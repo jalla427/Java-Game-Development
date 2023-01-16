@@ -1,0 +1,251 @@
+package enemy;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Area;
+import java.awt.image.BufferedImage;
+
+import tmp.Game;
+import tmp.GameObject;
+import tmp.Handler;
+import tmp.ID;
+import tmp.KeyInput;
+import tmp.SpriteSheet;
+
+public class HawkEnemy extends GameObject {
+	
+	private Handler handler;
+	private BufferedImage enemy_image;
+	SpriteSheet ss;
+	
+	private Polygon collision;
+	private int[] xCollision;
+	private int[] yCollision;
+	
+	float playerX = 0;
+	float playerY = 0;
+	int homingTimer = 0;
+	int retreatTimer;
+	boolean attacking = true;
+	
+	public HawkEnemy(int x, int y, ID id, Handler handler, int retreatNum) {
+		super(x, y, id);
+		
+		this.handler = handler;
+		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
+		
+		ss = new SpriteSheet(Game.sprite_sheet_hawk);
+		enemy_image = ss.grabImage(1, 1, 32, 32);
+		
+		velX = 5;
+		velY = 5;
+	}
+
+	public void tick() {
+		updateVelocity();
+		collision();
+		updateCollision();
+		collision.invalidate();
+	}
+
+	//Updates position and adjusts if the enemy is colliding with any tiles
+	private void collision() {
+		Area a1;
+	    Area a2; 
+		
+	    //Horizontal Collision
+		x += velX;
+		updateCollision();
+		for(int i = 0; i < handler.object.size(); i++) {
+			GameObject tempObject = handler.object.get(i);
+			
+			//Check for collision with tiles
+			if(tempObject.getID() == ID.Level) {
+				//Find area shared by player and tile
+				a1 = new Area(collision);
+				a2 = new Area(tempObject.getBounds());
+				a1.intersect(a2);
+				
+				//Determine if area is shared by enemy and tile
+				if(!a1.isEmpty()) {
+					//Reverse bad movement
+					x -= velX;
+					updateCollision();
+					a1.reset();
+					a2.reset();
+					a1 = new Area(collision);
+					a2 = new Area(tempObject.getBounds());
+					a1.intersect(a2);
+					
+					//Move enemy to the wall slowly until overlapping by one pixel
+					while(a1.isEmpty()) {
+						x += Math.signum(velX);
+						updateCollision();
+						a1.reset();
+						a2.reset();
+						a1 = new Area(collision);
+						a2 = new Area(tempObject.getBounds());
+						a1.intersect(a2);
+					}
+					
+					//Position enemy one pixel outside of wall
+					x -= Math.signum(velX);
+					updateCollision();
+					velX = 0;
+				}
+				a1.reset();
+				a2.reset();
+			}
+		}
+		
+		//Vertical Collision
+		y += velY;
+		updateCollision();
+		
+		//Set grounded to false in case enemy has walked over an edge
+		this.setGrounded(false);
+		
+		//Loop through all objects in search of tiles
+		for(int i = 0; i < handler.object.size(); i++) {
+			GameObject tempObject = handler.object.get(i);
+			
+			//Check for collision with tiles
+			if(tempObject.getID() == ID.Level) {
+				//Find area shared by enemy and tile
+				a1 = new Area(collision);
+				a2 = new Area(tempObject.getBounds());
+				a1.intersect(a2);
+				
+				//Determine if any area is shared by player and tile
+				if(!a1.isEmpty()) {
+					//Log
+					if(Game.debugMode) {
+						//System.out.println("Collision!");
+					}
+					
+					//Reverse bad movement
+					y -= velY;
+					updateCollision();
+					a1.reset();
+					a2.reset();
+					a1 = new Area(collision);
+					a2 = new Area(tempObject.getBounds());
+					a1.intersect(a2);
+					
+					//Move enemy to the wall slowly until overlapping by one pixel
+					while(a1.isEmpty()) {
+						y += Math.signum(velY);
+						updateCollision();
+						a1.reset();
+						a2.reset();
+						a1 = new Area(collision);
+						a2 = new Area(tempObject.getBounds());
+						a1.intersect(a2);
+					}
+					
+					//Position enemy one pixel outside of wall
+					y -= Math.signum(velY);
+					updateCollision();
+					velY = 0;
+				}
+				a1.reset();
+				a2.reset();
+			}
+		}
+	}
+
+	public void render(Graphics g) {
+		//g.setColor(Color.RED);
+		//g.fillRect((int) x, (int) y, 32, 32);
+		g.drawImage(enemy_image, (int) x, (int) y, null);
+		
+		//Draw collision box
+		if(Game.debugMode == true) {
+			g.setColor(Color.RED);
+			g.drawPolygon(collision);
+		}
+	}
+
+	public Polygon getBounds() {
+		return collision;
+	}
+
+	//moves collision box with enemy
+	protected void updateCollision() {
+		xCollision = new int[] {(int) x, ((int) x) + 32, ((int) x) + 32, (int) x};
+		yCollision = new int[] {(int) y, (int) y, ((int) y) + 32, ((int) y) + 32};
+		
+		collision = new Polygon();
+		collision.xpoints = xCollision;
+		collision.ypoints = yCollision;
+		collision.npoints = xCollision.length;
+	}
+	
+	protected void updateVelocity() {
+		//Partial homing on the player
+		for(int i = 0; i < handler.object.size(); i++) {
+			GameObject tempObject = handler.object.get(i);
+			
+			if(tempObject.getID() == ID.Player) {
+				playerX = tempObject.getX();
+				playerY = tempObject.getY();
+			}
+		}
+		
+		homingTimer++;
+		if(retreatTimer >= 300 && attacking) {
+			attacking = false;
+			enemy_image = ss.grabImage(1, 2, 32, 32);
+		}
+		
+		if(!attacking) {
+			if(playerX > this.x) {
+				velX = velX - 1;
+				velX = Game.clamp(velX, -2, 2);
+			}
+			else {
+				velX = velX + 1;
+				velX = Game.clamp(velX, -2, 2);
+			}
+			velY -= 1;
+			velY = Game.clamp(velY, -4, 4);
+			
+			retreatTimer -= 7;
+			if(retreatTimer <= 0) {
+				attacking = true;
+				enemy_image = ss.grabImage(1, 1, 32, 32);
+			}
+		}
+		else {
+			retreatTimer++;
+		}
+		
+		if(attacking) {
+			if(homingTimer >= 10) {
+				if(playerX > this.x) {
+					velX = velX + 1;
+				}
+				else {
+					velX = velX - 1;
+				}
+				if(playerY > this.y) {
+					velY = velY + 1;
+				}
+				else {
+					velY = velY - 1;
+				}
+				homingTimer = 0;
+			}
+		}
+		
+		//Limit speed
+		velX = Game.clamp(velX, -10, 10);
+		velY = Game.clamp(velY, -10, 10);
+		
+		//Position
+		x = Game.clamp(x, 0, Game.sWidth - 32);
+		y = Game.clamp(y, 0, Game.sHeight - 32);
+	}
+}
