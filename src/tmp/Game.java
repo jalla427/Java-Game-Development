@@ -23,11 +23,14 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	private boolean running = false;
 	public static boolean escapeGame = false;
+	public static boolean gameOver = false;
+	public static boolean quit = false;
 	
 	//Main frame dimensions
 	public static int sWidth = 900;
 	public static int sHeight = 670;
 	
+	//Variables primarily for level transition
 	protected static boolean playerControl = true;
 	protected static boolean transitioning = false;
 	private static int transitionTimer = 0;
@@ -57,7 +60,7 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		handler = new Handler();
 		tombTileMapBuilder = new TombTileMapBuilder();
-		menu = new Menu(this, handler);
+		menu = new Menu(handler);
 		hud = new HUD();
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addMouseListener(menu);
@@ -145,6 +148,13 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.render(g);
 		
+		//Quit was selected
+		if(quit) {
+			handler.clearPlayer();
+			handler.clearTiles();
+			quit = false;
+		}
+		
 		//Game start, Level 1 Transition
 		if(gameState == STATE.Menu && hud.getLevel() == 1) {
 			gameState = STATE.Game;
@@ -152,19 +162,16 @@ public class Game extends Canvas implements Runnable {
 		}
 		
 		if(gameState == STATE.Game) {
-			if(HUD.HEALTH <= 0) {
+			//Game Over
+			if(HUD.HEALTH <= 0 && !escapeGame) {
 				escapeGame = true;
 			}
 			
-			//Game over
 			if(escapeGame) {
-				HUD.HEALTH = 100;
-				hud.setScore(0);
-				hud.setLevel(0);
-				handler.clearPlayer();
-				handler.clearTiles();
-				gameState = STATE.Menu;
-				escapeGame = false;
+				if(!gameOver) {
+					beginGameOver();
+					gameOver = true;
+				}
 			}
 			
 			//Level 2 Transition
@@ -183,7 +190,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			
 			//Level Transition Timer
-			if(transitioning) {
+			if(transitioning && !escapeGame) {
 				transitionTimer++;
 				
 				//Next level banner
@@ -235,20 +242,20 @@ public class Game extends Canvas implements Runnable {
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
 			g.drawImage(backgroundImg, 0, 0, null);
-			menu.render(g);
 		}
 
+		menu.render(g);
 		g.dispose();
 		bs.show();
 	}
 	
-	//Start ransitioning level
+	//Start transitioning level
 	private static void startLevelTransition(int nextLevel, int playerX, int playerY) {
 		transitioning = true;
 		playerControl = false;
+		handler.clearEnemies();
 		handler.clearPlayer();
 		handler.clearTiles();
-		handler.clearEnemies();
 		tombTileMapBuilder.createTombLevel(LevelCollection.getLevel(nextLevel), handler);
 		handler.addObject(new Player(playerX, playerY, ID.Player, handler));
 		hud.setLevel(nextLevel);
@@ -260,6 +267,15 @@ public class Game extends Canvas implements Runnable {
 		transitionMessage = "";
 		transitioning = false;
 		playerControl = true;
+	}
+	
+	//Transition to gameover
+	public static void beginGameOver() {
+		escapeGame = true;
+		playerControl = false;
+		transitioning = false;
+		transitionTimer = 0;
+		handler.clearEnemies();
 	}
 	
 	//Restricts an int value between a given minimum and maximum value

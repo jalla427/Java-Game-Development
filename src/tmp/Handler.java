@@ -44,7 +44,7 @@ public class Handler {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Player) {
-				object.clear();
+				removeObject(object.get(i));
 			}
 		}
 	}
@@ -53,7 +53,7 @@ public class Handler {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Level) {
-				object.clear();
+				removeObject(object.get(i));
 			}
 		}
 	}
@@ -62,7 +62,7 @@ public class Handler {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Enemy) {
-				object.clear();
+				removeObject(object.get(i));
 			}
 		}
 	}

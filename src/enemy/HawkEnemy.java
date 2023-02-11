@@ -163,8 +163,13 @@ public class HawkEnemy extends GameObject {
 		
 		//Draw collision box
 		if(Game.debugMode == true) {
-			g.setColor(Color.RED);
-			g.drawPolygon(collision);
+			try {
+				g.setColor(Color.RED);
+				g.drawPolygon(getBounds());
+			}
+			catch (NullPointerException e) {
+				System.out.println(e);
+			}
 		}
 	}
 

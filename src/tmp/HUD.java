@@ -19,7 +19,7 @@ public class HUD {
 		
 		greenValue = HEALTH * 2;
 		
-		if(!Game.transitioning) {
+		if(!Game.transitioning && !Game.escapeGame) {
 			scoreTimer++;
 			if(scoreTimer >= 20) {
 				score++;

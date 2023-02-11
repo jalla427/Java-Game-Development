@@ -180,8 +180,7 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		//g.setColor(Color.BLUE);
-		//g.fillRect((int) x, (int) y, 32, 32);
+		//Draw player
 		g.drawImage(player_image, (int) x, (int) y, null);
 		
 		//Draw collision box
