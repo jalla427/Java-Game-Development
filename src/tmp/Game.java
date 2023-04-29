@@ -150,8 +150,9 @@ public class Game extends Canvas implements Runnable {
 		
 		//Quit was selected
 		if(quit) {
-			handler.clearPlayer();
-			handler.clearTiles();
+			while(handler.areLevel()) {
+				handler.clearLevel();
+			}
 			quit = false;
 		}
 		
@@ -253,9 +254,9 @@ public class Game extends Canvas implements Runnable {
 	private static void startLevelTransition(int nextLevel, int playerX, int playerY) {
 		transitioning = true;
 		playerControl = false;
-		handler.clearEnemies();
-		handler.clearPlayer();
-		handler.clearTiles();
+		while(handler.areLevel()) {
+			handler.clearLevel();
+		}
 		tombTileMapBuilder.createTombLevel(LevelCollection.getLevel(nextLevel), handler);
 		handler.addObject(new Player(playerX, playerY, ID.Player, handler));
 		hud.setLevel(nextLevel);
@@ -275,7 +276,9 @@ public class Game extends Canvas implements Runnable {
 		playerControl = false;
 		transitioning = false;
 		transitionTimer = 0;
-		handler.clearEnemies();
+		while(handler.areEnemies()) {
+			handler.clearEnemies();
+		}
 	}
 	
 	//Restricts an int value between a given minimum and maximum value

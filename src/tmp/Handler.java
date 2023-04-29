@@ -66,4 +66,61 @@ public class Handler {
 			}
 		}
 	}
+	
+	public void clearLevel() {
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
+				removeObject(object.get(i));
+			}
+		}
+	}
+	
+	public boolean arePlayers() {
+		boolean foundPlayer = false;
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Player) {
+				foundPlayer = true;
+				break;
+			}
+		}
+		return foundPlayer;
+	}
+	
+	public boolean areTiles() {
+		boolean foundTile = false;
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Level) {
+				foundTile = true;
+				break;
+			}
+		}
+		return foundTile;
+	}
+	
+	public boolean areEnemies() {
+		boolean foundEnemy = false;
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Enemy) {
+				foundEnemy = true;
+				break;
+			}
+		}
+		return foundEnemy;
+	}
+	
+	public boolean areLevel() {
+		boolean foundLevel = false;
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
+				foundLevel = true;
+				break;
+			}
+		}
+		return foundLevel;
+	}
 }

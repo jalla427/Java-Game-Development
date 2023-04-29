@@ -2,6 +2,7 @@ package tmp;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -91,20 +92,17 @@ public class Menu extends MouseAdapter {
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
 		
+		Color deepRed = new Color(100, 0, 0);
+		Color tan = new Color(71, 45, 0);
+		
 		if(Game.gameState == STATE.Menu) {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Menu", (Game.sWidth/2) - 65, 200);
 			
-			g.setFont(fnt2);
-			g.drawRect((Game.sWidth/2) - 100, 250, bWidth, bHeight);
-			g.drawString("Play", (Game.sWidth/2) - 30, 295);
-			
-			g.drawRect((Game.sWidth/2) - 100, 350, bWidth, bHeight);
-			g.drawString("Settings", (Game.sWidth/2) - 55, 395);
-			
-			g.drawRect((Game.sWidth/2) - 100, 450, bWidth, bHeight);
-			g.drawString("Quit", (Game.sWidth/2) - 30, 495);
+			drawButton(g, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight);
+			drawButton(g, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight);
+			drawButton(g, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight);
 		}
 		
 		if(Game.gameState == STATE.Settings) {
@@ -112,17 +110,29 @@ public class Menu extends MouseAdapter {
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
 			
-			g.setFont(fnt2);
-			g.drawRect((Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight);
-			g.drawString("Menu", (Game.sWidth/2) - 40, 495);
+			drawButton(g, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight);
 		}
 		
 		if(Game.gameState == STATE.Game) {
 			if(Game.escapeGame) {
-				g.setFont(fnt2);
-				g.drawRect((Game.sWidth/2) - 100, 350, Menu.bWidth, Menu.bHeight);
-				g.drawString("Quit", (Game.sWidth/2) - 30, 395);
+				drawButton(g, fnt2, deepRed, Color.WHITE, "Gameover!", (Game.sWidth/2) - 100, 275, bWidth, bHeight);
+				drawButton(g, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight);
 			}
 		}
+	}
+	
+	public void drawButton(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
+		FontMetrics metrics = g.getFontMetrics(font);
+		int textX = x + (width - metrics.stringWidth(text)) / 2;;
+		int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();;
+		
+		g.setColor(colorOne);
+		g.fillRect(x, y, width, height);
+		
+		g.setColor(colorTwo);
+		g.drawRect(x, y, width, height);
+		
+		g.setFont(font);
+		g.drawString(text, textX, textY);
 	}
 }
