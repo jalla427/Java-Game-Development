@@ -43,6 +43,8 @@ public class Game extends Canvas implements Runnable {
 	
 	public static BufferedImage backgroundImg;
 	public static BufferedImage tomb_blocks_20x20;
+	public static BufferedImage dungeon_blocks_20x20;
+	public static BufferedImage burning_blocks_20x20;
 	public static BufferedImage sprite_sheet;
 	public static BufferedImage sprite_sheet_hawk;
 	public static BufferedImage sprite_sheet_sentry;
@@ -68,6 +70,8 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		backgroundImg = loader.loadImage("/tombMainMenu.png");
 		tomb_blocks_20x20 = loader.loadImage("/tomb_blocks_20x20.png");
+		dungeon_blocks_20x20 = loader.loadImage("/dungeon_blocks_20x20.png");
+		burning_blocks_20x20 = loader.loadImage("/burning_blocks_20x20.png");
 		sprite_sheet = loader.loadImage("/sprite_sheet.png");
 		sprite_sheet_hawk = loader.loadImage("/sprite_sheet_hawk.png");
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
