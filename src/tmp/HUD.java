@@ -18,14 +18,6 @@ public class HUD {
 		greenValue = Game.clamp(greenValue, 0, 255);
 		
 		greenValue = HEALTH * 2;
-		
-		if(!Game.transitioning && !Game.escapeGame) {
-			scoreTimer++;
-			if(scoreTimer >= 20) {
-				score++;
-				scoreTimer = 0;
-			}
-		}
 	}
 	
 	public void render(Graphics g) {
@@ -39,6 +31,16 @@ public class HUD {
 		g.setFont(new Font("Helvetica", Font.PLAIN, 12));
 		g.drawString("Score: " + score, 240, 36);
 		g.drawString("Level: " + level, 240, 52);
+	}
+
+	private void handleScoreByTime() {
+		if(!Game.transitioning && !Game.escapeGame) {
+			scoreTimer++;
+			if(scoreTimer >= 20) {
+				score++;
+				scoreTimer = 0;
+			}
+		}
 	}
 	
 	public void setScore(int score) {

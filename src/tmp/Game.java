@@ -1,22 +1,15 @@
 package tmp;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.geom.Area;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 import enemy.HawkEnemy;
 import enemy.SentryEnemy;
+import Item.Coin;
 import level.LevelCollection;
 import level.TileMapBuilder;
-import tmp.HUD;
-import tmp.KeyInput;
-import tmp.Menu;
-import tmp.Game.STATE;
-import tmp.BufferedImageLoader;
 
 public class Game extends Canvas implements Runnable {
 
@@ -35,10 +28,11 @@ public class Game extends Canvas implements Runnable {
 	protected static boolean transitioning = false;
 	private static int transitionTimer = 0;
 	private static String transitionMessage = "";
+	public static int coinsLeft = 0;
 	
 	private static Handler handler;
 	private final Menu menu;
-	protected static HUD hud;
+	public static HUD hud;
 	protected static TileMapBuilder tombTileMapBuilder;
 	
 	public static BufferedImage backgroundImg;
@@ -209,6 +203,7 @@ public class Game extends Canvas implements Runnable {
 				if(hud.getLevel() == 1) {
 					if(transitionTimer >= 7000) {
 						handler.addObject(new HawkEnemy(100, 100, ID.Enemy, handler, 300));
+						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -218,6 +213,7 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new HawkEnemy(sWidth/4, 100, ID.Enemy, handler, 0));
 						handler.addObject(new HawkEnemy(3*(sWidth/4), 100, ID.Enemy, handler, 120));
 						handler.addObject(new SentryEnemy(0, 200, ID.Enemy, handler, 150, 0));
+						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -228,6 +224,7 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 120, 30));
 						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 120, 60));
 						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 120, 0));
+						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -239,9 +236,51 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new SentryEnemy(sWidth-60, 100, ID.Enemy, handler, 200, 150));
 						handler.addObject(new SentryEnemy(40, sHeight-50, ID.Enemy, handler, 200, 100));
 						handler.addObject(new SentryEnemy(sWidth-60, sHeight-50, ID.Enemy, handler, 200, 0));
+						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
+			}
+
+			//Handle coins during level
+			if(!handler.areCoins() && coinsLeft > 0) {
+				boolean obstructed;
+				float attemptX;
+				float attemptY;
+
+				do {
+					obstructed = false;
+
+					attemptX = (float)(sWidth * Math.random());
+					attemptY = (float)(sHeight * Math.random());
+					int[] xCollision = new int[] {(int) attemptX, ((int) attemptX) + 10, ((int) attemptX) + 10, (int) attemptX};
+					int[] yCollision = new int[] {(int) attemptY, (int) attemptY, ((int) attemptY) + 10, ((int) attemptY) + 10};
+					Polygon collision = new Polygon();
+					collision.xpoints = xCollision;
+					collision.ypoints = yCollision;
+					collision.npoints = xCollision.length;
+
+					for(int i = 0; i < handler.object.size(); i++) {
+						GameObject tempObject = handler.object.get(i);
+						Area a1;
+						Area a2;
+
+						//Check for player/tile collision
+						if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
+							//Find area shared by player/tile
+							a1 = new Area(collision);
+							a2 = new Area(tempObject.getBounds());
+							a1.intersect(a2);
+
+							//Determine if area is shared by player/tile
+							if (!a1.isEmpty()) {
+								obstructed = true;
+							}
+						}
+					}
+				} while(obstructed);
+
+				handler.addObject(new Coin(attemptX, attemptY, 5, 5, ID.Coin, handler));
 			}
 			
 			hud.render(g);
@@ -283,6 +322,7 @@ public class Game extends Canvas implements Runnable {
 		transitionTimer = 0;
 		while(handler.areEnemies()) {
 			handler.clearEnemies();
+			handler.clearItems();
 		}
 	}
 	

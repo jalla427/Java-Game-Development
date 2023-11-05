@@ -9,6 +9,7 @@ public abstract class GameObject {
 		protected ID id;
 		protected float x, y;
 		protected float velX, velY;
+		protected int width, height;
 		protected int xDirection;
 		protected int yDirection;
 		protected boolean grounded;
