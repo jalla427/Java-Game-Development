@@ -36,7 +36,7 @@ public class Tile extends GameObject{
 		g.drawImage(img, (int) x, (int) y, null);
 		
 		//Draw collision box
-		if(Game.debugMode == true) {
+		if(Game.debugMode) {
 			g.setColor(Color.BLUE);
 			g.drawPolygon(collision);
 		}

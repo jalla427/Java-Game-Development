@@ -16,7 +16,7 @@ import tmp.SpriteSheet;
 
 public class HawkEnemy extends GameObject {
 	
-	private Handler handler;
+	private final Handler handler;
 	private BufferedImage enemy_image;
 	SpriteSheet ss;
 	
@@ -162,7 +162,7 @@ public class HawkEnemy extends GameObject {
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box
-		if(Game.debugMode == true) {
+		if(Game.debugMode) {
 			try {
 				g.setColor(Color.RED);
 				g.drawPolygon(getBounds());

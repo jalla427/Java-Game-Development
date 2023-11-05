@@ -169,7 +169,7 @@ public class Player extends GameObject {
 				
 				//If jump button still held at the end of a jump, jump again
 				if(KeyInput.keyDown[4] && this.isGrounded()) {
-					if(Game.debugMode == true) {
+					if(Game.debugMode) {
 						System.out.println("Jumped again!");
 					}
 					this.velY -= 20; 
@@ -184,7 +184,7 @@ public class Player extends GameObject {
 		g.drawImage(player_image, (int) x, (int) y, null);
 		
 		//Draw collision box
-		if(Game.debugMode == true) {
+		if(Game.debugMode) {
 			g.setColor(Color.GREEN);
 			g.drawPolygon(collision);
 		}
@@ -208,7 +208,7 @@ public class Player extends GameObject {
 	protected void updateVelocity() {
 		//Velocity -- (0 = left), (1 = right), (2 = neutral)
 		if(!this.isGrounded()) {
-			if(Game.debugMode == true) {
+			if(Game.debugMode) {
 				//System.out.println("Airborne!");
 			}
 			velY += 1; 

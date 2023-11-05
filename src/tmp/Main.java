@@ -36,8 +36,8 @@ public class Main extends Canvas{
 		gamePlay.addComponentListener(new ComponentAdapter() {
 		    public void componentResized(ComponentEvent componentEvent) {
 		        gamePlay.setSize(jfrGameCore.getBounds().width, jfrGameCore.getBounds().height);
-		        gamePlay.sWidth = jfrGameCore.getBounds().width;
-		        gamePlay.sHeight = jfrGameCore.getBounds().height;
+		        Game.sWidth = jfrGameCore.getBounds().width;
+		        Game.sHeight = jfrGameCore.getBounds().height;
 		    }
 		});
 	}

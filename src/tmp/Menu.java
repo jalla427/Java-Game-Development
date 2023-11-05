@@ -11,13 +11,13 @@ import java.util.Random;
 import enemy.HawkEnemy;
 import level.DemoMain;
 import level.LevelCollection;
-import level.TombTileMapBuilder;
+import level.TileMapBuilder;
 import tmp.AudioPlayer;
 import tmp.Game.STATE;
 
 public class Menu extends MouseAdapter {
 	
-	private Handler handler;
+	private final Handler handler;
 	
 	private Random r;
 	protected static int bWidth = 200;
@@ -77,10 +77,7 @@ public class Menu extends MouseAdapter {
 	}
 	
 	private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
-		if(mx > x && mx < x + width && my > y && my < y + height) {
-			return true;
-		}
-		else return false;
+        return mx > x && mx < x + width && my > y && my < y + height;
 	}
 	
 	public void tick() {
@@ -123,10 +120,10 @@ public class Menu extends MouseAdapter {
 	
 	public void drawButton(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
 		FontMetrics metrics = g.getFontMetrics(font);
-		int textX = x + (width - metrics.stringWidth(text)) / 2;;
-		int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();;
-		
-		g.setColor(colorOne);
+		int textX = x + (width - metrics.stringWidth(text)) / 2;
+        int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();
+
+        g.setColor(colorOne);
 		g.fillRect(x, y, width, height);
 		
 		g.setColor(colorTwo);

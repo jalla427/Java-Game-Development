@@ -7,7 +7,7 @@ import tmp.Game.STATE;
 
 public class KeyInput extends KeyAdapter {
 	
-	private Handler handler;
+	private final Handler handler;
 	protected static boolean[] keyDown = new boolean[5];
 	
 	Game game;
@@ -30,23 +30,23 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);
 			
 			//Character Controls
-			if(tempObject.getID() == ID.Player && Game.playerControl == true) {
+			if(tempObject.getID() == ID.Player && Game.playerControl) {
 				//WASD
-				if(key == KeyEvent.VK_W && keyDown[1] != true && tempObject.isGrounded()) { 
+				if(key == KeyEvent.VK_W && !keyDown[1] && tempObject.isGrounded()) {
 					//Formerly jump, switched to space
 					keyDown[0] = true; 
 				}
 				else if(key == KeyEvent.VK_W) { 
 					keyDown[0] = true; 
 				}
-				if(key == KeyEvent.VK_S && keyDown[0] != true) { 
+				if(key == KeyEvent.VK_S && !keyDown[0]) {
 					//Formerly down, replaced with jumping mechanic
 					keyDown[1] = true; 
 				}
 				else if(key == KeyEvent.VK_S) { 
 					keyDown[1] = true; 
 				}
-				if(key == KeyEvent.VK_D && keyDown[3] != true) { 
+				if(key == KeyEvent.VK_D && !keyDown[3]) {
 					tempObject.setxDirection(1); 
 					keyDown[2] = true; 
 				}
@@ -54,7 +54,7 @@ public class KeyInput extends KeyAdapter {
 					tempObject.setxDirection(2); 
 					keyDown[2] = true; 
 				}
-				if(key == KeyEvent.VK_A && keyDown[2] != true) { 
+				if(key == KeyEvent.VK_A && !keyDown[2]) {
 					tempObject.setxDirection(0); 
 					keyDown[3] = true; 
 				}
@@ -67,7 +67,7 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_SPACE) { 
 					keyDown[4] = true;
 					if(tempObject.isGrounded()) {
-						if(Game.debugMode == true) {
+						if(Game.debugMode) {
 							System.out.println("Jumped!");
 						}
 						tempObject.velY -= 20; 
@@ -79,14 +79,14 @@ public class KeyInput extends KeyAdapter {
 		
 		//Pause
 		if(key == KeyEvent.VK_P) {
-			if(game.gameState == STATE.Game) {
+			if(Game.gameState == STATE.Game) {
 
 			}
 		}
 		
 		//Debug Mode
 		if(key == KeyEvent.VK_F3) {
-			if(Game.debugMode == false) {
+			if(!Game.debugMode) {
 				Game.debugMode = true;
 				System.out.println("** Debug Mode On **");
 			}

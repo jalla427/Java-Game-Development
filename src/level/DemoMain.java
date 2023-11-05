@@ -13,8 +13,8 @@ import tmp.ID;
 import tmp.Handler;
 
 public class DemoMain extends GameObject {
-	private Handler handler;
-	private BufferedImage terrainImg;
+	private final Handler handler;
+	private final BufferedImage terrainImg;
 	
 	private Polygon collision;
 	private int[] xCollision;

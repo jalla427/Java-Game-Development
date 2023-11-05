@@ -11,7 +11,7 @@ import tmp.ID;
 
 public class Bullet extends GameObject {
 
-	private Handler handler;
+	private final Handler handler;
 	
 	private Polygon collision;
 	private int[] xCollision;
@@ -45,7 +45,7 @@ public class Bullet extends GameObject {
 		g.fillRect((int) x, (int) y, 4, 4);
 		
 		//Draw collision box
-		if(Game.debugMode == true) {
+		if(Game.debugMode) {
 			g.setColor(Color.YELLOW);
 			g.drawPolygon(collision);
 		}

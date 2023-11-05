@@ -11,7 +11,7 @@ import java.util.Random;
 import enemy.HawkEnemy;
 import enemy.SentryEnemy;
 import level.LevelCollection;
-import level.TombTileMapBuilder;
+import level.TileMapBuilder;
 import tmp.HUD;
 import tmp.KeyInput;
 import tmp.Menu;
@@ -37,9 +37,9 @@ public class Game extends Canvas implements Runnable {
 	private static String transitionMessage = "";
 	
 	private static Handler handler;
-	private Menu menu;
+	private final Menu menu;
 	protected static HUD hud;
-	protected static TombTileMapBuilder tombTileMapBuilder;
+	protected static TileMapBuilder tombTileMapBuilder;
 	
 	public static BufferedImage backgroundImg;
 	public static BufferedImage tomb_blocks_20x20;
@@ -54,14 +54,15 @@ public class Game extends Canvas implements Runnable {
 		Menu,
 		Settings,
 		Game
-	};
-	public static STATE gameState = STATE.Menu;
+	}
+
+    public static STATE gameState = STATE.Menu;
 	public static boolean debugMode = false;
 	
 	//Constructor
 	public Game() {
 		handler = new Handler();
-		tombTileMapBuilder = new TombTileMapBuilder();
+		tombTileMapBuilder = new TileMapBuilder();
 		menu = new Menu(handler);
 		hud = new HUD();
 		this.addKeyListener(new KeyInput(handler, this));
@@ -163,7 +164,7 @@ public class Game extends Canvas implements Runnable {
 		//Game start, Level 1 Transition
 		if(gameState == STATE.Menu && hud.getLevel() == 1) {
 			gameState = STATE.Game;
-			startLevelTransition(1, sWidth/2-16, sHeight/2-32);
+			startLevelTransition(tomb_blocks_20x20, 1, sWidth/2-16, sHeight/2-32);
 		}
 		
 		if(gameState == STATE.Game) {
@@ -181,17 +182,17 @@ public class Game extends Canvas implements Runnable {
 			
 			//Level 2 Transition
 			if(hud.getScore() == 150 && hud.getLevel() == 1) {
-				startLevelTransition(2, sWidth/2-16, sHeight/2+232);
+				startLevelTransition(tomb_blocks_20x20, 2, sWidth/2-16, sHeight/2+232);
 			}
 			
 			//Level 3 Transition
 			if(hud.getScore() == 300 && hud.getLevel() == 2) {
-				startLevelTransition(3, sWidth/2-16, sHeight/2+232);
+				startLevelTransition(tomb_blocks_20x20, 3, sWidth/2-16, sHeight/2+232);
 			}
 			
 			//Level 3 Transition
 			if(hud.getScore() == 450 && hud.getLevel() == 3) {
-				startLevelTransition(4, sWidth/2-16, sHeight-60);
+				startLevelTransition(tomb_blocks_20x20, 4, sWidth/2-16, sHeight-60);
 			}
 			
 			//Level Transition Timer
@@ -255,13 +256,13 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	//Start transitioning level
-	private static void startLevelTransition(int nextLevel, int playerX, int playerY) {
+	private static void startLevelTransition(BufferedImage tileMap, int nextLevel, int playerX, int playerY) {
 		transitioning = true;
 		playerControl = false;
 		while(handler.areLevel()) {
 			handler.clearLevel();
 		}
-		tombTileMapBuilder.createTombLevel(LevelCollection.getLevel(nextLevel), handler);
+		tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
 		handler.addObject(new Player(playerX, playerY, ID.Player, handler));
 		hud.setLevel(nextLevel);
 	}
@@ -306,7 +307,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	//Main method
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		new Game();
 	}
 }
