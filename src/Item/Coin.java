@@ -14,6 +14,7 @@ public class Coin extends GameObject {
 
 	private int coinValue = 50;
 	private int coinHeal = 5;
+	private int maxSpeed = 10;
 
 	public Coin(float x, float y, float speedOne, float speedTwo, ID id, Handler handler) {
 		super(x, y, id);
@@ -28,20 +29,16 @@ public class Coin extends GameObject {
 	}
 
 	public void tick() {
-		//Clamp velocity
-		velX = Game.clamp(velX, -5, 5);
-		velY = Game.clamp(velY, -5, 5);
-
 		//Update position
-		x += velX;
-		y += velY;
-
 		collision();
 		updateCollision();
 		
 		//If coin is off screen, delete it
-		if(x > Game.sWidth || x < -width || y > Game.sHeight || y < -height) {
+		if(x > Game.sWidth || x < -this.width || y > Game.sHeight || y < -this.height) {
 			handler.object.remove(this);
+			if(Game.debugMode) {
+				System.out.println("*** Coin Out of Bounds! ***");
+			}
 		}
 	}
 
@@ -111,7 +108,7 @@ public class Coin extends GameObject {
 
 					//Flip velocity to bounce coin
 					velX = -velX;
-					velY = velY + (float)Math.random();
+					velX *= (float)((2 * Math.random()) + 0.5);
 				}
 				a1.reset();
 				a2.reset();
@@ -169,12 +166,14 @@ public class Coin extends GameObject {
 
 					//Flip velocity to bounce coin
 					velY = -velY;
-					velX = velX + (float)Math.random();
+					velY *= (float)((2 * Math.random()) + 0.5);
 				}
 				a1.reset();
 				a2.reset();
 			}
 		}
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 	}
 
 	public void render(Graphics g) {

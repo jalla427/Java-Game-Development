@@ -112,7 +112,9 @@ public class Game extends Canvas implements Runnable {
 			
 			if(System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
-				//System.out.println("FPS: " + frames);
+				if(debugMode) {
+					System.out.println("FPS: " + frames);
+				}
 				frames = 0;
 			}
 		}
@@ -128,6 +130,138 @@ public class Game extends Canvas implements Runnable {
 		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
 			handler.tick();
 			menu.tick();
+		}
+
+		//Quit was selected
+		if(quit) {
+			while(handler.areLevel()) {
+				handler.clearLevel();
+			}
+			quit = false;
+		}
+
+		//Game start, Level 1 Transition
+		if(gameState == STATE.Menu && hud.getLevel() == 1) {
+			gameState = STATE.Game;
+			startLevelTransition(tomb_blocks_20x20, 1, sWidth/2-16, sHeight/2-32);
+		}
+
+		if(gameState == STATE.Game) {
+			//Game Over
+			if (HUD.HEALTH <= 0 && !escapeGame) {
+				escapeGame = true;
+			}
+
+			if (escapeGame) {
+				if (!gameOver) {
+					beginGameOver();
+					gameOver = true;
+				}
+			}
+
+			//Level 2 Transition
+			if (hud.getScore() == 150 && hud.getLevel() == 1) {
+				startLevelTransition(tomb_blocks_20x20, 2, sWidth / 2 - 16, sHeight / 2 + 232);
+			}
+
+			//Level 3 Transition
+			if (hud.getScore() == 300 && hud.getLevel() == 2) {
+				startLevelTransition(tomb_blocks_20x20, 3, sWidth / 2 - 16, sHeight / 2 + 232);
+			}
+
+			//Level 3 Transition
+			if (hud.getScore() == 450 && hud.getLevel() == 3) {
+				startLevelTransition(tomb_blocks_20x20, 4, sWidth / 2 - 16, sHeight - 60);
+			}
+
+			//Level Transition Timer
+			if (transitioning && !escapeGame) {
+				transitionTimer++;
+				transitionMessage = "Level " + hud.getLevel();
+
+				//Brief pause between levels before calling enemies
+				if (hud.getLevel() == 1) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(100, 100, ID.Enemy, handler, 300));
+						coinsLeft = 3;
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 2) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(sWidth / 4, 100, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(3 * (sWidth / 4), 100, ID.Enemy, handler, 120));
+						handler.addObject(new SentryEnemy(0, 200, ID.Enemy, handler, 150, 0));
+						coinsLeft = 3;
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 3) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(sWidth / 4, 100, ID.Enemy, handler, 0));
+						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 120, 30));
+						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 120, 60));
+						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 120, 0));
+						coinsLeft = 3;
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 4) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(200, 100, ID.Enemy, handler, 0));
+						handler.addObject(new SentryEnemy(40, 100, ID.Enemy, handler, 200, 50));
+						handler.addObject(new SentryEnemy(sWidth - 60, 100, ID.Enemy, handler, 200, 150));
+						handler.addObject(new SentryEnemy(40, sHeight - 50, ID.Enemy, handler, 200, 100));
+						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, ID.Enemy, handler, 200, 0));
+						coinsLeft = 3;
+						endLevelTransition();
+					}
+				}
+			}
+
+			//Handle coins during level
+			if (!handler.areCoins() && coinsLeft > 0) {
+				boolean obstructed;
+				float attemptX;
+				float attemptY;
+
+				do {
+					obstructed = false;
+
+					attemptX = (float) (sWidth * Math.random());
+					attemptY = (float) (sHeight * Math.random());
+					int[] xCollision = new int[]{(int) attemptX, ((int) attemptX) + 10, ((int) attemptX) + 10, (int) attemptX};
+					int[] yCollision = new int[]{(int) attemptY, (int) attemptY, ((int) attemptY) + 10, ((int) attemptY) + 10};
+					Polygon collision = new Polygon();
+					collision.xpoints = xCollision;
+					collision.ypoints = yCollision;
+					collision.npoints = xCollision.length;
+
+					for (int i = 0; i < handler.object.size(); i++) {
+						GameObject tempObject = handler.object.get(i);
+						Area a1;
+						Area a2;
+
+						//Check for player/tile collision
+						if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
+							//Find area shared by player/tile
+							a1 = new Area(collision);
+							a2 = new Area(tempObject.getBounds());
+							a1.intersect(a2);
+
+							//Determine if area is shared by player/tile
+							if (!a1.isEmpty()) {
+								obstructed = true;
+							}
+						}
+					}
+				} while (obstructed);
+
+				handler.addObject(new Coin(attemptX, attemptY, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+			}
 		}
 	}
 	
@@ -147,143 +281,15 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.render(g);
 		
-		//Quit was selected
-		if(quit) {
-			while(handler.areLevel()) {
-				handler.clearLevel();
-			}
-			quit = false;
-		}
-		
-		//Game start, Level 1 Transition
-		if(gameState == STATE.Menu && hud.getLevel() == 1) {
-			gameState = STATE.Game;
-			startLevelTransition(tomb_blocks_20x20, 1, sWidth/2-16, sHeight/2-32);
-		}
-		
 		if(gameState == STATE.Game) {
-			//Game Over
-			if(HUD.HEALTH <= 0 && !escapeGame) {
-				escapeGame = true;
-			}
-			
-			if(escapeGame) {
-				if(!gameOver) {
-					beginGameOver();
-					gameOver = true;
-				}
-			}
-			
-			//Level 2 Transition
-			if(hud.getScore() == 150 && hud.getLevel() == 1) {
-				startLevelTransition(tomb_blocks_20x20, 2, sWidth/2-16, sHeight/2+232);
-			}
-			
-			//Level 3 Transition
-			if(hud.getScore() == 300 && hud.getLevel() == 2) {
-				startLevelTransition(tomb_blocks_20x20, 3, sWidth/2-16, sHeight/2+232);
-			}
-			
-			//Level 3 Transition
-			if(hud.getScore() == 450 && hud.getLevel() == 3) {
-				startLevelTransition(tomb_blocks_20x20, 4, sWidth/2-16, sHeight-60);
-			}
-			
-			//Level Transition Timer
+			hud.render(g);
+
 			if(transitioning && !escapeGame) {
-				transitionTimer++;
-				
 				//Next level banner
-				transitionMessage = "Level " + hud.getLevel();
 				g.setColor(Color.white);
 				g.setFont(new Font("Helvetica", Font.PLAIN, 36));
-				g.drawString(transitionMessage, sWidth/2-50, sHeight/2);
-				
-				//Brief pause between levels before calling enemies
-				if(hud.getLevel() == 1) {
-					if(transitionTimer >= 7000) {
-						handler.addObject(new HawkEnemy(100, 100, ID.Enemy, handler, 300));
-						coinsLeft = 3;
-						endLevelTransition();
-					}
-				}
-				
-				if(hud.getLevel() == 2) {
-					if(transitionTimer >= 7000) {
-						handler.addObject(new HawkEnemy(sWidth/4, 100, ID.Enemy, handler, 0));
-						handler.addObject(new HawkEnemy(3*(sWidth/4), 100, ID.Enemy, handler, 120));
-						handler.addObject(new SentryEnemy(0, 200, ID.Enemy, handler, 150, 0));
-						coinsLeft = 3;
-						endLevelTransition();
-					}
-				}
-				
-				if(hud.getLevel() == 3) {
-					if(transitionTimer >= 7000) {
-						handler.addObject(new HawkEnemy(sWidth/4, 100, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 120, 30));
-						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 120, 60));
-						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 120, 0));
-						coinsLeft = 3;
-						endLevelTransition();
-					}
-				}
-				
-				if(hud.getLevel() == 4) {
-					if(transitionTimer >= 7000) {
-						handler.addObject(new HawkEnemy(200, 100, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(40, 100, ID.Enemy, handler, 200, 50));
-						handler.addObject(new SentryEnemy(sWidth-60, 100, ID.Enemy, handler, 200, 150));
-						handler.addObject(new SentryEnemy(40, sHeight-50, ID.Enemy, handler, 200, 100));
-						handler.addObject(new SentryEnemy(sWidth-60, sHeight-50, ID.Enemy, handler, 200, 0));
-						coinsLeft = 3;
-						endLevelTransition();
-					}
-				}
+				g.drawString(transitionMessage, sWidth / 2 - 50, sHeight / 2);
 			}
-
-			//Handle coins during level
-			if(!handler.areCoins() && coinsLeft > 0) {
-				boolean obstructed;
-				float attemptX;
-				float attemptY;
-
-				do {
-					obstructed = false;
-
-					attemptX = (float)(sWidth * Math.random());
-					attemptY = (float)(sHeight * Math.random());
-					int[] xCollision = new int[] {(int) attemptX, ((int) attemptX) + 10, ((int) attemptX) + 10, (int) attemptX};
-					int[] yCollision = new int[] {(int) attemptY, (int) attemptY, ((int) attemptY) + 10, ((int) attemptY) + 10};
-					Polygon collision = new Polygon();
-					collision.xpoints = xCollision;
-					collision.ypoints = yCollision;
-					collision.npoints = xCollision.length;
-
-					for(int i = 0; i < handler.object.size(); i++) {
-						GameObject tempObject = handler.object.get(i);
-						Area a1;
-						Area a2;
-
-						//Check for player/tile collision
-						if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
-							//Find area shared by player/tile
-							a1 = new Area(collision);
-							a2 = new Area(tempObject.getBounds());
-							a1.intersect(a2);
-
-							//Determine if area is shared by player/tile
-							if (!a1.isEmpty()) {
-								obstructed = true;
-							}
-						}
-					}
-				} while(obstructed);
-
-				handler.addObject(new Coin(attemptX, attemptY, 5, 5, ID.Coin, handler));
-			}
-			
-			hud.render(g);
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
 			g.drawImage(backgroundImg, 0, 0, null);
@@ -320,7 +326,8 @@ public class Game extends Canvas implements Runnable {
 		playerControl = false;
 		transitioning = false;
 		transitionTimer = 0;
-		while(handler.areEnemies()) {
+		coinsLeft = 0;
+		while(handler.areEnemies() || handler.areCoins()) {
 			handler.clearEnemies();
 			handler.clearItems();
 		}
