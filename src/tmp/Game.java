@@ -28,7 +28,7 @@ public class Game extends Canvas implements Runnable {
 	protected static boolean transitioning = false;
 	private static int transitionTimer = 0;
 	private static String transitionMessage = "";
-	public static int coinsLeft = 0;
+	public static int coinsLeft = 1;
 	
 	private static Handler handler;
 	private final Menu menu;
@@ -143,7 +143,7 @@ public class Game extends Canvas implements Runnable {
 		//Game start, Level 1 Transition
 		if(gameState == STATE.Menu && hud.getLevel() == 1) {
 			gameState = STATE.Game;
-			startLevelTransition(tomb_blocks_20x20, 1, sWidth/2-16, sHeight/2-32);
+			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
 		}
 
 		if(gameState == STATE.Game) {
@@ -160,18 +160,18 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Level 2 Transition
-			if (hud.getScore() == 150 && hud.getLevel() == 1) {
-				startLevelTransition(tomb_blocks_20x20, 2, sWidth / 2 - 16, sHeight / 2 + 232);
+			if (coinsLeft == 0 && hud.getLevel() == 1) {
+				startLevelTransition(tomb_blocks_20x20, 2, 3, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 
 			//Level 3 Transition
-			if (hud.getScore() == 300 && hud.getLevel() == 2) {
-				startLevelTransition(tomb_blocks_20x20, 3, sWidth / 2 - 16, sHeight / 2 + 232);
+			if (coinsLeft == 0 && hud.getLevel() == 2) {
+				startLevelTransition(tomb_blocks_20x20, 3, 3, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 
 			//Level 3 Transition
-			if (hud.getScore() == 450 && hud.getLevel() == 3) {
-				startLevelTransition(tomb_blocks_20x20, 4, sWidth / 2 - 16, sHeight - 60);
+			if (coinsLeft == 0 && hud.getLevel() == 3) {
+				startLevelTransition(tomb_blocks_20x20, 4, 3, sWidth / 2 - 16, sHeight - 60);
 			}
 
 			//Level Transition Timer
@@ -183,7 +183,6 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 1) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(100, 100, ID.Enemy, handler, 300));
-						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -193,7 +192,6 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new HawkEnemy(sWidth / 4, 100, ID.Enemy, handler, 0));
 						handler.addObject(new HawkEnemy(3 * (sWidth / 4), 100, ID.Enemy, handler, 120));
 						handler.addObject(new SentryEnemy(0, 200, ID.Enemy, handler, 150, 0));
-						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -204,7 +202,6 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 120, 30));
 						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 120, 60));
 						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 120, 0));
-						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
@@ -216,14 +213,13 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new SentryEnemy(sWidth - 60, 100, ID.Enemy, handler, 200, 150));
 						handler.addObject(new SentryEnemy(40, sHeight - 50, ID.Enemy, handler, 200, 100));
 						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, ID.Enemy, handler, 200, 0));
-						coinsLeft = 3;
 						endLevelTransition();
 					}
 				}
 			}
 
-			//Handle coins during level
-			if (!handler.areCoins() && coinsLeft > 0) {
+			//Handle coin collection during level
+			if (!handler.areCoins() && coinsLeft > 0 && !transitioning) {
 				boolean obstructed;
 				float attemptX;
 				float attemptY;
@@ -310,7 +306,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	//Start transitioning level
-	private static void startLevelTransition(BufferedImage tileMap, int nextLevel, int playerX, int playerY) {
+	private void startLevelTransition(BufferedImage tileMap, int nextLevel, int coins, int playerX, int playerY) {
 		transitioning = true;
 		playerControl = false;
 		while(handler.areLevel()) {
@@ -319,6 +315,7 @@ public class Game extends Canvas implements Runnable {
 		tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
 		handler.addObject(new Player(playerX, playerY, ID.Player, handler));
 		hud.setLevel(nextLevel);
+		setLevelCoinGoal(coins);
 	}
 	
 	//Finish transitioning level
@@ -340,6 +337,12 @@ public class Game extends Canvas implements Runnable {
 			handler.clearEnemies();
 			handler.clearItems();
 		}
+	}
+
+	//Set level coin goal
+	private void setLevelCoinGoal(int goal) {
+		coinsLeft = goal;
+		hud.coinStart = coinsLeft;
 	}
 	
 	//Restricts an int value between a given minimum and maximum value
