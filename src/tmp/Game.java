@@ -288,7 +288,16 @@ public class Game extends Canvas implements Runnable {
 				//Next level banner
 				g.setColor(Color.white);
 				g.setFont(new Font("Helvetica", Font.PLAIN, 36));
-				g.drawString(transitionMessage, sWidth / 2 - 50, sHeight / 2);
+				int width = g.getFontMetrics().stringWidth(transitionMessage);
+				g.drawString(transitionMessage, (sWidth / 2) - (width / 2), sHeight / 2);
+
+				//Loading bar
+				g.setColor(Color.gray);
+				g.fillRect(sWidth / 2 - 50, (sHeight / 2) + 35, 100, 10);
+				g.setColor(Color.blue);
+				g.fillRect(sWidth / 2 - 50, (sHeight / 2) + 35, transitionTimer/2, 10);
+				g.setColor(Color.white);
+				g.drawRect(sWidth / 2 - 50, (sHeight / 2) + 35, 100, 10);
 			}
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
