@@ -161,17 +161,17 @@ public class Game extends Canvas implements Runnable {
 
 			//Level 2 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 1) {
-				startLevelTransition(tomb_blocks_20x20, 2, 3, sWidth / 2 - 16, sHeight / 2 + 232);
+				startLevelTransition(tomb_blocks_20x20, 2, 4, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 
 			//Level 3 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 2) {
-				startLevelTransition(tomb_blocks_20x20, 3, 3, sWidth / 2 - 16, sHeight / 2 + 232);
+				startLevelTransition(tomb_blocks_20x20, 3, 6, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 
 			//Level 3 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 3) {
-				startLevelTransition(tomb_blocks_20x20, 4, 3, sWidth / 2 - 16, sHeight - 60);
+				startLevelTransition(tomb_blocks_20x20, 4, 8, sWidth / 2 - 16, sHeight - 60);
 			}
 
 			//Level Transition Timer
@@ -219,45 +219,7 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Handle coin collection during level
-			if (!handler.areCoins() && coinsLeft > 0 && !transitioning) {
-				boolean obstructed;
-				float attemptX;
-				float attemptY;
-
-				do {
-					obstructed = false;
-
-					attemptX = (float) (sWidth * Math.random());
-					attemptY = (float) (sHeight * Math.random());
-					int[] xCollision = new int[]{(int) attemptX, ((int) attemptX) + 10, ((int) attemptX) + 10, (int) attemptX};
-					int[] yCollision = new int[]{(int) attemptY, (int) attemptY, ((int) attemptY) + 10, ((int) attemptY) + 10};
-					Polygon collision = new Polygon();
-					collision.xpoints = xCollision;
-					collision.ypoints = yCollision;
-					collision.npoints = xCollision.length;
-
-					for (int i = 0; i < handler.object.size(); i++) {
-						GameObject tempObject = handler.object.get(i);
-						Area a1;
-						Area a2;
-
-						//Check for player/tile collision
-						if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
-							//Find area shared by player/tile
-							a1 = new Area(collision);
-							a2 = new Area(tempObject.getBounds());
-							a1.intersect(a2);
-
-							//Determine if area is shared by player/tile
-							if (!a1.isEmpty()) {
-								obstructed = true;
-							}
-						}
-					}
-				} while (obstructed);
-
-				handler.addObject(new Coin(attemptX, attemptY, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
-			}
+			coinSpawner();
 		}
 	}
 	
@@ -339,10 +301,60 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
-	//Set level coin goal
+	//Set level coin goal during level transition
 	private void setLevelCoinGoal(int goal) {
 		coinsLeft = goal;
 		hud.coinStart = coinsLeft;
+	}
+
+	//Coin spawning during active gameplay
+	private void coinSpawner() {
+		if (!handler.areCoins() && coinsLeft > 0 && !transitioning) {
+			boolean obstructed;
+			float attemptX;
+			float attemptY;
+
+			do {
+				obstructed = false;
+
+				attemptX = (float) (sWidth * Math.random());
+				attemptY = (float) (sHeight * Math.random());
+				int[] xCollision = new int[]{(int) attemptX, ((int) attemptX) + 10, ((int) attemptX) + 10, (int) attemptX};
+				int[] yCollision = new int[]{(int) attemptY, (int) attemptY, ((int) attemptY) + 10, ((int) attemptY) + 10};
+				Polygon collision = new Polygon();
+				collision.xpoints = xCollision;
+				collision.ypoints = yCollision;
+				collision.npoints = xCollision.length;
+
+				for (int i = 0; i < handler.object.size(); i++) {
+					GameObject tempObject = handler.object.get(i);
+					Area a1;
+					Area a2;
+
+					//Check to make sure coin attempt is not near player
+					if(tempObject.getID() == ID.Player) {
+						if(calculateDistance(attemptX, attemptY, tempObject.getX(), tempObject.getY()) < 100) {
+							obstructed = true;
+						}
+					}
+
+					//Check for player/tile collision
+					if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Level) {
+						//Find area shared by player/tile
+						a1 = new Area(collision);
+						a2 = new Area(tempObject.getBounds());
+						a1.intersect(a2);
+
+						//Determine if area is shared by player/tile
+						if (!a1.isEmpty()) {
+							obstructed = true;
+						}
+					}
+				}
+			} while (obstructed);
+
+			handler.addObject(new Coin(attemptX, attemptY, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+		}
 	}
 	
 	//Restricts an int value between a given minimum and maximum value
@@ -363,6 +375,14 @@ public class Game extends Canvas implements Runnable {
 		if(input > max) output = max;
 		
 		return output;
+	}
+
+	//Finds the distance between two points
+	public static float calculateDistance(float x1, float y1, float x2, float y2) {
+		float deltaX = x2 - x1;
+		float deltaY = y2 - y1;
+
+        return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 	}
 	
 	//Main method
