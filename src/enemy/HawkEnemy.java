@@ -3,7 +3,6 @@ package enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
@@ -11,13 +10,14 @@ import tmp.Game;
 import tmp.GameObject;
 import tmp.Handler;
 import tmp.ID;
-import tmp.KeyInput;
 import tmp.SpriteSheet;
 
 public class HawkEnemy extends GameObject {
 	
 	private final Handler handler;
 	private BufferedImage enemy_image;
+	private int animationFrame;
+	private int animationDelay;
 	SpriteSheet ss;
 	
 	private Polygon collision;
@@ -36,6 +36,8 @@ public class HawkEnemy extends GameObject {
 		
 		this.handler = handler;
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
+		this.animationFrame = 1;
+		this.animationDelay = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_hawk);
 		enemy_image = ss.grabImage(1, 1, 32, 32);
@@ -161,6 +163,7 @@ public class HawkEnemy extends GameObject {
 		//g.setColor(Color.RED);
 		//g.fillRect((int) x, (int) y, 32, 32);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
+		System.out.println("Enemy Frame:" + this.animationFrame);
 		
 		//Draw collision box
 		if(Game.debugMode) {
@@ -203,7 +206,7 @@ public class HawkEnemy extends GameObject {
 		homingTimer++;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
-			enemy_image = ss.grabImage(1, 2, 32, 32);
+			enemy_image = ss.grabImage(1, 4, 32, 32);
 		}
 		
 		if(!attacking) {
@@ -229,6 +232,19 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		if(attacking) {
+			//Cycles animation frame
+			enemy_image = ss.grabImage(1, this.animationFrame, 32, 32);
+			this.animationDelay++;
+			if(this.animationDelay >= 15) {
+				this.animationDelay = 1;
+				if(this.animationFrame < 3) {
+					this.animationFrame++;
+				}
+				else {
+					this.animationFrame = 1;
+				}
+			}
+
 			if(homingTimer >= 10) {
 				if(playerX > this.x) {
 					velX = velX + 1;
