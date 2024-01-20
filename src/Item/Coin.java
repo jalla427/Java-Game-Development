@@ -14,7 +14,7 @@ public class Coin extends GameObject {
 
 	private int coinValue = 50;
 	private int coinHeal = 5;
-	private int maxSpeed = 10;
+	private int maxSpeed = 5;
 
 	public Coin(float x, float y, float speedOne, float speedTwo, ID id, Handler handler) {
 		super(x, y, id);
@@ -108,7 +108,7 @@ public class Coin extends GameObject {
 
 					//Flip velocity to bounce coin
 					velX = -velX;
-					velX *= (float)((2 * Math.random()) + 0.5);
+					velX *= (float)((1.5 * Math.random()) + 0.3);
 				}
 				a1.reset();
 				a2.reset();

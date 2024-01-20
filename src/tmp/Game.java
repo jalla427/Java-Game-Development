@@ -169,9 +169,19 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(tomb_blocks_20x20, 3, 6, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 
-			//Level 3 Transition
+			//Level 4 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 3) {
 				startLevelTransition(tomb_blocks_20x20, 4, 8, sWidth / 2 - 16, sHeight - 60);
+			}
+
+			//Level 5 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 4) {
+				startLevelTransition(tomb_blocks_20x20, 5, 10, sWidth / 2 - 16, sHeight - 200);
+			}
+
+			//Level 6 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 5) {
+				startLevelTransition(tomb_blocks_20x20, 6, 10, sWidth / 2 - 16, sHeight - 100);
 			}
 
 			//Level Transition Timer
@@ -199,9 +209,9 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 3) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(sWidth / 4, 100, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 120, 30));
-						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 120, 60));
-						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 120, 0));
+						handler.addObject(new SentryEnemy(120, 100, ID.Enemy, handler, 250, 30));
+						handler.addObject(new SentryEnemy(440, 100, ID.Enemy, handler, 250, 60));
+						handler.addObject(new SentryEnemy(760, 100, ID.Enemy, handler, 250, 0));
 						endLevelTransition();
 					}
 				}
@@ -209,10 +219,30 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 4) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(40, 100, ID.Enemy, handler, 200, 50));
-						handler.addObject(new SentryEnemy(sWidth - 60, 100, ID.Enemy, handler, 200, 150));
-						handler.addObject(new SentryEnemy(40, sHeight - 50, ID.Enemy, handler, 200, 100));
-						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, ID.Enemy, handler, 200, 0));
+						handler.addObject(new SentryEnemy(40, 100, ID.Enemy, handler, 250, 50));
+						handler.addObject(new SentryEnemy(sWidth - 60, 100, ID.Enemy, handler, 250, 150));
+						handler.addObject(new SentryEnemy(40, sHeight - 50, ID.Enemy, handler, 250, 50));
+						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, ID.Enemy, handler, 250, 150));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 5) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(200, 100, ID.Enemy, handler, 0));
+						handler.addObject(new SentryEnemy(40, sHeight - 50, ID.Enemy, handler, 200, 50));
+						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, ID.Enemy, handler, 200, 150));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 6) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new HawkEnemy(200, 100, ID.Enemy, handler, 0));
+						handler.addObject(new SentryEnemy(420, 120, ID.Enemy, handler, 500, 100));
+						handler.addObject(new SentryEnemy(420, 160, ID.Enemy, handler, 500, 110));
+						handler.addObject(new SentryEnemy(460, 120, ID.Enemy, handler, 500, 120));
+						handler.addObject(new SentryEnemy(460, 160, ID.Enemy, handler, 500, 130));
 						endLevelTransition();
 					}
 				}
@@ -269,15 +299,17 @@ public class Game extends Canvas implements Runnable {
 	
 	//Start transitioning level
 	private void startLevelTransition(BufferedImage tileMap, int nextLevel, int coins, int playerX, int playerY) {
-		transitioning = true;
-		playerControl = false;
-		while(handler.areLevel()) {
-			handler.clearLevel();
+		if(!gameOver) {
+			transitioning = true;
+			playerControl = false;
+			while(handler.areLevel()) {
+				handler.clearLevel();
+			}
+			tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
+			handler.addObject(new Player(playerX, playerY, ID.Player, handler));
+			hud.setLevel(nextLevel);
+			setLevelCoinGoal(coins);
 		}
-		tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
-		handler.addObject(new Player(playerX, playerY, ID.Player, handler));
-		hud.setLevel(nextLevel);
-		setLevelCoinGoal(coins);
 	}
 	
 	//Finish transitioning level
@@ -309,7 +341,7 @@ public class Game extends Canvas implements Runnable {
 
 	//Coin spawning during active gameplay
 	private void coinSpawner() {
-		if (!handler.areCoins() && coinsLeft > 0 && !transitioning) {
+		if (!handler.areCoins() && coinsLeft > 0 && !transitioning && !gameOver) {
 			boolean obstructed;
 			float attemptX;
 			float attemptY;
@@ -333,7 +365,7 @@ public class Game extends Canvas implements Runnable {
 
 					//Check to make sure coin attempt is not near player
 					if(tempObject.getID() == ID.Player) {
-						if(calculateDistance(attemptX, attemptY, tempObject.getX(), tempObject.getY()) < 100) {
+						if(calculateDistance(attemptX, attemptY, tempObject.getX(), tempObject.getY()) < 300) {
 							obstructed = true;
 						}
 					}

@@ -26,6 +26,7 @@ public class HawkEnemy extends GameObject {
 	
 	float playerX = 0;
 	float playerY = 0;
+	int maxSpeed = 6;
 	int homingTimer = 0;
 	int retreatTimer;
 	boolean attacking = true;
@@ -246,8 +247,8 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		//Limit speed
-		velX = Game.clamp(velX, -10, 10);
-		velY = Game.clamp(velY, -10, 10);
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 		
 		//Position
 		x = Game.clamp(x, 0, Game.sWidth - 32);
