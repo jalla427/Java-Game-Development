@@ -40,12 +40,12 @@ public class Menu extends MouseAdapter {
 			//Settings
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 350, bWidth, bHeight)) {
 				Game.gameState = STATE.Settings;
-				AudioPlayer.playSound("res/buttonClick.wav", -20f);
+				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 			//Play
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 250, bWidth, bHeight)) {
 				Game.hud.setLevel(1);
-				AudioPlayer.playSound("res/buttonClick.wav", -20f);
+				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 		}
 		
@@ -53,14 +53,14 @@ public class Menu extends MouseAdapter {
 			//Back
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 450, bWidth, bHeight)) {
 				Game.gameState = STATE.Menu;
-				AudioPlayer.playSound("res/buttonClick.wav", -20f);
+				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 		}
 		
 		if(Game.gameState == STATE.Game) {
 			//Return to menu from gameover
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 350, bWidth, bHeight) && Game.escapeGame) {
-				AudioPlayer.playSound("res/buttonClick.wav", -20f);
+				AudioPlayer.playSound("res/buttonClick.wav", -20);
 				HUD.HEALTH = 100;
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);

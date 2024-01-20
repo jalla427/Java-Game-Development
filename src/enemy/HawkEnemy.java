@@ -160,10 +160,7 @@ public class HawkEnemy extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		//g.setColor(Color.RED);
-		//g.fillRect((int) x, (int) y, 32, 32);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
-		System.out.println("Enemy Frame:" + this.animationFrame);
 		
 		//Draw collision box
 		if(Game.debugMode) {

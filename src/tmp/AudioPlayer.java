@@ -9,18 +9,20 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import static tmp.Game.gameVolume;
+
 public class AudioPlayer {
 	
 	private static Clip play;
 
-	 public static void playMusicLoop(String link, Float volumeValue) {
+	 public static void playMusicLoop(String link, double volumeValue) {
 		 try {
 		   AudioInputStream menuSound = AudioSystem.getAudioInputStream(new File(link));
 		   
 		   play = AudioSystem.getClip();
 		   play.open(menuSound);
 		   FloatControl volume = (FloatControl) play.getControl(FloatControl.Type.MASTER_GAIN);
-		   volume.setValue(volumeValue);
+		   volume.setValue((float)(volumeValue * gameVolume));
 		   
 		   play.loop(Clip.LOOP_CONTINUOUSLY);
 
@@ -29,13 +31,13 @@ public class AudioPlayer {
 	  }
 	 }
 	 
-	 public static void playSound(String link, Float volumeValue) {
+	 public static void playSound(String link, double volumeValue) {
 		 try {
 		   AudioInputStream gameSound = AudioSystem.getAudioInputStream(new File(link));
 		   Clip click = AudioSystem.getClip();
 		   click.open(gameSound);
 		   FloatControl volume = (FloatControl) click.getControl(FloatControl.Type.MASTER_GAIN);
-		   volume.setValue(volumeValue);
+		   volume.setValue((float)(volumeValue * gameVolume));
 		   click.loop(0);
 	  }catch (LineUnavailableException | IOException | UnsupportedAudioFileException e){
 		  e.printStackTrace();

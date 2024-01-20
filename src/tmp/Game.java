@@ -22,6 +22,9 @@ public class Game extends Canvas implements Runnable {
 	//Main frame dimensions
 	public static int sWidth = 900;
 	public static int sHeight = 670;
+
+	//Global volume
+	public static double gameVolume = 1;
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
@@ -34,7 +37,8 @@ public class Game extends Canvas implements Runnable {
 	private final Menu menu;
 	public static HUD hud;
 	protected static TileMapBuilder tombTileMapBuilder;
-	
+
+	//Sprites
 	public static BufferedImage backgroundImg;
 	public static BufferedImage tomb_blocks_20x20;
 	public static BufferedImage dungeon_blocks_20x20;
