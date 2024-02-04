@@ -29,39 +29,45 @@ public class Menu extends MouseAdapter {
 	}
 	
 	public void mousePressed(MouseEvent e) {
+
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		//Grab mouse coordinates and check for overlap with any button
 		int mx = e.getX();
 		int my = e.getY();
-			
+		String buttonClicked = handler.getButtonAtLocation(mx, my);
+
 		if(Game.gameState == STATE.Menu) {
 			//Quit
-			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 450, bWidth, bHeight)) {
+			if(buttonClicked == "Quit") {
 				System.exit(1);
 			}
 			//Settings
-			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 350, bWidth, bHeight)) {
+			if(buttonClicked == "Settings") {
 				Game.gameState = STATE.Settings;
 				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 			//Play
-			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 250, bWidth, bHeight)) {
+			if(buttonClicked == "Play") {
 				Game.hud.setLevel(1);
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 		}
-		
+
 		if(Game.gameState == STATE.Settings) {
 			//Back
-			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 450, bWidth, bHeight)) {
+			if(buttonClicked == "Menu") {
 				Game.gameState = STATE.Menu;
 				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 		}
-		
+
 		if(Game.gameState == STATE.Game) {
 			//Return to menu from gameover
-			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 350, bWidth, bHeight) && Game.escapeGame) {
+			if(buttonClicked == "Quit") {
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 				HUD.HEALTH = 100;
 				Game.hud.setScore(0);
@@ -75,15 +81,7 @@ public class Menu extends MouseAdapter {
 		}
 	}
 	
-	public void mouseReleased(MouseEvent e) {
-		
-	}
-	
-	private boolean mouseOver(int mx, int my, int x, int y, int width, int height) {
-        return mx > x && mx < x + width && my > y && my < y + height;
-	}
-	
-	public void tick() {
+	protected void tick() {
 		Font fnt = new Font("arial", 1, 50);
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
@@ -114,7 +112,7 @@ public class Menu extends MouseAdapter {
 		}
 	}
 	
-	public void render(Graphics g) {
+	protected void render(Graphics g) {
 		Font fnt = new Font("arial", 1, 50);
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
@@ -140,7 +138,7 @@ public class Menu extends MouseAdapter {
 		}
 	}
 	
-	public void drawBoxedText(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
+	private void drawBoxedText(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
 		FontMetrics metrics = g.getFontMetrics(font);
 		int textX = x + (width - metrics.stringWidth(text)) / 2;
         int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();
