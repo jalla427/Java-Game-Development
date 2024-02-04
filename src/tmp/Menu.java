@@ -40,6 +40,7 @@ public class Menu extends MouseAdapter {
 			//Settings
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 350, bWidth, bHeight)) {
 				Game.gameState = STATE.Settings;
+				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 			//Play
@@ -53,6 +54,7 @@ public class Menu extends MouseAdapter {
 			//Back
 			if(mouseOver(mx, my, (Game.sWidth/2) - 100, 450, bWidth, bHeight)) {
 				Game.gameState = STATE.Menu;
+				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav", -20);
 			}
 		}
@@ -67,6 +69,7 @@ public class Menu extends MouseAdapter {
 				Game.escapeGame = false;
 				Game.gameOver = false;
 				Game.gameState = STATE.Menu;
+				handler.clearButtons();
 				Game.quit = true;
 			}
 		}
@@ -81,14 +84,40 @@ public class Menu extends MouseAdapter {
 	}
 	
 	public void tick() {
-		
+		Font fnt = new Font("arial", 1, 50);
+		Font fnt2 = new Font("arial", 1, 30);
+		Font fnt3 = new Font("arial", 1, 18);
+		Color deepRed = new Color(100, 0, 0);
+		Color tan = new Color(71, 45, 0);
+		boolean buttonsFound = handler.areButtons();
+
+		if(Game.gameState == STATE.Menu) {
+			if(!buttonsFound) {
+				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
+				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
+				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+			}
+		}
+
+		if(Game.gameState == STATE.Settings) {
+			if(!buttonsFound) {
+				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+			}
+		}
+
+		if(Game.gameState == STATE.Game) {
+			if(Game.escapeGame) {
+				if(!buttonsFound) {
+					handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+				}
+			}
+		}
 	}
 	
 	public void render(Graphics g) {
 		Font fnt = new Font("arial", 1, 50);
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
-		
 		Color deepRed = new Color(100, 0, 0);
 		Color tan = new Color(71, 45, 0);
 		
@@ -96,29 +125,22 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Menu", (Game.sWidth/2) - 65, 200);
-			
-			drawButton(g, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight);
-			drawButton(g, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight);
-			drawButton(g, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight);
 		}
 		
 		if(Game.gameState == STATE.Settings) {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
-			
-			drawButton(g, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight);
 		}
 		
 		if(Game.gameState == STATE.Game) {
 			if(Game.escapeGame) {
-				drawButton(g, fnt2, deepRed, Color.WHITE, "Gameover!", (Game.sWidth/2) - 100, 275, bWidth, bHeight);
-				drawButton(g, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight);
+				drawBoxedText(g, fnt2, deepRed, Color.WHITE, "Gameover!", (Game.sWidth/2) - 100, 275, bWidth, bHeight);
 			}
 		}
 	}
 	
-	public void drawButton(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
+	public void drawBoxedText(Graphics g, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
 		FontMetrics metrics = g.getFontMetrics(font);
 		int textX = x + (width - metrics.stringWidth(text)) / 2;
         int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();

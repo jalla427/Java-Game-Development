@@ -31,21 +31,7 @@ public class KeyInput extends KeyAdapter {
 			
 			//Character Controls
 			if(tempObject.getID() == ID.Player && Game.playerControl) {
-				//WASD
-				if(key == KeyEvent.VK_W && !keyDown[1] && tempObject.isGrounded()) {
-					//Formerly jump, switched to space
-					keyDown[0] = true; 
-				}
-				else if(key == KeyEvent.VK_W) { 
-					keyDown[0] = true; 
-				}
-				if(key == KeyEvent.VK_S && !keyDown[0]) {
-					//Formerly down, replaced with jumping mechanic
-					keyDown[1] = true; 
-				}
-				else if(key == KeyEvent.VK_S) { 
-					keyDown[1] = true; 
-				}
+				//Directional movement
 				if(key == KeyEvent.VK_D && !keyDown[3]) {
 					tempObject.setxDirection(1); 
 					keyDown[2] = true; 

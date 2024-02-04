@@ -130,6 +130,9 @@ public class Game extends Canvas implements Runnable {
 		if(gameState == STATE.Game) {
 			handler.tick();
 			hud.tick();
+			if(escapeGame) {
+				menu.tick();
+			}
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
 			handler.tick();
@@ -147,6 +150,7 @@ public class Game extends Canvas implements Runnable {
 		//Game start, Level 1 Transition
 		if(gameState == STATE.Menu && hud.getLevel() == 1) {
 			gameState = STATE.Game;
+			handler.clearButtons();
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
 		}
 
@@ -270,9 +274,13 @@ public class Game extends Canvas implements Runnable {
 		//Background
 		g.setColor(Color.black);
 		g.fillRect(0, 0, sWidth, sHeight);
-		
+
+		if(gameState == STATE.Menu || gameState == STATE.Settings) {
+			g.drawImage(backgroundImg, 0, 0, null);
+		}
+
 		handler.render(g);
-		
+
 		if(gameState == STATE.Game) {
 			hud.render(g);
 
@@ -291,9 +299,6 @@ public class Game extends Canvas implements Runnable {
 				g.setColor(Color.white);
 				g.drawRect(sWidth / 2 - 50, (sHeight / 2) + 35, 100, 10);
 			}
-		}
-		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
-			g.drawImage(backgroundImg, 0, 0, null);
 		}
 
 		menu.render(g);
@@ -419,6 +424,10 @@ public class Game extends Canvas implements Runnable {
 		float deltaY = y2 - y1;
 
         return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+	}
+
+	public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
+		return mx > x && mx < x + width && my > y && my < y + height;
 	}
 	
 	//Main method

@@ -7,11 +7,15 @@ import java.util.LinkedList;
 public class Handler {
 	
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
+	public LinkedList<Button> buttonList = new LinkedList<Button>();
 	
 	public void tick() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			
+			tempObject.tick();
+		}
+		for(int i = 0; i < buttonList.size(); i++) {
+			Button tempObject = buttonList.get(i);
 			tempObject.tick();
 		}
 	}
@@ -30,15 +34,22 @@ public class Handler {
 				tempObject.render(g);
 			}
 		}
+
+		for(int i = 0; i < buttonList.size(); i++) {
+			Button tempObject = buttonList.get(i);
+			tempObject.render(g);
+		}
 	}
 	
 	public void addObject(GameObject object) {
 		this.object.add(object);
 	}
-	
 	public void removeObject(GameObject object) {
 		this.object.remove(object);
 	}
+
+	public void addButton(Button button) { this.buttonList.add(button); }
+	public void removeButton(Button button) { this.buttonList.remove(button); }
 	
 	public void clearPlayer() {
 		for(int i = 0; i < object.size(); i++) {
@@ -82,6 +93,12 @@ public class Handler {
 			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin) {
 				removeObject(object.get(i));
 			}
+		}
+	}
+
+	public void clearButtons() {
+		while(areButtons()) {
+			buttonList.pop();
 		}
 	}
 	
@@ -143,5 +160,34 @@ public class Handler {
 			}
 		}
 		return foundLevel;
+	}
+
+	public boolean areButtons() {
+		boolean foundButton = false;
+		if(buttonList.size() > 0) {
+			foundButton = true;
+		}
+		return foundButton;
+	}
+
+	public String getButtonAtLocation(int mx, int my) {
+		String buttonName = "";
+		for(int i = 0; i < buttonList.size(); i++) {
+			Button tempObject = buttonList.get(i);
+			if(Game.isPointInBounds(mx, my, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getWidth(), tempObject.getHeight())) {
+				buttonName = tempObject.getText();
+				break;
+			}
+		}
+		return buttonName;
+	}
+
+	public String getButtonNames() {
+		String buttonName = "";
+		for(int i = 0; i < buttonList.size(); i++) {
+			Button tempObject = buttonList.get(i);
+			buttonName += tempObject.getText() + " / ";
+		}
+		return buttonName;
 	}
 }

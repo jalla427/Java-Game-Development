@@ -4,5 +4,6 @@ public enum ID {
 	Player(),
 	Level(),
 	Enemy(),
-	Coin()
+	Coin(),
+	Button()
 }
