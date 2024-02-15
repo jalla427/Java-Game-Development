@@ -127,6 +127,7 @@ public class Game extends Canvas implements Runnable {
 	
 	//Update method
 	private void tick() {
+		//Based on gamestate, determine what needs to tick
 		if(gameState == STATE.Game) {
 			handler.tick();
 			hud.tick();
@@ -154,6 +155,7 @@ public class Game extends Canvas implements Runnable {
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
 		}
 
+		//In game
 		if(gameState == STATE.Game) {
 			//Game Over
 			if (HUD.HEALTH <= 0 && !escapeGame) {
@@ -282,8 +284,8 @@ public class Game extends Canvas implements Runnable {
 		handler.render(g);
 
 		if(gameState == STATE.Game) {
+			Lighting.render((Graphics2D) g);
 			hud.render(g);
-
 			if(transitioning && !escapeGame) {
 				//Next level banner
 				g.setColor(Color.white);
