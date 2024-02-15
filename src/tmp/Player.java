@@ -23,12 +23,13 @@ public class Player extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public Player(int x, int y, ID id, Handler handler) {
-		super(x, y, id);
+	public Player(int x, int y, int width, int height, ID id, Handler handler) {
+		super(x, y, width, height, id);
 		this.handler = handler;
+		this.luminosity = 300;
 		
 		ss = new SpriteSheet(Game.sprite_sheet);
-		player_image = ss.grabImage(1, 1, 32, 32);
+		player_image = ss.grabImage(1, 1, width, height);
 		
 		updateCollision();
 	}
@@ -47,7 +48,7 @@ public class Player extends GameObject {
 		
 	    //Horizontal Collision, enemy collision check
 		x += velX;
-		player_image = ss.grabImage(1, 1, 32, 32);
+		player_image = ss.grabImage(1, 1, width, height);
 		updateCollision();
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
@@ -62,7 +63,7 @@ public class Player extends GameObject {
 				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
 					HUD.HEALTH--;
-					player_image = ss.grabImage(1, 2, 32, 32);
+					player_image = ss.grabImage(1, 2, width, height);
 				}
 			}
 			
@@ -196,8 +197,8 @@ public class Player extends GameObject {
 
 	//moves collision box with player.
 	protected void updateCollision() {
-		xCollision = new int[] {(int) x, ((int) x) + 32, ((int) x) + 32, (int) x};
-		yCollision = new int[] {(int) y, (int) y, ((int) y) + 32, ((int) y) + 32};
+		xCollision = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) x};
+		yCollision = new int[] {(int) y, (int) y, ((int) y) + height, ((int) y) + height};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
@@ -239,7 +240,7 @@ public class Player extends GameObject {
 		velX = Game.clamp(velX, -5, 5);
 		
 		//Position
-		x = Game.clamp(x, 0, Game.sWidth - 32);
-		y = Game.clamp(y, 0, Game.sHeight - 32);
+		x = Game.clamp(x, 0, Game.sWidth - width);
+		y = Game.clamp(y, 0, Game.sHeight - height);
 	}
 }

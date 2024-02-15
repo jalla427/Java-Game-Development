@@ -21,7 +21,7 @@ public class DemoMain extends GameObject {
 	private int[] yCollision;
 	
 	public DemoMain(float x, float y, ID id, Handler handler) {
-		super(x, y, id);
+		super(x, y, 0, 0, id);
 		this.handler = handler;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();

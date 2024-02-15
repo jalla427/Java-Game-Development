@@ -17,12 +17,13 @@ public class Bullet extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	public Bullet(float x, float y, ID id, Handler handler, float targetX, float targetY) {
-		super(x, y, id);
+	public Bullet(float x, float y, int width, int height, ID id, Handler handler, float targetX, float targetY) {
+		super(x, y, width, height, id);
 		
 		double[] speeds = getSpeed(x, y, targetX, targetY);
 		
 		this.handler = handler;
+		this.luminosity = 6;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
 	}
@@ -34,28 +35,27 @@ public class Bullet extends GameObject {
 		
 		updateCollision();
 		
-		//If bullet is off screen, delete it
-		if(x > Game.sWidth || x < -4 || y > Game.sHeight || y < -4) {
+		//If bullet is offscreen, delete it
+		if(x > Game.sWidth || x < -width || y > Game.sHeight || y < -height) {
 			handler.object.remove(this);
 		}
 	}
 
 	public void render(Graphics g) {
 		g.setColor(Color.RED);
-		g.fillRect((int) x, (int) y, 4, 4);
+		g.fillRect((int) x, (int) y, width, height);
 		
 		//Draw collision box
 		if(Game.debugMode) {
 			g.setColor(Color.YELLOW);
 			g.drawPolygon(collision);
 		}
-		
 	}
 	
 	//moves collision box with enemy
 	protected void updateCollision() {
-		xCollision = new int[] {(int) x, ((int) x) + 4, ((int) x) + 4, (int) x};
-		yCollision = new int[] {(int) y, (int) y, ((int) y) + 4, ((int) y) + 4};
+		xCollision = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) width};
+		yCollision = new int[] {(int) y, (int) y, ((int) y) + height, ((int) y) + height};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
@@ -77,10 +77,6 @@ public class Bullet extends GameObject {
 		
 		speeds[0] = Math.cos(angle) * bulletSpeed;
 		speeds[1] = Math.sin(angle) * bulletSpeed;
-		
-//		System.out.println("--------------");
-//		System.out.println("velX: " + speeds[0]);
-//		System.out.println("velY: " + speeds[1]);
 		
 		return speeds;
 	}

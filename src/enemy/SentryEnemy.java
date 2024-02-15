@@ -21,8 +21,8 @@ public class SentryEnemy extends GameObject {
 	private int timer = 0;
 	private int fireRate = 150;
 
-	public SentryEnemy(float x, float y, ID id, Handler handler, int fireRate, int timerOffset) {
-		super(x, y, id);
+	public SentryEnemy(float x, float y, int width, int height, ID id, Handler handler, int fireRate, int timerOffset) {
+		super(x, y, width, height, id);
 		
 		this.handler = handler;
 		this.velX = 0;
@@ -32,23 +32,25 @@ public class SentryEnemy extends GameObject {
 		timer = Game.clamp(timerOffset, 0, fireRate - 10);
 		
 		ss = new SpriteSheet(Game.sprite_sheet_sentry);
-		enemy_image = ss.grabImage(1, 2, 20, 20);
+		enemy_image = ss.grabImage(1, 2, width, height);
 	}
 
 	public void tick() {
 		timer++;
 		if(timer == fireRate - 10) {
-			enemy_image = ss.grabImage(1, 1, 20, 20);
+			luminosity = width;
+			enemy_image = ss.grabImage(1, 1, width, height);
 		}
 		if(timer >= fireRate) {
 			timer = 0;
-			enemy_image = ss.grabImage(1, 2, 20, 20);
+			luminosity = 0;
+			enemy_image = ss.grabImage(1, 2, width, height);
 			for(int i = 0; i < handler.object.size(); i++) {
 				GameObject tempObject = handler.object.get(i);
 				
 				if(tempObject.getID() == ID.Player) {
 					AudioPlayer.playSound("res/bulletFire.wav", -20);
-					handler.addObject(new Bullet(this.x + 10, this.y + 10, ID.Enemy, handler, tempObject.getX() + 16, tempObject.getY() + 16));
+					handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 4, 4, ID.Enemy, handler, tempObject.getX() + (tempObject.getWidth()/2), tempObject.getY() + (tempObject.getHeight()/2)));
 				}
 			}
 		}
@@ -56,8 +58,6 @@ public class SentryEnemy extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		//g.setColor(Color.RED);
-		//g.fillRect((int) x, (int) y, 32, 32);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 	}
 	

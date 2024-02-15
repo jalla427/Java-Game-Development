@@ -32,31 +32,31 @@ public class TileMapBuilder {
 			for (int col = 0; col < tiles[row].length; col++) { 
 				current = tiles[row][col]; 
 				if(current == 1) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, brickBlock));
+					handler.addObject(new Tile(col*20, row*20, 20, 20, ID.Level, handler, brickBlock));
 				}
 				if(current == 2) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, plainBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, plainBlock));
 				}
 				if(current == 3) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, fadedBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, fadedBlock));
 				}
 				if(current == 4) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, pillarBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, pillarBlock));
 				}
 				if(current == 5) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, holeEmptyBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, holeEmptyBlock));
 				}
 				if(current == 6) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, edgelessBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, edgelessBlock));
 				}
 				if(current == 7) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, holeBlueBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, holeBlueBlock));
 				}
 				if(current == 8) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, holeRedBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, holeRedBlock));
 				}
 				if(current == 9) {
-					handler.addObject(new Tile(col*20, row*20, ID.Level, handler, holeGreenBlock));
+					handler.addObject(new Tile(col*20, row*20,20, 20, ID.Level, handler, holeGreenBlock));
 				}
 			} 
 		}

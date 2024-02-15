@@ -13,11 +13,14 @@ public abstract class GameObject {
 		protected int xDirection;
 		protected int yDirection;
 		protected boolean grounded;
+		protected float luminosity = 0;
 		
-		public GameObject(float x, float y, ID id) {
+		public GameObject(float x, float y, int width, int height, ID id) {
 			this.x = x;
 			this.y = y;
 			this.id = id;
+			this.width = width;
+			this.height = height;
 			
 			//0 = left/up, 1 = right/down, 2 = neutral
 			this.xDirection = 2;
@@ -35,6 +38,9 @@ public abstract class GameObject {
 		public void setY(int y) {
 			this.y = y;
 		}
+		public void setWidth(int width) { this.width = width; }
+		public void setHeight(int height) { this.height = height; }
+		public void setLuminosity(float luminosity) { this.luminosity = luminosity; }
 		public void setID(ID id) {
 			this.id = id;
 		}
@@ -60,6 +66,9 @@ public abstract class GameObject {
 		public float getY() {
 			return y;
 		}
+		public float getWidth() { return width; }
+		public float getHeight() { return height; }
+		public float getLuminosity() { return luminosity; }
 		public ID getID() {
 			return id;
 		}
@@ -78,4 +87,6 @@ public abstract class GameObject {
 		public boolean isGrounded() {
 			return grounded;
 		}
+
+
 }

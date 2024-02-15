@@ -16,14 +16,13 @@ public class Coin extends GameObject {
 	private int coinHeal = 5;
 	private int maxSpeed = 5;
 
-	public Coin(float x, float y, float speedOne, float speedTwo, ID id, Handler handler) {
-		super(x, y, id);
+	public Coin(float x, float y, int width, int height, float speedOne, float speedTwo, ID id, Handler handler) {
+		super(x, y, width, height, id);
 		
 		double[] speeds = getSpeed(speedOne, speedTwo);
 		
 		this.handler = handler;
-		this.width = 10;
-		this.height = 10;
+		this.luminosity = 50;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
 	}
@@ -178,7 +177,7 @@ public class Coin extends GameObject {
 
 	public void render(Graphics g) {
 		g.setColor(Color.YELLOW);
-		g.fillRect((int) x, (int) y, 10, 10);
+		g.fillRect((int) x, (int) y, width, height);
 		
 		//Draw collision box
 		if(Game.debugMode && collision != null) {

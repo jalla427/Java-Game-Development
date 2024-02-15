@@ -31,16 +31,17 @@ public class HawkEnemy extends GameObject {
 	int retreatTimer;
 	boolean attacking = true;
 	
-	public HawkEnemy(int x, int y, ID id, Handler handler, int retreatNum) {
-		super(x, y, id);
+	public HawkEnemy(int x, int y, int width, int height, ID id, Handler handler, int retreatNum) {
+		super(x, y, width, height, id);
 		
 		this.handler = handler;
+		this.luminosity = 100;
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_hawk);
-		enemy_image = ss.grabImage(1, 1, 32, 32);
+		enemy_image = ss.grabImage(1, 1, width, height);
 		
 		velX = 5;
 		velY = 5;
@@ -66,7 +67,7 @@ public class HawkEnemy extends GameObject {
 			
 			//Check for collision with tiles
 			if(tempObject.getID() == ID.Level) {
-				//Find area shared by player and tile
+				//Find area shared by enemy and by tile
 				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
@@ -121,7 +122,7 @@ public class HawkEnemy extends GameObject {
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
 				
-				//Determine if any area is shared by player and tile
+				//Determine if any area is shared by enemy and by tile
 				if(!a1.isEmpty()) {
 					//Log
 					if(Game.debugMode) {
@@ -180,8 +181,8 @@ public class HawkEnemy extends GameObject {
 
 	//moves collision box with enemy
 	protected void updateCollision() {
-		xCollision = new int[] {(int) x, ((int) x) + 32, ((int) x) + 32, (int) x};
-		yCollision = new int[] {(int) y, (int) y, ((int) y) + 32, ((int) y) + 32};
+		xCollision = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) x};
+		yCollision = new int[] {(int) y, (int) y, ((int) y) + height, ((int) y) + height};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
@@ -203,7 +204,8 @@ public class HawkEnemy extends GameObject {
 		homingTimer++;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
-			enemy_image = ss.grabImage(1, 4, 32, 32);
+			luminosity = 0;
+			enemy_image = ss.grabImage(1, 4, width, height);
 		}
 		
 		if(!attacking) {
@@ -221,7 +223,8 @@ public class HawkEnemy extends GameObject {
 			retreatTimer -= 7;
 			if(retreatTimer <= 0) {
 				attacking = true;
-				enemy_image = ss.grabImage(1, 1, 32, 32);
+				luminosity = 100;
+				enemy_image = ss.grabImage(1, 1, width, height);
 			}
 		}
 		else {
@@ -230,7 +233,7 @@ public class HawkEnemy extends GameObject {
 		
 		if(attacking) {
 			//Cycles animation frame
-			enemy_image = ss.grabImage(1, this.animationFrame, 32, 32);
+			enemy_image = ss.grabImage(1, this.animationFrame, width, height);
 			this.animationDelay++;
 			if(this.animationDelay >= 15) {
 				this.animationDelay = 1;
@@ -264,7 +267,7 @@ public class HawkEnemy extends GameObject {
 		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 		
 		//Position
-		x = Game.clamp(x, 0, Game.sWidth - 32);
-		y = Game.clamp(y, 0, Game.sHeight - 32);
+		x = Game.clamp(x, 0, Game.sWidth - width);
+		y = Game.clamp(y, 0, Game.sHeight - height);
 	}
 }

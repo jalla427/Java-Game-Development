@@ -19,8 +19,8 @@ public class Tile extends GameObject{
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public Tile(int x, int y, ID id, Handler handler, BufferedImage img) {
-		super(x, y, id);
+	public Tile(int x, int y, int width, int height, ID id, Handler handler, BufferedImage img) {
+		super(x, y, width, height, id);
 		
 		this.handler = handler;
 		this.img = img;
