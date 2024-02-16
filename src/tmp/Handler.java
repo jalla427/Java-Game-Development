@@ -34,7 +34,9 @@ public class Handler {
 				tempObject.render(g);
 			}
 		}
+	}
 
+	public void renderHigherElements(Graphics g) {
 		for(int i = 0; i < buttonList.size(); i++) {
 			Button tempObject = buttonList.get(i);
 			tempObject.render(g);

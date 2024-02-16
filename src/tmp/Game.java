@@ -308,6 +308,7 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 
+		handler.renderHigherElements(g);
 		menu.render(g);
 		g.dispose();
 		bs.show();
