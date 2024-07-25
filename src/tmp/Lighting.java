@@ -20,6 +20,8 @@ public class Lighting {
         lightBounds[3] = new Area(new Rectangle.Double(0, 0, Game.sWidth, Game.sHeight));
         lightBounds[4] = new Area(new Rectangle.Double(0, 0, Game.sWidth, Game.sHeight));
 
+        double[] gradientDistances = new double[]{0.5, 1, 1.75, 3, 5};
+
         float luminosity = 0;
         float targetX = 0;
         float targetY = 0;
@@ -38,7 +40,7 @@ public class Lighting {
 
                 //Create gradient circles
                 for(int ii = 0; ii < 5; ii++) {
-                    double lightMod = ((ii + 1.0) / 5.0);
+                    double lightMod = (gradientDistances[ii] / 5.0);
                     Shape lightCircle = new Ellipse2D.Double((targetX - ((luminosity / 2) * lightMod)), (targetY - ((luminosity / 2) * lightMod)) + variation, luminosity * lightMod, (luminosity + variation) * lightMod);
                     lightCircles[ii] = lightCircle;
 
