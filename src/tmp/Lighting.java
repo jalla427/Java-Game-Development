@@ -3,7 +3,6 @@ package tmp;
 import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
 
 public class Lighting {
     public static void render(Graphics2D g, Handler handler) {
@@ -13,12 +12,12 @@ public class Lighting {
         float targetX = 0;
         float targetY = 0;
 
-        //Loop through all objects in search of tiles
+        //Loop through all objects
         for(int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
 
-            //Check for collision with tiles
-            if (tempObject.getID() == ID.Player || tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Coin) {
+            //Apply light to objects with luminosity
+            if (tempObject.getLuminosity() > 0) {
                 targetX = tempObject.getX() + (tempObject.getWidth()/2);
                 targetY = tempObject.getY() + (tempObject.getHeight()/2);
                 luminosity = tempObject.getLuminosity();
