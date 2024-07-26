@@ -110,7 +110,12 @@ public class KeyInput extends KeyAdapter {
 					}
 					keyDown[3] = false;
 				}
-				if(key == KeyEvent.VK_SPACE) keyDown[4] = false;
+				if(key == KeyEvent.VK_SPACE) {
+					keyDown[4] = false;
+					if(!tempObject.isGrounded() && tempObject.velY < -5) {
+						tempObject.velY = -5;
+					}
+				}
 				
 				//Horizontal movement
 				if(!keyDown[2] && !keyDown[3]) tempObject.setxDirection(2);
