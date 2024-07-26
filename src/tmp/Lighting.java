@@ -36,12 +36,12 @@ public class Lighting {
                 targetX = tempObject.getX() + (tempObject.getWidth()/2);
                 targetY = tempObject.getY() + (tempObject.getHeight()/2);
                 luminosity = tempObject.getLuminosity();
-                float variation = (float) Math.random();
+                float variation = (float) Math.random() * 2;
 
                 //Create gradient circles
                 for(int ii = 0; ii < 5; ii++) {
                     double lightMod = (gradientDistances[ii] / 5.0);
-                    Shape lightCircle = new Ellipse2D.Double((targetX - ((luminosity / 2) * lightMod)), (targetY - ((luminosity / 2) * lightMod)) + variation, luminosity * lightMod, (luminosity + variation) * lightMod);
+                    Shape lightCircle = new Ellipse2D.Double((targetX - (((luminosity + variation) * lightMod) / 2)), (targetY - (((luminosity + variation) * lightMod) / 2)), (luminosity + variation) * lightMod, (luminosity + variation) * lightMod);
                     lightCircles[ii] = lightCircle;
 
                     Area lightArea = new Area(lightCircles[ii]);
