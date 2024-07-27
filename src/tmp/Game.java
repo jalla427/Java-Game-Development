@@ -47,6 +47,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet;
 	public static BufferedImage sprite_sheet_hawk;
 	public static BufferedImage sprite_sheet_sentry;
+	public static BufferedImage sprite_sheet_coin;
 	
 	//Used for determining the current scene
 	public enum STATE {
@@ -76,6 +77,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet = loader.loadImage("/sprite_sheet.png");
 		sprite_sheet_hawk = loader.loadImage("/sprite_sheet_hawk.png");
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
+		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 		
 		new Main("Game Demo", sWidth, sHeight, this);
 	}
