@@ -3,16 +3,17 @@ package enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 
-import tmp.Game;
-import tmp.GameObject;
-import tmp.Handler;
-import tmp.ID;
+import tmp.*;
 
 public class Bullet extends GameObject {
 
 	private final Handler handler;
-	
+	private BufferedImage bullet_image;
+	SpriteSheet ss;
+
+	private int spriteTimer = 1;
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
@@ -26,6 +27,9 @@ public class Bullet extends GameObject {
 		this.luminosity = 6;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
+
+		ss = new SpriteSheet(Game.sprite_sheet_sentry);
+		bullet_image = ss.grabImage(6, 1, width, height);
 	}
 
 	public void tick() {
@@ -36,14 +40,20 @@ public class Bullet extends GameObject {
 		updateCollision();
 		
 		//If bullet is offscreen, delete it
-		if(x > Game.sWidth || x < -width || y > Game.sHeight || y < -height) {
+		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
 			handler.object.remove(this);
 		}
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.RED);
-		g.fillRect((int) x, (int) y, width, height);
+		//Update sprite
+		spriteTimer++;
+		bullet_image = ss.grabImage(6, spriteTimer, (int) this.getWidth(), (int) this.getHeight());
+		if(spriteTimer >= 5) {
+			spriteTimer = 0;
+		}
+
+		g.drawImage(bullet_image, (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {
@@ -54,8 +64,8 @@ public class Bullet extends GameObject {
 	
 	//moves collision box with enemy
 	protected void updateCollision() {
-		xCollision = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) width};
-		yCollision = new int[] {(int) y, (int) y, ((int) y) + height, ((int) y) + height};
+		xCollision = new int[] {(int) this.getX(), ((int) this.getX()) + (int) this.getWidth(), ((int) this.getX()) + (int) this.getWidth(), (int) this.getWidth()};
+		yCollision = new int[] {(int) this.getY(), (int) this.getY(), ((int) this.getY()) + (int) this.getHeight(), ((int) this.getY()) + (int) this.getHeight()};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
