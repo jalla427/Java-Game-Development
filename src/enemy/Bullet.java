@@ -64,8 +64,13 @@ public class Bullet extends GameObject {
 	
 	//moves collision box with enemy
 	protected void updateCollision() {
-		xCollision = new int[] {(int) this.getX(), ((int) this.getX()) + (int) this.getWidth(), ((int) this.getX()) + (int) this.getWidth(), (int) this.getWidth()};
-		yCollision = new int[] {(int) this.getY(), (int) this.getY(), ((int) this.getY()) + (int) this.getHeight(), ((int) this.getY()) + (int) this.getHeight()};
+		int pointX = (int) this.getX();
+		int pointY = (int) this.getY();
+		int objWidth = (int) this.getWidth();
+		int objHeight = (int) this.getHeight();
+
+		xCollision = new int[] {pointX, (pointX) + objWidth, (pointX) + objWidth, pointX};
+		yCollision = new int[] {pointY, pointY, (pointY) + objHeight, (pointY) + objHeight};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
