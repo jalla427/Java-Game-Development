@@ -50,7 +50,7 @@ public class SentryEnemy extends GameObject {
 				
 				if(tempObject.getID() == ID.Player) {
 					AudioPlayer.playSound("res/bulletFire.wav", -20);
-					handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 4, 4, ID.Enemy, handler, tempObject.getX() + (tempObject.getWidth()/2), tempObject.getY() + (tempObject.getHeight()/2)));
+					handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, handler, tempObject.getX() + (tempObject.getWidth()/2), tempObject.getY() + (tempObject.getHeight()/2)));
 				}
 			}
 		}

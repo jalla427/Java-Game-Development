@@ -11,25 +11,31 @@ public class Bullet extends GameObject {
 
 	private final Handler handler;
 	private BufferedImage bullet_image;
+	private int animationFrame;
+	private int animationDelay;
 	SpriteSheet ss;
 
-	private int spriteTimer = 1;
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
 
+	int bulletSpeed;
+
 	public Bullet(float x, float y, int width, int height, ID id, Handler handler, float targetX, float targetY) {
 		super(x, y, width, height, id);
 		
-		double[] speeds = getSpeed(x, y, targetX, targetY);
-		
 		this.handler = handler;
 		this.luminosity = 6;
+		this.animationFrame = 1;
+		this.animationDelay = 1;
+
+		this.bulletSpeed = 7;
+		double[] speeds = getSpeed(x, y, targetX, targetY);
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
 
 		ss = new SpriteSheet(Game.sprite_sheet_sentry);
-		bullet_image = ss.grabImage(6, 1, width, height);
+		bullet_image = ss.grabImage(3, 1, width, height);
 	}
 
 	public void tick() {
@@ -46,11 +52,17 @@ public class Bullet extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		//Update sprite
-		spriteTimer++;
-		bullet_image = ss.grabImage(6, spriteTimer, (int) this.getWidth(), (int) this.getHeight());
-		if(spriteTimer >= 5) {
-			spriteTimer = 0;
+		//Cycles animation frame
+		bullet_image = ss.grabImage(3, animationFrame, (int) this.getWidth(), (int) this.getHeight());
+		this.animationDelay++;
+		if(this.animationDelay >= 15) {
+			this.animationDelay = 1;
+			if(this.animationFrame < 4) {
+				this.animationFrame++;
+			}
+			else {
+				this.animationFrame = 1;
+			}
 		}
 
 		g.drawImage(bullet_image, (int) x, (int) y, null);
@@ -84,7 +96,6 @@ public class Bullet extends GameObject {
 	
 	public double[] getSpeed(float x, float y, float targetX, float targetY) {
 		double[] speeds = new double[2];
-		int bulletSpeed = 10;
 		
 		double dx = targetX - x;
 		double dy = targetY - y;
