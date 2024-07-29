@@ -18,6 +18,7 @@ public class Player extends GameObject {
 	Handler handler;
 	BufferedImage player_image;
 	SpriteSheet ss;
+	int playerSkin = 1;
 	
 	private Polygon collision;
 	private int[] xCollision;
@@ -29,7 +30,7 @@ public class Player extends GameObject {
 		this.luminosity = 300;
 		
 		ss = new SpriteSheet(Game.sprite_sheet);
-		player_image = ss.grabImage(1, 1, width, height);
+		player_image = ss.grabImage(playerSkin, 1, width, height);
 		
 		updateCollision();
 	}
@@ -48,7 +49,7 @@ public class Player extends GameObject {
 		
 	    //Horizontal Collision, enemy collision check
 		x += velX;
-		player_image = ss.grabImage(1, 1, width, height);
+		player_image = ss.grabImage(playerSkin, 1, width, height);
 		updateCollision();
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
@@ -63,7 +64,7 @@ public class Player extends GameObject {
 				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
 					HUD.HEALTH--;
-					player_image = ss.grabImage(1, 2, width, height);
+					player_image = ss.grabImage(playerSkin, 2, width, height);
 				}
 			}
 			
@@ -190,7 +191,7 @@ public class Player extends GameObject {
 				this.setLuminosity(this.getLuminosity() - 1);
 			}
 			else {
-				player_image = ss.grabImage(1, 3, width, height);
+				player_image = ss.grabImage(playerSkin, 3, width, height);
 			}
 		}
 		
@@ -217,7 +218,7 @@ public class Player extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		//Velocity -- (0 = left), (1 = right), (2 = neutral)
+		//Direction -- (0 = left), (1 = right), (2 = neutral)
 		if(!this.isGrounded()) {
 			if(Game.debugMode) {
 				//System.out.println("Airborne!");
