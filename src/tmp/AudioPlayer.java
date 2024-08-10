@@ -17,31 +17,35 @@ public class AudioPlayer {
 
 	 public static void playMusicLoop(String link, double volumeValue) {
 		 try {
-		   AudioInputStream menuSound = AudioSystem.getAudioInputStream(new File(link));
-		   
-		   play = AudioSystem.getClip();
-		   play.open(menuSound);
-		   FloatControl volume = (FloatControl) play.getControl(FloatControl.Type.MASTER_GAIN);
-		   volume.setValue((float)(volumeValue * gameVolume));
-		   
-		   play.loop(Clip.LOOP_CONTINUOUSLY);
+			 AudioInputStream menuSound = AudioSystem.getAudioInputStream(new File(link));
 
-	  }catch (LineUnavailableException | IOException | UnsupportedAudioFileException e){
-		  e.printStackTrace();
-	  }
+			 play = AudioSystem.getClip();
+			 play.open(menuSound);
+
+			 FloatControl volume = (FloatControl) play.getControl(FloatControl.Type.MASTER_GAIN);
+			 volume.setValue((float)(volumeValue * (((double) Game.gameVolume) / 100.0)));
+
+			 play.loop(Clip.LOOP_CONTINUOUSLY);
+
+		 } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e){
+			 e.printStackTrace();
+		 }
 	 }
 	 
-	 public static void playSound(String link, double volumeValue) {
+	 public static void playSound(String link) {
 		 try {
-		   AudioInputStream gameSound = AudioSystem.getAudioInputStream(new File(link));
-		   Clip click = AudioSystem.getClip();
-		   click.open(gameSound);
-		   FloatControl volume = (FloatControl) click.getControl(FloatControl.Type.MASTER_GAIN);
-		   volume.setValue((float)(volumeValue * gameVolume));
-		   click.loop(0);
-	  }catch (LineUnavailableException | IOException | UnsupportedAudioFileException e){
-		  e.printStackTrace();
-	  }
+			 //Retrieve sound from provided link
+			 AudioInputStream gameSound = AudioSystem.getAudioInputStream(new File(link));
+			 Clip player = AudioSystem.getClip();
+			 player.open(gameSound);
+
+			 //Play sound and account for game volume
+			 FloatControl volume = (FloatControl) player.getControl(FloatControl.Type.MASTER_GAIN);
+			 volume.setValue(20f * (float) Math.log10(Game.gameVolume / 100.0));
+			 player.loop(0);
+		 } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e){
+			 e.printStackTrace();
+		 }
 	 }
 
 	 public static void stopMusic() {

@@ -24,7 +24,7 @@ public class Game extends Canvas implements Runnable {
 	public static int sHeight = 670;
 
 	//Global volume
-	public static double gameVolume = 1;
+	public static int gameVolume = 30;
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;

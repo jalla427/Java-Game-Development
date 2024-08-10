@@ -44,28 +44,36 @@ public class Menu extends MouseAdapter {
 			if(buttonClicked == "Settings") {
 				Game.gameState = STATE.Settings;
 				handler.clearButtons();
-				AudioPlayer.playSound("res/buttonClick.wav", -20);
+				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 			//Play
 			if(buttonClicked == "Play") {
 				Game.hud.setLevel(1);
-				AudioPlayer.playSound("res/buttonClick.wav", -20);
+				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 		}
 
 		if(Game.gameState == STATE.Settings) {
+			if(buttonClicked == "LeftVolume") {
+				Game.gameVolume = Game.clamp(Game.gameVolume - 10, 0, 100);
+				AudioPlayer.playSound("res/buttonClick.wav");
+			}
+			if(buttonClicked == "RightVolume") {
+				Game.gameVolume = Game.clamp(Game.gameVolume + 10, 0, 100);
+				AudioPlayer.playSound("res/buttonClick.wav");
+			}
 			//Back
 			if(buttonClicked == "Menu") {
 				Game.gameState = STATE.Menu;
 				handler.clearButtons();
-				AudioPlayer.playSound("res/buttonClick.wav", -20);
+				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 		}
 
 		if(Game.gameState == STATE.Game) {
 			//Return to menu from gameover
 			if(buttonClicked == "Quit") {
-				AudioPlayer.playSound("res/buttonClick.wav", -20);
+				AudioPlayer.playSound("res/buttonClick.wav");
 				HUD.HEALTH = 100;
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);
@@ -97,8 +105,8 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
-				handler.addButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 300, 32, 32));
-				handler.addButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 300, 32, 32));
+				handler.addButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
+				handler.addButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 			}
 		}
 
@@ -128,6 +136,7 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
+			drawBoxedText(g, fnt3, tan, Color.WHITE, "Volume: "+ Game.gameVolume + "%", (Game.sWidth/2) - 80, 230, 160, 32);
 		}
 		
 		if(Game.gameState == STATE.Game) {
