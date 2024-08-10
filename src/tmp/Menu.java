@@ -13,7 +13,8 @@ import tmp.Game.STATE;
 public class Menu extends MouseAdapter {
 	
 	private final Handler handler;
-	
+	SpriteSheet menu_buttons;
+
 	private Random r;
 	protected static int bWidth = 200;
 	protected static int bHeight = 64;
@@ -21,6 +22,7 @@ public class Menu extends MouseAdapter {
 	
 	public Menu(Handler handler) {
 		this.handler = handler;
+		menu_buttons = new SpriteSheet(Game.sprite_sheet_menu_buttons);
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -95,6 +97,8 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 300, 32, 32));
+				handler.addButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 300, 32, 32));
 			}
 		}
 

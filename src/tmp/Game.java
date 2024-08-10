@@ -41,6 +41,7 @@ public class Game extends Canvas implements Runnable {
 	//Sprites
 	public static BufferedImage backgroundImg;
 	public static BufferedImage tombBackgroundImg;
+	public static BufferedImage sprite_sheet_menu_buttons;
 	public static BufferedImage tomb_blocks_20x20;
 	public static BufferedImage dungeon_blocks_20x20;
 	public static BufferedImage burning_blocks_20x20;
@@ -61,16 +62,11 @@ public class Game extends Canvas implements Runnable {
 	
 	//Constructor
 	public Game() {
-		handler = new Handler();
-		tombTileMapBuilder = new TileMapBuilder();
-		menu = new Menu(handler);
-		hud = new HUD();
-		this.addKeyListener(new KeyInput(handler, this));
-		this.addMouseListener(menu);
-		
+		//Load assets
 		BufferedImageLoader loader = new BufferedImageLoader();
 		backgroundImg = loader.loadImage("/tombMainMenu.png");
 		tombBackgroundImg = loader.loadImage("/tombBackground.png");
+		sprite_sheet_menu_buttons = loader.loadImage("/sprite_sheet_menu_buttons.png");
 		tomb_blocks_20x20 = loader.loadImage("/tomb_blocks_20x20.png");
 		dungeon_blocks_20x20 = loader.loadImage("/dungeon_blocks_20x20.png");
 		burning_blocks_20x20 = loader.loadImage("/burning_blocks_20x20.png");
@@ -78,7 +74,16 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_hawk = loader.loadImage("/sprite_sheet_hawk.png");
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
-		
+
+		//Create core objects
+		handler = new Handler();
+		tombTileMapBuilder = new TileMapBuilder();
+		menu = new Menu(handler);
+		hud = new HUD();
+		this.addKeyListener(new KeyInput(handler, this));
+		this.addMouseListener(menu);
+
+		//Create game window
 		new Main("Game Demo", sWidth, sHeight, this);
 	}
 	
