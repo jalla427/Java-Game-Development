@@ -8,11 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-import enemy.HawkEnemy;
-import level.DemoMain;
-import level.LevelCollection;
-import level.TileMapBuilder;
-import tmp.AudioPlayer;
 import tmp.Game.STATE;
 
 public class Menu extends MouseAdapter {
@@ -91,22 +86,22 @@ public class Menu extends MouseAdapter {
 
 		if(Game.gameState == STATE.Menu) {
 			if(!buttonsFound) {
-				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
-				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
-				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
+				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
+				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 			}
 		}
 
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
-				handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 			}
 		}
 
 		if(Game.gameState == STATE.Game) {
 			if(Game.escapeGame) {
 				if(!buttonsFound) {
-					handler.addButton(new Button(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+					handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 				}
 			}
 		}
