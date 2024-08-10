@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 public class Handler {
 	
-	public LinkedList<GameObject> object = new LinkedList<GameObject>();
-	public LinkedList<RectTextButton> buttonList = new LinkedList<RectTextButton>();
+	public LinkedList<GameObject> object = new LinkedList<>();
+	public LinkedList<Button> buttonList = new LinkedList<>();
 	
 	public void tick() {
 		for(int i = 0; i < object.size(); i++) {
@@ -15,7 +15,7 @@ public class Handler {
 			tempObject.tick();
 		}
 		for(int i = 0; i < buttonList.size(); i++) {
-			RectTextButton tempObject = buttonList.get(i);
+			Button tempObject = buttonList.get(i);
 			tempObject.tick();
 		}
 	}
@@ -38,7 +38,7 @@ public class Handler {
 
 	public void renderHigherElements(Graphics g) {
 		for(int i = 0; i < buttonList.size(); i++) {
-			RectTextButton tempObject = buttonList.get(i);
+			Button tempObject = buttonList.get(i);
 			tempObject.render(g);
 		}
 	}
@@ -50,8 +50,8 @@ public class Handler {
 		this.object.remove(object);
 	}
 
-	public void addButton(RectTextButton button) { this.buttonList.add(button); }
-	public void removeButton(RectTextButton button) { this.buttonList.remove(button); }
+	public void addButton(Button button) { this.buttonList.add(button); }
+	public void removeButton(Button button) { this.buttonList.remove(button); }
 	
 	public void clearPlayer() {
 		for(int i = 0; i < object.size(); i++) {
@@ -175,9 +175,9 @@ public class Handler {
 	public String getButtonAtLocation(int mx, int my) {
 		String buttonName = "";
 		for(int i = 0; i < buttonList.size(); i++) {
-			RectTextButton tempObject = buttonList.get(i);
-			if(Game.isPointInBounds(mx, my, (int) tempObject.getX(), (int) tempObject.getY(), tempObject.getWidth(), tempObject.getHeight())) {
-				buttonName = tempObject.getText();
+			Button tempObject = buttonList.get(i);
+			if(Game.isPointInBounds(mx, my, tempObject.getX(), tempObject.getY(), tempObject.getWidth(), tempObject.getHeight())) {
+				buttonName = tempObject.getName();
 				break;
 			}
 		}
@@ -187,8 +187,8 @@ public class Handler {
 	public String getButtonNames() {
 		String buttonName = "";
 		for(int i = 0; i < buttonList.size(); i++) {
-			RectTextButton tempObject = buttonList.get(i);
-			buttonName += tempObject.getText() + " / ";
+			Button tempObject = buttonList.get(i);
+			buttonName += tempObject.getName() + " / ";
 		}
 		return buttonName;
 	}

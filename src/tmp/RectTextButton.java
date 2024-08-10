@@ -9,7 +9,7 @@ public class RectTextButton extends Button {
     private String text;
 
     public RectTextButton(Handler handler, Font font, Color colorOne, Color colorTwo, String text, int x, int y, int width, int height) {
-        super(handler, x, y, width, height);
+        super(handler, text, x, y, width, height);
         this.font = font;
         this.colorOne = colorOne;
         this.colorTwo = colorTwo;
