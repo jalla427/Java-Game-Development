@@ -6,11 +6,7 @@ import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
-import tmp.Game;
-import tmp.GameObject;
-import tmp.Handler;
-import tmp.ID;
-import tmp.SpriteSheet;
+import tmp.*;
 
 public class HawkEnemy extends GameObject {
 	
@@ -206,6 +202,7 @@ public class HawkEnemy extends GameObject {
 			attacking = false;
 			luminosity = 0;
 			enemy_image = ss.grabImage(1, 4, width, height);
+			AudioPlayer.playSound("res/hawkOffBeep.wav");
 		}
 		
 		if(!attacking) {
@@ -225,6 +222,7 @@ public class HawkEnemy extends GameObject {
 				attacking = true;
 				luminosity = 100;
 				enemy_image = ss.grabImage(1, 1, width, height);
+				AudioPlayer.playSound("res/hawkOnBeep.wav");
 			}
 		}
 		else {
