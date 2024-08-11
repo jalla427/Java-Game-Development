@@ -76,6 +76,7 @@ public class Coin extends GameObject {
 					Game.coinsLeft--;
 					Game.hud.setScore(Game.hud.getScore() + coinValue);
 					HUD.HEALTH += coinHeal;
+					AudioPlayer.playSound("res/coinGet.wav");
 					handler.object.remove(this);
 				}
 			}
@@ -121,6 +122,9 @@ public class Coin extends GameObject {
 					//Flip velocity to bounce coin
 					this.setVelX(-this.getVelX());
 					this.setVelX((this.getVelX() * (float) ((1.5 * Math.random()) + 0.3)));
+
+					//Play bounce sound
+					AudioPlayer.playSound("res/coinBounce.wav");
 				}
 				a1.reset();
 				a2.reset();
@@ -179,6 +183,9 @@ public class Coin extends GameObject {
 					//Flip velocity to bounce coin
 					this.setVelY(-this.getVelY());
 					this.setVelY((this.getVelY() * (float) ((2 * Math.random()) + 0.5)));
+
+					//Play bounce sound
+					AudioPlayer.playSound("res/coinBounce.wav");
 				}
 				a1.reset();
 				a2.reset();
