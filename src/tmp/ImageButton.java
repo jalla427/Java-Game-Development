@@ -18,4 +18,7 @@ public class ImageButton extends Button {
     public void render(Graphics g) {
         g.drawImage(image, this.getX(), this.getY(), null);
     }
+
+    public BufferedImage getImage() { return image; }
+    public void setImage(BufferedImage image) { this.image = image; }
 }

@@ -24,13 +24,14 @@ public class Player extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public Player(int x, int y, int width, int height, ID id, Handler handler) {
+	public Player(int x, int y, int width, int height, int playerSkin, ID id, Handler handler) {
 		super(x, y, width, height, id);
 		this.handler = handler;
 		this.luminosity = 300;
+		this.playerSkin = playerSkin;
 		
 		ss = new SpriteSheet(Game.sprite_sheet);
-		player_image = ss.grabImage(playerSkin, 1, width, height);
+		player_image = ss.grabImage(this.playerSkin, 1, width, height);
 		
 		updateCollision();
 	}

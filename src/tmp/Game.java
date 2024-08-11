@@ -49,6 +49,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_hawk;
 	public static BufferedImage sprite_sheet_sentry;
 	public static BufferedImage sprite_sheet_coin;
+	public static int playerSkin = 1;
 	
 	//Used for determining the current scene
 	public enum STATE {
@@ -330,7 +331,7 @@ public class Game extends Canvas implements Runnable {
 				handler.clearLevel();
 			}
 			tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
-			handler.addObject(new Player(playerX, playerY, 32, 32, ID.Player, handler));
+			handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
 			hud.setLevel(nextLevel);
 			setLevelCoinGoal(coins);
 		}

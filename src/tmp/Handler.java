@@ -2,12 +2,14 @@ package tmp;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
+import java.util.Objects;
 
 
 public class Handler {
 	
 	public LinkedList<GameObject> object = new LinkedList<>();
 	public LinkedList<Button> buttonList = new LinkedList<>();
+	public LinkedList<ImageButton> imageButtonList = new LinkedList<>();
 	
 	public void tick() {
 		for(int i = 0; i < object.size(); i++) {
@@ -51,7 +53,15 @@ public class Handler {
 	}
 
 	public void addButton(Button button) { this.buttonList.add(button); }
+	public void addImageButton(ImageButton button) {
+		this.buttonList.add(button);
+		this.imageButtonList.add(button);
+	}
 	public void removeButton(Button button) { this.buttonList.remove(button); }
+	public void removeImageButton(ImageButton button) {
+		this.buttonList.remove(button);
+		this.imageButtonList.remove(button);
+	}
 	
 	public void clearPlayer() {
 		for(int i = 0; i < object.size(); i++) {
@@ -101,6 +111,9 @@ public class Handler {
 	public void clearButtons() {
 		while(areButtons()) {
 			buttonList.pop();
+		}
+		while(areImageButtons()) {
+			imageButtonList.pop();
 		}
 	}
 	
@@ -172,16 +185,32 @@ public class Handler {
 		return foundButton;
 	}
 
-	public String getButtonAtLocation(int mx, int my) {
-		String buttonName = "";
+	public boolean areImageButtons() {
+		boolean foundButton = false;
+		if(imageButtonList.size() > 0) {
+			foundButton = true;
+		}
+		return foundButton;
+	}
+
+	public Button getButtonAtLocation(int mx, int my) {
 		for(int i = 0; i < buttonList.size(); i++) {
 			Button tempObject = buttonList.get(i);
 			if(Game.isPointInBounds(mx, my, tempObject.getX(), tempObject.getY(), tempObject.getWidth(), tempObject.getHeight())) {
-				buttonName = tempObject.getName();
-				break;
+				return tempObject;
 			}
 		}
-		return buttonName;
+		return null;
+	}
+
+	public ImageButton getImageButtonByName(String name) {
+		for(int i = 0; i < imageButtonList.size(); i++) {
+			ImageButton tempObject = imageButtonList.get(i);
+			if(Objects.equals(tempObject.getName(), name)) {
+				return tempObject;
+			}
+		}
+		return null;
 	}
 
 	public String getButtonNames() {

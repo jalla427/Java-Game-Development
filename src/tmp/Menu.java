@@ -14,6 +14,7 @@ public class Menu extends MouseAdapter {
 	
 	private final Handler handler;
 	SpriteSheet menu_buttons;
+	SpriteSheet player_skins;
 
 	private Random r;
 	protected static int bWidth = 200;
@@ -23,6 +24,7 @@ public class Menu extends MouseAdapter {
 	public Menu(Handler handler) {
 		this.handler = handler;
 		menu_buttons = new SpriteSheet(Game.sprite_sheet_menu_buttons);
+		player_skins = new SpriteSheet(Game.sprite_sheet);
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -33,46 +35,55 @@ public class Menu extends MouseAdapter {
 		//Grab mouse coordinates and check for overlap with any button
 		int mx = e.getX();
 		int my = e.getY();
-		String buttonClicked = handler.getButtonAtLocation(mx, my);
+		Button buttonClicked = handler.getButtonAtLocation(mx, my);
 
-		if(Game.gameState == STATE.Menu) {
+		if(Game.gameState == STATE.Menu && buttonClicked != null) {
 			//Quit
-			if(buttonClicked == "Quit") {
+			if(buttonClicked.getName() == "Quit") {
 				System.exit(1);
 			}
 			//Settings
-			if(buttonClicked == "Settings") {
+			if(buttonClicked.getName() == "Settings") {
 				Game.gameState = STATE.Settings;
 				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 			//Play
-			if(buttonClicked == "Play") {
+			if(buttonClicked.getName() == "Play") {
 				Game.hud.setLevel(1);
 				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 		}
 
-		if(Game.gameState == STATE.Settings) {
-			if(buttonClicked == "LeftVolume") {
+		if(Game.gameState == STATE.Settings && buttonClicked != null) {
+			if(buttonClicked.getName() == "LeftVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume - 10, 0, 100);
 				AudioPlayer.playSound("res/buttonClick.wav");
 			}
-			if(buttonClicked == "RightVolume") {
+			if(buttonClicked.getName() == "RightVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume + 10, 0, 100);
 				AudioPlayer.playSound("res/buttonClick.wav");
 			}
 			//Back
-			if(buttonClicked == "Menu") {
+			if(buttonClicked.getName() == "Menu") {
 				Game.gameState = STATE.Menu;
 				handler.clearButtons();
 				AudioPlayer.playSound("res/buttonClick.wav");
 			}
+			if(buttonClicked.getName().contains("playerSkinOption")) {
+				//Retrieve number at the end of button name (should be 1-4)
+				int skinNum = Integer.valueOf(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
+				if(Game.playerSkin != skinNum && skinNum <= 4 && skinNum >= 1) {
+					handler.getImageButtonByName(buttonClicked.getName()).setImage(player_skins.grabImage(skinNum, 1, 32, 32));
+					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImage(Game.playerSkin, 3, 32, 32));
+					Game.playerSkin = skinNum;
+				}
+			}
 		}
 
-		if(Game.gameState == STATE.Game) {
+		if(Game.gameState == STATE.Game && buttonClicked != null) {
 			//Return to menu from gameover
-			if(buttonClicked == "Quit") {
+			if(buttonClicked.getName() == "Quit") {
 				AudioPlayer.playSound("res/buttonClick.wav");
 				HUD.HEALTH = 100;
 				Game.hud.setScore(0);
@@ -105,8 +116,18 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
-				handler.addButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
-				handler.addButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
+				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
+				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
+
+				//Player skin buttons
+				for(int i = 1; i < 5; i++) {
+					if(Game.playerSkin == i) {
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105, 320, 32, 32));
+					}
+					else {
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 3, 32, 32), (Game.sWidth/2) + (i * 36) - 105, 320, 32, 32));
+					}
+				}
 			}
 		}
 
@@ -137,6 +158,7 @@ public class Menu extends MouseAdapter {
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
 			drawBoxedText(g, fnt3, tan, Color.WHITE, "Volume: "+ Game.gameVolume + "%", (Game.sWidth/2) - 80, 230, 160, 32);
+			drawBoxedText(g, fnt3, tan, Color.WHITE, "Player Skin", (Game.sWidth/2) - 80, 280, 160, 32);
 		}
 		
 		if(Game.gameState == STATE.Game) {
