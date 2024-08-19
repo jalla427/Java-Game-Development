@@ -21,6 +21,7 @@ public abstract class GameObject {
 			this.id = id;
 			this.width = width;
 			this.height = height;
+			this.grounded = false;
 			
 			//0 = left/up, 1 = right/down, 2 = neutral
 			this.xDirection = 2;
