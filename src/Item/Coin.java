@@ -198,7 +198,7 @@ public class Coin extends GameObject {
 	public void render(Graphics g) {
 		coin_image = ss.grabImage(1, this.animationFrame, width, height);
 		this.animationDelay++;
-		if(this.animationDelay >= 45) {
+		if(this.animationDelay >= 15) {
 			this.animationDelay = 1;
 			if(this.animationForward) {
 				if(this.animationFrame < 9) {
