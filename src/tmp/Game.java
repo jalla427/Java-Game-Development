@@ -225,6 +225,11 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(dungeon_blocks_20x20, 8, 8, sWidth / 2 - 16, sHeight - 200);
 			}
 
+			//Level 9 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 8) {
+				startLevelTransition(dungeon_blocks_20x20, 9, 10, sWidth / 2 - 16, sHeight - 200);
+			}
+
 			//Level Transition Timer
 			if (transitioning && !escapeGame) {
 				transitionTimer++;
@@ -280,10 +285,10 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 6) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 500, 100));
-						handler.addObject(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 500, 110));
-						handler.addObject(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 500, 120));
-						handler.addObject(new SentryEnemy(460, 160, 20, 20, ID.Enemy, handler, 500, 130));
+						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 400, 100));
+						handler.addObject(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 400, 110));
+						handler.addObject(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 400, 120));
+						handler.addObject(new SentryEnemy(460, 160, 20, 20, ID.Enemy, handler, 400, 130));
 						endLevelTransition();
 					}
 				}
@@ -300,6 +305,15 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 132, 400, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 9) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(Game.sWidth - 132, 150, 32, 32, ID.Enemy, handler));
 						endLevelTransition();

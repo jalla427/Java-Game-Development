@@ -29,6 +29,9 @@ public class LevelCollection {
 		if(num == 8) {
 			level = arrayTo2DArray(DungeonLevels.getLevelTwo());
 		}
+		if(num == 9) {
+			level = arrayTo2DArray(DungeonLevels.getLevelThree());
+		}
 		
 		return level;
 	}
