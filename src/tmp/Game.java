@@ -41,7 +41,9 @@ public class Game extends Canvas implements Runnable {
 
 	//Sprites
 	public static BufferedImage backgroundImg;
+	public static BufferedImage levelBackgroundImg;
 	public static BufferedImage tombBackgroundImg;
+	public static BufferedImage dungeonBackgroundImg;
 	public static BufferedImage sprite_sheet_menu_buttons;
 	public static BufferedImage tomb_blocks_20x20;
 	public static BufferedImage dungeon_blocks_20x20;
@@ -69,6 +71,7 @@ public class Game extends Canvas implements Runnable {
 		BufferedImageLoader loader = new BufferedImageLoader();
 		backgroundImg = loader.loadImage("/tombMainMenu.png");
 		tombBackgroundImg = loader.loadImage("/tombBackground.png");
+		dungeonBackgroundImg = loader.loadImage("/dungeonBackground.png");
 		sprite_sheet_menu_buttons = loader.loadImage("/sprite_sheet_menu_buttons.png");
 		tomb_blocks_20x20 = loader.loadImage("/tomb_blocks_20x20.png");
 		dungeon_blocks_20x20 = loader.loadImage("/dungeon_blocks_20x20.png");
@@ -163,6 +166,7 @@ public class Game extends Canvas implements Runnable {
 
 		//Game start, Level 1 Transition
 		if(gameState == STATE.Menu && hud.getLevel() == 1) {
+			levelBackgroundImg = tombBackgroundImg;
 			gameState = STATE.Game;
 			handler.clearButtons();
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
@@ -205,6 +209,17 @@ public class Game extends Canvas implements Runnable {
 			//Level 6 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 5) {
 				startLevelTransition(tomb_blocks_20x20, 6, 10, sWidth / 2 - 16, sHeight - 100);
+			}
+
+			//Level 7 Transition, start of section 2
+			if (coinsLeft == 0 && hud.getLevel() == 6) {
+				levelBackgroundImg = dungeonBackgroundImg;
+				startLevelTransition(dungeon_blocks_20x20, 7, 6, sWidth / 2 - 16, sHeight - 300);
+			}
+
+			//Level 8 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 7) {
+				startLevelTransition(dungeon_blocks_20x20, 8, 8, sWidth / 2 - 16, sHeight - 200);
 			}
 
 			//Level Transition Timer
@@ -269,6 +284,24 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
+
+				if (hud.getLevel() == 7) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(100, 150, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 100, 100, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 8) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 132, 100, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 132, 100, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
 			}
 
 			//Handle coin collection during level
@@ -294,7 +327,7 @@ public class Game extends Canvas implements Runnable {
 			g.drawImage(backgroundImg, 0, 0, null);
 		}
 		if(gameState == STATE.Game) {
-			g.drawImage(tombBackgroundImg, 0, 0, null);
+			g.drawImage(levelBackgroundImg, 0, 0, null);
 		}
 
 		handler.render(g);
