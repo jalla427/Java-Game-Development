@@ -183,9 +183,6 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		//Draw player
-		g.drawImage(player_image, (int) x, (int) y, null);
-
 		//Dim player if gameover
 		if(Game.gameOver) {
 			if(this.getLuminosity() > 0) {
@@ -195,6 +192,9 @@ public class Player extends GameObject {
 				player_image = ss.grabImage(playerSkin, 3, width, height);
 			}
 		}
+
+		//Draw player
+		g.drawImage(player_image, (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {
