@@ -7,8 +7,9 @@ import java.awt.image.BufferedImage;
 
 import enemy.HawkEnemy;
 import enemy.SentryEnemy;
-import Item.Coin;
+import enemy.ThumperEnemy;
 import enemy.StriderEnemy;
+import Item.Coin;
 import level.LevelCollection;
 import level.TileMapBuilder;
 
@@ -52,6 +53,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_hawk;
 	public static BufferedImage sprite_sheet_sentry;
 	public static BufferedImage sprite_sheet_strider;
+	public static BufferedImage sprite_sheet_thumper;
 	public static BufferedImage sprite_sheet_coin;
 	public static int playerSkin = 1;
 	
@@ -80,6 +82,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_hawk = loader.loadImage("/sprite_sheet_hawk.png");
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
 		sprite_sheet_strider = loader.loadImage("/sprite_sheet_strider.png");
+		sprite_sheet_thumper = loader.loadImage("/sprite_sheet_thumper.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 
 		//Create core objects
@@ -296,9 +299,9 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 8) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
-						handler.addObject(new StriderEnemy(sWidth - 132, 100, 32, 32, ID.Enemy, handler));
-						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
-						handler.addObject(new StriderEnemy(sWidth - 132, 100, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 132, 400, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(Game.sWidth - 132, 150, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
