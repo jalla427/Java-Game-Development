@@ -237,7 +237,9 @@ public class Game extends Canvas implements Runnable {
 
 			//Level 7 Transition, start of section 2
 			if (coinsLeft == 0 && hud.getLevel() == 6) {
-				levelBackgroundImg = dungeonBackgroundImg;
+				if(!gameOver) {
+					levelBackgroundImg = dungeonBackgroundImg;
+				}
 				startLevelTransition(dungeon_blocks_20x20, 7, 6, sWidth / 2 - 16, sHeight - 300);
 			}
 
