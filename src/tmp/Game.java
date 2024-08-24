@@ -299,6 +299,7 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 5) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(200, 300, 32, 32, ID.Enemy, handler, 0));
 						handler.addObject(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 50));
 						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 150));
 						endLevelTransition();
@@ -308,10 +309,10 @@ public class Game extends Canvas implements Runnable {
 				if (hud.getLevel() == 6) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 0));
-						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 400, 100));
-						handler.addObject(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 400, 110));
-						handler.addObject(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 400, 120));
-						handler.addObject(new SentryEnemy(460, 160, 20, 20, ID.Enemy, handler, 400, 130));
+						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 200, 100));
+						handler.addObject(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 200, 110));
+						handler.addObject(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 200, 120));
+						handler.addObject(new SentryEnemy(460, 160, 20, 20, ID.Enemy, handler, 200, 130));
 						endLevelTransition();
 					}
 				}
@@ -338,7 +339,7 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
-						handler.addObject(new ThumperEnemy(Game.sWidth - 132, 150, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(Game.sWidth - 100, 150, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
