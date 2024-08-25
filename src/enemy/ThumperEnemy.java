@@ -63,11 +63,17 @@ public class ThumperEnemy extends GameObject {
 		updateCollision();
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
-			
+			a1 = new Area(collision);
+
+			//While looping through all objects, retrieve player cords for later
+			if(tempObject.getID() == ID.Player) {
+				playerX = tempObject.getX();
+				playerY = tempObject.getY();
+			}
+
 			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
+			else if(tempObject.getID() == ID.Level) {
 				//Find area shared by enemy and by tile
-				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
 				
@@ -116,11 +122,11 @@ public class ThumperEnemy extends GameObject {
 		//Loop through all objects in search of tiles
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
+			a1 = new Area(collision);
 			
 			//Check for collision with tiles
 			if(tempObject.getID() == ID.Level) {
 				//Find area shared by enemy and tile
-				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
 				
@@ -229,16 +235,6 @@ public class ThumperEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		//Partial homing on the player
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			
-			if(tempObject.getID() == ID.Player) {
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();
-			}
-		}
-
 		//Find x and y distance to player separately for comparison
 		float playerXDistance = (int) Game.calculateDistance(this.getX(), this.getY(), playerX, this.getY());
 		float playerYDistance = (int) Game.calculateDistance(this.getX(), this.getY(), this.getX(), playerY);
