@@ -21,8 +21,6 @@ public class StriderEnemy extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	float playerX = 0;
-	float playerY = 0;
 	int maxSpeed = 3;
 	int sightRange = 300;
 	int jumpTimer = 0;
@@ -68,14 +66,8 @@ public class StriderEnemy extends GameObject {
 			GameObject tempObject = handler.object.get(i);
 			a1 = new Area(collision);
 
-			//While looping through all objects, retrieve player cords for later
-			if(tempObject.getID() == ID.Player) {
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();
-			}
-
 			//Check for collision with tiles
-			else if(tempObject.getID() == ID.Level) {
+			if(tempObject.getID() == ID.Level) {
 				//Find area shared by enemy and by tile
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
@@ -205,7 +197,7 @@ public class StriderEnemy extends GameObject {
 			}
 		}
 		else {
-			if(playerX > this.x) {
+			if(Handler.playerX > this.x) {
 				this.animType = 2;
 				if(this.animType != currentAnimType) {
 					this.animationDelayTimer = 0;
@@ -259,7 +251,7 @@ public class StriderEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		float playerDistance = Game.calculateDistance(this.x, this.y, playerX, playerY);
+		float playerDistance = Game.calculateDistance(this.x, this.y, Handler.playerX, Handler.playerY);
 
 		if(!attacking) {
 			if(playerDistance < this.sightRange) {
@@ -289,7 +281,7 @@ public class StriderEnemy extends GameObject {
 		}
 		
 		if(attacking) {
-			if(playerX > this.x) {
+			if(Handler.playerX > this.x) {
 				this.setVelX(this.getVelX() + 1);
 			}
 			else {
@@ -297,7 +289,7 @@ public class StriderEnemy extends GameObject {
 			}
 
 			//Decide to jump
-			if(!this.jumping && ((this.xCollided && this.isGrounded()) || (playerY < this.y && this.isGrounded() && this.jumpTimer >= 150))) {
+			if(!this.jumping && ((this.xCollided && this.isGrounded()) || (Handler.playerY < this.y && this.isGrounded() && this.jumpTimer >= 150))) {
 				this.jumpTimer = (int) (20 * Math.random());
 				this.setVelY(this.getVelY() - 20);
 				this.setGrounded(false);
@@ -327,7 +319,7 @@ public class StriderEnemy extends GameObject {
 		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
 
 		//Stop adjusting velocity X if overlapping player on the X axis (prevents spinning in place)
-		if(Game.calculateDistance(this.getX(), this.getX(), playerX, this.getX()) < this.getWidth() / 2) {
+		if(Game.calculateDistance(this.getX(), this.getX(), Handler.playerX, this.getX()) < this.getWidth() / 2) {
 			this.setVelX(0);
 		}
 

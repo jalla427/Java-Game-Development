@@ -20,8 +20,6 @@ public class ThumperEnemy extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	float playerX = 0;
-	float playerY = 0;
 	int maxSpeed = 6;
 	int restingTimer = 0;
 
@@ -65,14 +63,8 @@ public class ThumperEnemy extends GameObject {
 			GameObject tempObject = handler.object.get(i);
 			a1 = new Area(collision);
 
-			//While looping through all objects, retrieve player cords for later
-			if(tempObject.getID() == ID.Player) {
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();
-			}
-
 			//Check for collision with tiles
-			else if(tempObject.getID() == ID.Level) {
+			if(tempObject.getID() == ID.Level) {
 				//Find area shared by enemy and by tile
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
@@ -236,8 +228,8 @@ public class ThumperEnemy extends GameObject {
 	
 	protected void updateVelocity() {
 		//Find x and y distance to player separately for comparison
-		float playerXDistance = (int) Game.calculateDistance(this.getX(), this.getY(), playerX, this.getY());
-		float playerYDistance = (int) Game.calculateDistance(this.getX(), this.getY(), this.getX(), playerY);
+		float playerXDistance = (int) Game.calculateDistance(this.getX(), this.getY(), Handler.playerX, this.getY());
+		float playerYDistance = (int) Game.calculateDistance(this.getX(), this.getY(), this.getX(), Handler.playerY);
 
 		if(!attacking) {
 			restingTimer++;
@@ -245,16 +237,16 @@ public class ThumperEnemy extends GameObject {
 				restingTimer = 0;
 
 				//Out of four directions, go the direction that is the shortest distance to the player
-				if(playerX >= (this.getX() + (this.getWidth()/2)) && playerXDistance >= playerYDistance) {
+				if(Handler.playerX >= (this.getX() + (this.getWidth()/2)) && playerXDistance >= playerYDistance) {
 					this.velX = maxSpeed;
 				}
-				else if(playerX < (this.getX() + (this.getWidth()/2)) && playerXDistance >= playerYDistance) {
+				else if(Handler.playerX < (this.getX() + (this.getWidth()/2)) && playerXDistance >= playerYDistance) {
 					this.velX = -maxSpeed;
 				}
-				else if(playerY >= (this.getY() + (this.getWidth()/2)) && playerYDistance > playerXDistance) {
+				else if(Handler.playerY >= (this.getY() + (this.getWidth()/2)) && playerYDistance > playerXDistance) {
 					this.velY = maxSpeed;
 				}
-				else if(playerY < (this.getY() + (this.getWidth()/2)) && playerYDistance > playerXDistance) {
+				else if(Handler.playerY < (this.getY() + (this.getWidth()/2)) && playerYDistance > playerXDistance) {
 					this.velY = -maxSpeed;
 				}
 				this.attacking = true;
@@ -279,7 +271,7 @@ public class ThumperEnemy extends GameObject {
 			//Change direction once during each attack
 			if(this.getVelX() != 0 && playerXDistance <= 16 && !motionLocked) {
 				this.setVelX(0);
-				if(playerY >= this.getY()) {
+				if(Handler.playerY >= this.getY()) {
 					this.setVelY(Game.clamp((int) (maxSpeed * Math.random()), 3, maxSpeed));
 				}
 				else {
@@ -290,7 +282,7 @@ public class ThumperEnemy extends GameObject {
 			}
 			else if(this.getVelY() != 0 && playerYDistance <= 16 && !motionLocked) {
 				this.setVelY(0);
-				if(playerX >= this.getX()) {
+				if(Handler.playerX >= this.getX()) {
 					this.setVelX(Game.clamp((int) (maxSpeed * Math.random()), 3, maxSpeed));
 				}
 				else {

@@ -45,16 +45,10 @@ public class SentryEnemy extends GameObject {
 			timer = 0;
 			luminosity = 0;
 			enemy_image = ss.grabImage(1, 2, width, height);
-			for(int i = 0; i < handler.object.size(); i++) {
-				GameObject tempObject = handler.object.get(i);
-				
-				if(tempObject.getID() == ID.Player) {
-					AudioPlayer.playSound("res/bulletFire.wav");
-					handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, handler, tempObject.getX() + (tempObject.getWidth()/2), tempObject.getY() + (tempObject.getHeight()/2)));
-				}
-			}
+
+			AudioPlayer.playSound("res/bulletFire.wav");
+			handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 16));
 		}
-		
 	}
 
 	public void render(Graphics g) {

@@ -19,9 +19,7 @@ public class HawkEnemy extends GameObject {
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
-	
-	float playerX = 0;
-	float playerY = 0;
+
 	int maxSpeed = 6;
 	int homingTimer = 0;
 	int retreatTimer;
@@ -187,16 +185,6 @@ public class HawkEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		//Partial homing on the player
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			
-			if(tempObject.getID() == ID.Player) {
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();
-			}
-		}
-		
 		homingTimer++;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
@@ -206,7 +194,7 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		if(!attacking) {
-			if(playerX > this.x) {
+			if(Handler.playerX > this.x) {
 				velX = velX - 1;
 				velX = Game.clamp(velX, -2, 2);
 			}
@@ -244,13 +232,13 @@ public class HawkEnemy extends GameObject {
 			}
 
 			if(homingTimer >= 10) {
-				if(playerX > this.x) {
+				if(Handler.playerX > this.x) {
 					velX = velX + 1;
 				}
 				else {
 					velX = velX - 1;
 				}
-				if(playerY > this.y) {
+				if(Handler.playerY > this.y) {
 					velY = velY + 1;
 				}
 				else {

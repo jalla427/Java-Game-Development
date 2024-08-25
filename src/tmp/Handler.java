@@ -10,11 +10,19 @@ public class Handler {
 	public LinkedList<GameObject> object = new LinkedList<>();
 	public LinkedList<Button> buttonList = new LinkedList<>();
 	public LinkedList<ImageButton> imageButtonList = new LinkedList<>();
+	public static float playerX = 0;
+	public static float playerY = 0;
 	
 	public void tick() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			tempObject.tick();
+
+			//While looping through all objects, retrieve current player cords for easy access
+			if(tempObject.getID() == ID.Player) {
+				playerX = tempObject.getX();
+				playerY = tempObject.getY();
+			}
 		}
 		for(int i = 0; i < buttonList.size(); i++) {
 			Button tempObject = buttonList.get(i);
