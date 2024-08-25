@@ -46,71 +46,38 @@ public class Player extends GameObject {
 	//Updates position and adjusts if the player is colliding with any tiles
 	private void collision() {
 		Area a1;
-	    Area a2; 
+		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision, enemy collision check
 		x += velX;
 		player_image = ss.grabImage(playerSkin, 1, width, height);
 		updateCollision();
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			
-			//Check for enemy collisions
-			if(tempObject.getID() == ID.Enemy && tempObject.getBounds() != null) {
-				//Find area shared by player and enemy
-				a1 = new Area(collision);
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-				
-				//Lower HUD health if player is touching an enemy
-				if(!a1.isEmpty()) {
-					HUD.HEALTH--;
-					player_image = ss.grabImage(playerSkin, 2, width, height);
-				}
-			}
-			
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by player and tile
-				a1 = new Area(collision);
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-				
-				//Determine if area is shared by player and tile
-				if(!a1.isEmpty()) {
-					//Log
-					if(Game.debugMode) {
-						//System.out.println("Collision!");
-					}
+
+		//Find area shared by player and tile
+		a1 = new Area(collision);
+		a1.intersect(a2);
+
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			x -= velX;
+			updateCollision();
+			a1.reset();
+			a1 = new Area(collision);
+			a1.intersect(a2);
 					
-					//Reverse bad movement
-					x -= velX;
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
-					
-					//Move player to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						x += Math.signum(velX);
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-					
-					//Position player one pixel outside of wall
-					x -= Math.signum(velX);
-					updateCollision();
-					velX = 0;
-				}
+			//Move player to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				x += Math.signum(velX);
+				updateCollision();
 				a1.reset();
-				a2.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
 			}
+					
+			//Position player one pixel outside of wall
+			x -= Math.signum(velX);
+			updateCollision();
+			velX = 0;
 		}
 		
 		//Vertical Collision
@@ -119,61 +86,58 @@ public class Player extends GameObject {
 		
 		//Set grounded to false in case player has walked over an edge
 		this.setGrounded(false);
-		
-		//Loop through all objects in search of tiles
+
+		//Find area shared by player and tile
+		a1 = new Area(collision);
+		a1.intersect(a2);
+
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			y -= velY;
+			updateCollision();
+			a1.reset();
+			a1 = new Area(collision);
+			a1.intersect(a2);
+					
+			//Move player to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				y += Math.signum(velY);
+				updateCollision();
+				a1.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
+			}
+					
+			//Position player one pixel outside of wall
+			y -= Math.signum(velY);
+			updateCollision();
+					
+			if(Math.signum(velY) == 1) {
+				this.setGrounded(true);
+			}
+			velY = 0;
+		}
+				
+		//If jump button still held at the end of a jump, jump again
+		if(KeyInput.keyDown[4] && this.isGrounded() && Game.playerControl) {
+			this.velY -= 20;
+			this.setGrounded(false);
+		}
+
+		//Check for enemy collisions
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
-			
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by player and tile
+
+			if(tempObject.getID() == ID.Enemy && tempObject.getBounds() != null) {
+				//Find area shared by player and enemy
 				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
-				
-				//Determine if any area is shared by player and tile
+
+				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
-					//Log
-					if(Game.debugMode) {
-						//System.out.println("Collision!");
-					}
-					
-					//Reverse bad movement
-					y -= velY;
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
-					
-					//Move player to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						y += Math.signum(velY);
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-					
-					//Position player one pixel outside of wall
-					y -= Math.signum(velY);
-					updateCollision();
-					
-					if(Math.signum(velY) == 1) {
-						this.setGrounded(true);
-					}
-					velY = 0;
-				}
-				a1.reset();
-				a2.reset();
-				
-				//If jump button still held at the end of a jump, jump again
-				if(KeyInput.keyDown[4] && this.isGrounded() && Game.playerControl) {
-					this.velY -= 20; 
-					this.setGrounded(false); 
+					HUD.HEALTH--;
+					player_image = ss.grabImage(playerSkin, 2, width, height);
 				}
 			}
 		}

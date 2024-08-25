@@ -57,58 +57,41 @@ public class StriderEnemy extends GameObject {
 	//Updates position and adjusts if the enemy is colliding with any tiles
 	private void collision() {
 		Area a1;
-	    Area a2; 
+		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
 		x += velX;
 		updateCollision();
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+
+		//Find area shared by enemy and by tiles
+		a1 = new Area(collision);
+		a1.intersect(a2);
+
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			x -= velX;
+			updateCollision();
+			a1.reset();
 			a1 = new Area(collision);
-
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by enemy and by tile
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-				
-				//Determine if area is shared by enemy and tile
-				if(!a1.isEmpty()) {
-					//Reverse bad movement
-					x -= velX;
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
+			a1.intersect(a2);
 					
-					//Move enemy to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						x += Math.signum(velX);
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-					
-					//Position enemy one pixel outside of wall
-					x -= Math.signum(velX);
-					updateCollision();
-					velX = 0;
-
-					//Update jumping AI
-					if(!jumping) {
-						this.xCollided = true;
-					}
-
-					//No more need to check after collision handled
-					break;
-				}
+			//Move enemy to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				x += Math.signum(velX);
+				updateCollision();
 				a1.reset();
-				a2.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
+			}
+					
+			//Position enemy one pixel outside of wall
+			x -= Math.signum(velX);
+			updateCollision();
+			velX = 0;
+
+			//Update jumping AI
+			if(!jumping) {
+				this.xCollided = true;
 			}
 		}
 		
@@ -118,64 +101,40 @@ public class StriderEnemy extends GameObject {
 		
 		//Set grounded to false in case enemy has walked over an edge
 		this.setGrounded(false);
-		
-		//Loop through all objects in search of tiles
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+
+		//Find area shared by enemy and tile
+		a1 = new Area(collision);
+		a1.intersect(a2);
+
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			y -= velY;
+			updateCollision();
+			a1.reset();
 			a1 = new Area(collision);
-			
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by enemy and tile
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-				
-				//Determine if any area is shared by enemy and by tile
-				if(!a1.isEmpty()) {
-					//Log
-					if(Game.debugMode) {
-						//System.out.println("Collision!");
-					}
+			a1.intersect(a2);
 					
-					//Reverse bad movement
-					y -= velY;
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
-					
-					//Move enemy to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						y += Math.signum(velY);
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-					
-					//Position enemy one pixel outside of wall
-					y -= Math.signum(velY);
-					updateCollision();
-					velY = 0;
-
-					//If jumping, end jump
-					if(!this.isGrounded()) {
-						this.setGrounded(true);
-						if(jumping) {
-							this.jumping = false;
-							AudioPlayer.playSound("res/striderLand.wav");
-						}
-					}
-
-					//No more need to check after collision handled
-					break;
-				}
+			//Move enemy to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				y += Math.signum(velY);
+				updateCollision();
 				a1.reset();
-				a2.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
+			}
+					
+			//Position enemy one pixel outside of wall
+			y -= Math.signum(velY);
+			updateCollision();
+			velY = 0;
+
+			//If jumping, end jump
+			if(!this.isGrounded()) {
+				this.setGrounded(true);
+				if(jumping) {
+					this.jumping = false;
+					AudioPlayer.playSound("res/striderLand.wav");
+				}
 			}
 		}
 	}

@@ -56,79 +56,44 @@ public class Coin extends GameObject {
 
 	private void collision() {
 		Area a1;
-		Area a2;
+		Area a2 = Handler.currentLevelArea;
 
 		//Horizontal Collision
 		this.setX(this.getX() + this.getVelX());
 		updateCollision();
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
 
-			//Check for player collision
-			if(tempObject.getID() == ID.Player) {
-				//Find area shared by coin and player
-				a1 = new Area(collision);
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
+		//Find area shared by coin and tile
+		a1 = new Area(collision);
+		a1.intersect(a2);
 
-				//Determine if area is shared by coin and player
-				if(!a1.isEmpty()) {
-					Game.coinsLeft--;
-					Game.hud.setScore(Game.hud.getScore() + coinValue);
-					HUD.HEALTH += coinHeal;
-					AudioPlayer.playSound("res/coinGet.wav");
-					handler.object.remove(this);
-				}
-			}
+		//Determine if area is shared by coin and tile
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			this.setX(this.getX() - this.getVelX());
+			updateCollision();
+			a1.reset();
+			a1 = new Area(collision);
+			a1.intersect(a2);
 
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by coin and tile
-				a1 = new Area(collision);
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-
-				//Determine if area is shared by coin and tile
-				if(!a1.isEmpty()) {
-					//Log
-					if(Game.debugMode) {
-						//System.out.println("Collision! - X: " + velX);
-					}
-
-					//Reverse bad movement
-					this.setX(this.getX() - this.getVelX());
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
-
-					//Move coin to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						x += Math.signum(this.getVelX());
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-
-					//Position coin one pixel outside of wall
-					x -= Math.signum(this.getVelX());
-					updateCollision();
-
-					//Flip velocity to bounce coin
-					this.setVelX(-this.getVelX());
-					this.setVelX((this.getVelX() * (float) ((1.5 * Math.random()) + 0.3)));
-
-					//Play bounce sound
-					AudioPlayer.playSound("res/coinBounce.wav");
-				}
+			//Move coin to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				x += Math.signum(this.getVelX());
+				updateCollision();
 				a1.reset();
-				a2.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
 			}
+
+			//Position coin one pixel outside of wall
+			x -= Math.signum(this.getVelX());
+			updateCollision();
+
+			//Flip velocity to bounce coin
+			this.setVelX(-this.getVelX());
+			this.setVelX((this.getVelX() * (float) ((1.5 * Math.random()) + 0.3)));
+
+			//Play bounce sound
+			AudioPlayer.playSound("res/coinBounce.wav");
 		}
 
 		//Vertical Collision
@@ -138,59 +103,61 @@ public class Coin extends GameObject {
 		//Set grounded to false in case coin has moved over an edge
 		this.setGrounded(false);
 
-		//Loop through all objects in search of tiles
+		//Find area shared by coin and tile
+		a1 = new Area(collision);
+		a1.intersect(a2);
+
+		//Determine if any area is shared by coin and tile
+		if(!a1.isEmpty()) {
+			//Reverse bad movement
+			this.setY(this.getY() - this.getVelY());
+			updateCollision();
+			a1.reset();
+			a1 = new Area(collision);
+			a1.intersect(a2);
+
+			//Move coin to the wall slowly until overlapping by one pixel
+			while(a1.isEmpty()) {
+				y += Math.signum(this.getVelY());
+				updateCollision();
+				a1.reset();
+				a1 = new Area(collision);
+				a1.intersect(a2);
+			}
+
+			//Position coin one pixel outside of wall
+			y -= Math.signum(this.getVelY());
+			updateCollision();
+
+			//Flip velocity to bounce coin
+			this.setVelY(-this.getVelY());
+			this.setVelY((this.getVelY() * (float) ((2 * Math.random()) + 0.5)));
+
+			//Play bounce sound
+			AudioPlayer.playSound("res/coinBounce.wav");
+		}
+
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
 
-			//Check for collision with tiles
-			if(tempObject.getID() == ID.Level) {
-				//Find area shared by coin and tile
+			//Check for player collision
+			if (tempObject.getID() == ID.Player) {
+				//Find area shared by coin and player
 				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
 				a1.intersect(a2);
 
-				//Determine if any area is shared by coin and tile
-				if(!a1.isEmpty()) {
-					//Log
-					if(Game.debugMode) {
-						//System.out.println("Collision! - Y: " + velY);
-					}
-
-					//Reverse bad movement
-					this.setY(this.getY() - this.getVelY());
-					updateCollision();
-					a1.reset();
-					a2.reset();
-					a1 = new Area(collision);
-					a2 = new Area(tempObject.getBounds());
-					a1.intersect(a2);
-
-					//Move coin to the wall slowly until overlapping by one pixel
-					while(a1.isEmpty()) {
-						y += Math.signum(this.getVelY());
-						updateCollision();
-						a1.reset();
-						a2.reset();
-						a1 = new Area(collision);
-						a2 = new Area(tempObject.getBounds());
-						a1.intersect(a2);
-					}
-
-					//Position coin one pixel outside of wall
-					y -= Math.signum(this.getVelY());
-					updateCollision();
-
-					//Flip velocity to bounce coin
-					this.setVelY(-this.getVelY());
-					this.setVelY((this.getVelY() * (float) ((2 * Math.random()) + 0.5)));
-
-					//Play bounce sound
-					AudioPlayer.playSound("res/coinBounce.wav");
+				//Determine if area is shared by coin and player
+				if (!a1.isEmpty()) {
+					Game.coinsLeft--;
+					Game.hud.setScore(Game.hud.getScore() + coinValue);
+					HUD.HEALTH += coinHeal;
+					AudioPlayer.playSound("res/coinGet.wav");
+					handler.object.remove(this);
 				}
-				a1.reset();
-				a2.reset();
 			}
 		}
+
 		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
 		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
 	}

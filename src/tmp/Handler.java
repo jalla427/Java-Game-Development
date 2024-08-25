@@ -1,6 +1,7 @@
 package tmp;
 
 import java.awt.Graphics;
+import java.awt.geom.Area;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ public class Handler {
 	public LinkedList<ImageButton> imageButtonList = new LinkedList<>();
 	public static float playerX = 0;
 	public static float playerY = 0;
+	public static Area currentLevelArea = null;
 	
 	public void tick() {
 		for(int i = 0; i < object.size(); i++) {
@@ -230,4 +232,15 @@ public class Handler {
 		}
 		return buttonName;
 	}
+
+	public void findTotalLevelArea() {
+        Area combinedLevel = new Area();
+        for (int i = 0; i < object.size(); i++) {
+            GameObject tempObject = object.get(i);
+            if (tempObject.getID() == ID.Level) {
+                combinedLevel.add(new Area(tempObject.getBounds()));
+            }
+        }
+        currentLevelArea = combinedLevel;
+    }
 }

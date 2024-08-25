@@ -441,6 +441,7 @@ public class Game extends Canvas implements Runnable {
 				handler.clearLevel();
 			}
 			tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
+			handler.findTotalLevelArea();
 			handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
 			hud.setLevel(nextLevel);
 			setLevelCoinGoal(coins);
