@@ -254,6 +254,16 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(dungeon_blocks_20x20, 9, 10, sWidth / 2 - 16, sHeight - 200);
 			}
 
+			//Level 10 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 9) {
+				startLevelTransition(dungeon_blocks_20x20, 10, 12, sWidth / 2 - 16, sHeight - 200);
+			}
+
+			//Level 11 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 10) {
+				startLevelTransition(dungeon_blocks_20x20, 11, 14, sWidth / 2 - 16, sHeight - 180);
+			}
+
 			//Level Transition Timer
 			if (transitioning && !escapeGame) {
 				transitionTimer++;
@@ -341,6 +351,26 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(Game.sWidth - 100, 150, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 10) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(160, 180, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(340, 180, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(540, 180, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 11) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(sWidth - 200, sHeight - 165, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy(180, 160, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}

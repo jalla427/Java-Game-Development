@@ -5,7 +5,7 @@ public class LevelCollection {
 	public static int[][] getLevel(int num) {
 		int[][] level = new int[34][45];
 		
-		if(num == 1) {
+		if(num == 1) { //Start of tomb levels
 			level = arrayTo2DArray(TombLevels.getLevelOne());
 		}
 		if(num == 2) {
@@ -23,7 +23,7 @@ public class LevelCollection {
 		if(num == 6) {
 			level = arrayTo2DArray(TombLevels.getLevelSix());
 		}
-		if(num == 7) {
+		if(num == 7) { //Start of dungeon levels
 			level = arrayTo2DArray(DungeonLevels.getLevelOne());
 		}
 		if(num == 8) {
@@ -32,7 +32,13 @@ public class LevelCollection {
 		if(num == 9) {
 			level = arrayTo2DArray(DungeonLevels.getLevelThree());
 		}
-		
+		if(num == 10) {
+			level = arrayTo2DArray(DungeonLevels.getLevelFour());
+		}
+		if(num == 11) {
+			level = arrayTo2DArray(DungeonLevels.getLevelFive());
+		}
+
 		return level;
 	}
 	
