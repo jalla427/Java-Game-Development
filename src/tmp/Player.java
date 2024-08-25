@@ -171,10 +171,7 @@ public class Player extends GameObject {
 				a2.reset();
 				
 				//If jump button still held at the end of a jump, jump again
-				if(KeyInput.keyDown[4] && this.isGrounded()) {
-					if(Game.debugMode) {
-						System.out.println("Jumped again!");
-					}
+				if(KeyInput.keyDown[4] && this.isGrounded() && Game.playerControl) {
 					this.velY -= 20; 
 					this.setGrounded(false); 
 				}
@@ -219,19 +216,17 @@ public class Player extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		//Direction -- (0 = left), (1 = right), (2 = neutral)
+		//Y Direction
 		if(!this.isGrounded()) {
-			if(Game.debugMode) {
-				//System.out.println("Airborne!");
-			}
 			velY += 1; 
 			velY = Game.clamp(velY, -20, 10);
 		}
 		else {
 			velY = 0;
 		}
-		
-		if(this.xDirection == 0) { 
+
+		//X Direction -- (0 = left), (1 = right), (2 = neutral)
+		if(this.xDirection == 0) {
 			if(this.isGrounded()) {
 				velX = -5; 
 			} 
@@ -239,7 +234,7 @@ public class Player extends GameObject {
 				velX -= 1;
 			}
 		}
-		else if(this.xDirection == 1) { 
+		else if(this.xDirection == 1) {
 			if(this.isGrounded()) {
 				velX = 5; 
 			} 
@@ -247,9 +242,17 @@ public class Player extends GameObject {
 				velX += 1;
 			} 
 		}
-		else if (this.isGrounded()) { velX = 0; }
-		
+		else if (this.isGrounded()) {
+			velX = 0;
+		}
+
+		//Limit X velocity
 		velX = Game.clamp(velX, -5, 5);
+
+		if(Game.gameOver) {
+			this.setVelX(0);
+			this.setxDirection(2);
+		}
 		
 		//Position
 		x = Game.clamp(x, 0, Game.sWidth - width);

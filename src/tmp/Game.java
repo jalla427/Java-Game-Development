@@ -138,6 +138,7 @@ public class Game extends Canvas implements Runnable {
 			while(delta >= 1) {
 				tick();
 				delta--;
+//				System.out.println(KeyInput.keyDown[4]);
 			}
 			render();
 			frames++;
@@ -404,6 +405,9 @@ public class Game extends Canvas implements Runnable {
 		if(!gameOver) {
 			transitioning = true;
 			playerControl = false;
+			for(int i = 0;  i < KeyInput.keyDown.length; i++) {
+				KeyInput.keyDown[i] = false;
+			}
 			while(handler.areLevel()) {
 				handler.clearLevel();
 			}
@@ -426,6 +430,9 @@ public class Game extends Canvas implements Runnable {
 	public static void beginGameOver() {
 		escapeGame = true;
 		playerControl = false;
+		for(int i = 0;  i < KeyInput.keyDown.length; i++) {
+			KeyInput.keyDown[i] = false;
+		}
 		transitioning = false;
 		transitionTimer = 0;
 		coinsLeft = 0;

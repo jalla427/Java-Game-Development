@@ -94,7 +94,7 @@ public class KeyInput extends KeyAdapter {
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
 			
-			if(tempObject.getID() == ID.Player) {
+			if(tempObject.getID() == ID.Player && Game.playerControl) {
 				//Key events for player
 				if(key == KeyEvent.VK_W) keyDown[0] = false; 
 				if(key == KeyEvent.VK_S) keyDown[1] = false; 
