@@ -98,6 +98,9 @@ public class ThumperEnemy extends GameObject {
 
 					//End attack after collision
 					collided = true;
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();
@@ -161,6 +164,9 @@ public class ThumperEnemy extends GameObject {
 
 					//End attack after collision
 					collided = true;
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();

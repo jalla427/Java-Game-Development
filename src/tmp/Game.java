@@ -194,7 +194,9 @@ public class Game extends Canvas implements Runnable {
 			levelBackgroundImg = tombBackgroundImg;
 			gameState = STATE.Game;
 			handler.clearButtons();
-			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
+//			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
+			levelBackgroundImg = dungeonBackgroundImg;
+			startLevelTransition(dungeon_blocks_20x20, 10, 12, sWidth / 2 - 16, sHeight - 200);
 		}
 
 		//In game

@@ -92,6 +92,9 @@ public class HawkEnemy extends GameObject {
 					x -= Math.signum(velX);
 					updateCollision();
 					velX = 0;
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();
@@ -147,6 +150,9 @@ public class HawkEnemy extends GameObject {
 					y -= Math.signum(velY);
 					updateCollision();
 					velY = 0;
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();

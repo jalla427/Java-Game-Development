@@ -103,6 +103,9 @@ public class StriderEnemy extends GameObject {
 					if(!jumping) {
 						this.xCollided = true;
 					}
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();
@@ -167,6 +170,9 @@ public class StriderEnemy extends GameObject {
 							AudioPlayer.playSound("res/striderLand.wav");
 						}
 					}
+
+					//No more need to check after collision handled
+					break;
 				}
 				a1.reset();
 				a2.reset();
