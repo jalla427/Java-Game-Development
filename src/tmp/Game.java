@@ -138,7 +138,6 @@ public class Game extends Canvas implements Runnable {
 			while(delta >= 1) {
 				tick();
 				delta--;
-//				System.out.println(KeyInput.keyDown[4]);
 			}
 			render();
 			frames++;
