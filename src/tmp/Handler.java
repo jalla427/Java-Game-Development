@@ -23,18 +23,19 @@ public class Handler {
 	}
 	
 	public void render(Graphics g) {
+		GameObject playerObject = null;
+
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() != ID.Player) {
 				tempObject.render(g);
 			}
-		}
-		
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Player) {
-				tempObject.render(g);
+			else {
+				playerObject = tempObject;
 			}
+		}
+		if(playerObject != null) {
+			playerObject.render(g);
 		}
 	}
 
