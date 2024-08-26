@@ -263,6 +263,11 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(dungeon_blocks_20x20, 11, 10, sWidth / 2 - 16, sHeight - 180);
 			}
 
+			//Level 12 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 11) {
+				startLevelTransition(dungeon_blocks_20x20, 12, 12, sWidth / 2 - 16, sHeight - 180);
+			}
+
 			//Level Transition Timer
 			if (transitioning && !escapeGame) {
 				transitionTimer++;
@@ -369,6 +374,16 @@ public class Game extends Canvas implements Runnable {
 						handler.addObject(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 200, sHeight - 165, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(180, 160, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+
+				if (hud.getLevel() == 12) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new StriderEnemy(30, 220, 32, 32, ID.Enemy, handler));
+						handler.addObject(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy, handler));
+						handler.addObject(new ThumperEnemy((Game.sWidth/2) + 48, 300, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}

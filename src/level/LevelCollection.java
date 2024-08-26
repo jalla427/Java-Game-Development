@@ -38,6 +38,9 @@ public class LevelCollection {
 		if(num == 11) {
 			level = arrayTo2DArray(DungeonLevels.getLevelFive());
 		}
+		if(num == 12) {
+			level = arrayTo2DArray(DungeonLevels.getLevelSix());
+		}
 
 		return level;
 	}
