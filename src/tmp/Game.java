@@ -255,12 +255,12 @@ public class Game extends Canvas implements Runnable {
 
 			//Level 10 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 9) {
-				startLevelTransition(dungeon_blocks_20x20, 10, 12, sWidth / 2 - 16, sHeight - 200);
+				startLevelTransition(dungeon_blocks_20x20, 10, 10, sWidth / 2 - 16, sHeight - 200);
 			}
 
 			//Level 11 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 10) {
-				startLevelTransition(dungeon_blocks_20x20, 11, 14, sWidth / 2 - 16, sHeight - 180);
+				startLevelTransition(dungeon_blocks_20x20, 11, 10, sWidth / 2 - 16, sHeight - 180);
 			}
 
 			//Level Transition Timer
@@ -346,7 +346,6 @@ public class Game extends Canvas implements Runnable {
 
 				if (hud.getLevel() == 9) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(Game.sWidth - 100, 150, 32, 32, ID.Enemy, handler));

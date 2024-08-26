@@ -20,7 +20,7 @@ public class ThumperEnemy extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	int maxSpeed = 6;
+	int maxSpeed = 5;
 	int restingTimer = 0;
 
 	boolean attacking = false;
