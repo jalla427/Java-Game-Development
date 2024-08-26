@@ -46,29 +46,29 @@ public class Menu extends MouseAdapter {
 			if(buttonClicked.getName() == "Settings") {
 				Game.gameState = STATE.Settings;
 				handler.clearButtons();
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			//Play
 			if(buttonClicked.getName() == "Play") {
 				Game.hud.setLevel(1);
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 			}
 		}
 
 		if(Game.gameState == STATE.Settings && buttonClicked != null) {
 			if(buttonClicked.getName() == "LeftVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume - 10, 0, 100);
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			if(buttonClicked.getName() == "RightVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume + 10, 0, 100);
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			//Back
 			if(buttonClicked.getName() == "Menu") {
 				Game.gameState = STATE.Menu;
 				handler.clearButtons();
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-4)
@@ -84,7 +84,7 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Game && buttonClicked != null) {
 			//Return to menu from gameover
 			if(buttonClicked.getName() == "Quit") {
-				AudioPlayer.playSound("res/buttonClick.wav");
+				AudioPlayer.playSound("/buttonClick.wav");
 				HUD.HEALTH = 100;
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);

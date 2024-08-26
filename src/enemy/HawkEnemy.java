@@ -156,7 +156,7 @@ public class HawkEnemy extends GameObject {
 			attacking = false;
 			luminosity = 0;
 			enemy_image = ss.grabImage(1, 4, width, height);
-			AudioPlayer.playSound("res/hawkOffBeep.wav");
+			AudioPlayer.playSound("/hawkOffBeep.wav");
 		}
 		
 		if(!attacking) {
@@ -176,7 +176,7 @@ public class HawkEnemy extends GameObject {
 				attacking = true;
 				luminosity = 100;
 				enemy_image = ss.grabImage(1, 1, width, height);
-				AudioPlayer.playSound("res/hawkOnBeep.wav");
+				AudioPlayer.playSound("/hawkOnBeep.wav");
 			}
 		}
 		else {

@@ -222,7 +222,7 @@ public class ThumperEnemy extends GameObject {
 			if(collided) {
 				//Play noise only if full motion occurred (avoids repeated slamming noises)
 				if(motionLocked) {
-					AudioPlayer.playSound("res/thumperSlam.wav");
+					AudioPlayer.playSound("/thumperSlam.wav");
 				}
 
 				//Reset tracking variables
@@ -242,7 +242,7 @@ public class ThumperEnemy extends GameObject {
 				else {
 					this.setVelY(Game.clamp((int) (-maxSpeed * Math.random()), -maxSpeed, -3));
 				}
-				AudioPlayer.playSound("res/thumperOn.wav");
+				AudioPlayer.playSound("/thumperOn.wav");
 				motionLocked = true;
 			}
 			else if(this.getVelY() != 0 && playerYDistance <= 16 && !motionLocked) {
@@ -253,7 +253,7 @@ public class ThumperEnemy extends GameObject {
 				else {
 					this.setVelX(Game.clamp((int) (-maxSpeed * Math.random()), -maxSpeed, -3));
 				}
-				AudioPlayer.playSound("res/thumperOn.wav");
+				AudioPlayer.playSound("/thumperOn.wav");
 				motionLocked = true;
 			}
 		}

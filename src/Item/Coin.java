@@ -93,7 +93,7 @@ public class Coin extends GameObject {
 			this.setVelX((this.getVelX() * (float) ((1.5 * Math.random()) + 0.3)));
 
 			//Play bounce sound
-			AudioPlayer.playSound("res/coinBounce.wav");
+			AudioPlayer.playSound("/coinBounce.wav");
 		}
 
 		//Vertical Collision
@@ -134,7 +134,7 @@ public class Coin extends GameObject {
 			this.setVelY((this.getVelY() * (float) ((2 * Math.random()) + 0.5)));
 
 			//Play bounce sound
-			AudioPlayer.playSound("res/coinBounce.wav");
+			AudioPlayer.playSound("/coinBounce.wav");
 		}
 
 		for(int i = 0; i < handler.object.size(); i++) {
@@ -152,7 +152,7 @@ public class Coin extends GameObject {
 					Game.coinsLeft--;
 					Game.hud.setScore(Game.hud.getScore() + coinValue);
 					HUD.HEALTH += coinHeal;
-					AudioPlayer.playSound("res/coinGet.wav");
+					AudioPlayer.playSound("/coinGet.wav");
 					handler.object.remove(this);
 				}
 			}

@@ -133,7 +133,7 @@ public class StriderEnemy extends GameObject {
 				this.setGrounded(true);
 				if(jumping) {
 					this.jumping = false;
-					AudioPlayer.playSound("res/striderLand.wav");
+					AudioPlayer.playSound("/striderLand.wav");
 				}
 			}
 		}
@@ -222,7 +222,7 @@ public class StriderEnemy extends GameObject {
 			if(playerDistance < this.sightRange) {
 				this.attacking = true;
 				this.wanderTimer = 0;
-				AudioPlayer.playSound("res/striderOnBeep.wav");
+				AudioPlayer.playSound("/striderOnBeep.wav");
 			}
 			else {
 				//Handle random wandering movements
@@ -268,7 +268,7 @@ public class StriderEnemy extends GameObject {
 			if(playerDistance >= this.sightRange) {
 				this.attacking = false;
 				this.setVelX(0);
-				AudioPlayer.playSound("res/striderOffBeep.wav");
+				AudioPlayer.playSound("/striderOffBeep.wav");
 			}
 		}
 
@@ -291,7 +291,7 @@ public class StriderEnemy extends GameObject {
 		//Walking audio
 		if(!this.jumping && this.getVelX() != 0 && (System.currentTimeMillis() - walkAudioTimer) > 200) {
 			walkAudioTimer = System.currentTimeMillis();
-			AudioPlayer.playSound("res/striderWalk.wav");
+			AudioPlayer.playSound("/striderWalk.wav");
 		}
 
 		//Position
