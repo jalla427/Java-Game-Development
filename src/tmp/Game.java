@@ -5,10 +5,7 @@ import java.awt.geom.Area;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
-import enemy.HawkEnemy;
-import enemy.SentryEnemy;
-import enemy.ThumperEnemy;
-import enemy.StriderEnemy;
+import enemy.*;
 import Item.Coin;
 import level.LevelCollection;
 import level.TileMapBuilder;
@@ -54,6 +51,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_sentry;
 	public static BufferedImage sprite_sheet_strider;
 	public static BufferedImage sprite_sheet_thumper;
+	public static BufferedImage sprite_sheet_wisp;
 	public static BufferedImage sprite_sheet_coin;
 	public static int playerSkin = 1;
 	
@@ -83,6 +81,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
 		sprite_sheet_strider = loader.loadImage("/sprite_sheet_strider.png");
 		sprite_sheet_thumper = loader.loadImage("/sprite_sheet_thumper.png");
+		sprite_sheet_wisp = loader.loadImage("/sprite_sheet_wisp.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 
 		//Create core objects
