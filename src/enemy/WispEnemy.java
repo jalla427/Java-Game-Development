@@ -13,12 +13,13 @@ public class WispEnemy extends GameObject {
 	private int animationFrame;
 	private int animationDelay;
 	SpriteSheet ss;
+	int direction = 1;
 
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
 
-	int maxSpeed = 6;
+	int maxSpeed = 4;
 	int homingTimer = 0;
 	int retreatTimer;
 	boolean attacking = true;
@@ -33,10 +34,10 @@ public class WispEnemy extends GameObject {
 		this.animationDelay = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_wisp);
-		enemy_image = ss.grabImage(1, 1, width, height);
+		enemy_image = ss.grabImage(direction, this.animationFrame, width, height);
 		
-		velX = 5;
-		velY = 5;
+		velX = 0;
+		velY = 0;
 	}
 
 	public void tick() {
@@ -54,6 +55,20 @@ public class WispEnemy extends GameObject {
 	}
 
 	public void render(Graphics g) {
+		//Cycles animation frame
+		enemy_image = ss.grabImage(direction, this.animationFrame, width, height);
+		this.animationDelay++;
+		if(this.animationDelay >= 15) {
+			this.animationDelay = 1;
+			if(this.animationFrame < 9) {
+				this.animationFrame++;
+			}
+			else {
+				this.animationFrame = 1;
+			}
+		}
+
+		findPlayerDirection();
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box
@@ -87,8 +102,6 @@ public class WispEnemy extends GameObject {
 		homingTimer++;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
-			luminosity = 0;
-			enemy_image = ss.grabImage(1, 4, width, height);
 			AudioPlayer.playSound("/wisp_ambient_2.wav");
 		}
 		
@@ -106,10 +119,18 @@ public class WispEnemy extends GameObject {
 			
 			retreatTimer -= 7;
 			if(retreatTimer <= 0) {
-				attacking = true;
-				luminosity = 100;
-				enemy_image = ss.grabImage(1, 1, width, height);
-				AudioPlayer.playSound("/wisp_ambient_1.wav");
+				velX = 0;
+				velY = 0;
+				if(retreatTimer <= -100) {
+					attacking = true;
+					retreatTimer = 0;
+
+					//Fire barage of fireballs
+					AudioPlayer.playSound("/wisp_fire.wav");
+					handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY - 34, 7, 2));
+					handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 16, 7, 2));
+					handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 66, 7, 2));
+				}
 			}
 		}
 		else {
@@ -117,31 +138,18 @@ public class WispEnemy extends GameObject {
 		}
 		
 		if(attacking) {
-			//Cycles animation frame
-			enemy_image = ss.grabImage(1, this.animationFrame, width, height);
-			this.animationDelay++;
-			if(this.animationDelay >= 15) {
-				this.animationDelay = 1;
-				if(this.animationFrame < 3) {
-					this.animationFrame++;
-				}
-				else {
-					this.animationFrame = 1;
-				}
-			}
-
 			if(homingTimer >= 10) {
 				if(Handler.playerX > this.x) {
-					velX = velX + 1;
+					velX = velX + 2;
 				}
 				else {
-					velX = velX - 1;
+					velX = velX - 2;
 				}
 				if(Handler.playerY > this.y) {
-					velY = velY + 1;
+					velY = velY + 2;
 				}
 				else {
-					velY = velY - 1;
+					velY = velY - 2;
 				}
 				homingTimer = 0;
 			}
@@ -154,5 +162,17 @@ public class WispEnemy extends GameObject {
 		//Position
 		x = Game.clamp(x, 0, Game.sWidth - width);
 		y = Game.clamp(y, 0, Game.sHeight - height);
+	}
+
+	private void findPlayerDirection() {
+		//First two sprite sheet rows are right/left, last two rows are right/left while firing
+		if(Handler.playerX >= this.getX()) {
+			this.direction = 2;
+		} else {
+			this.direction = 1;
+		}
+		if(!attacking) {
+			this.direction += 2;
+		}
 	}
 }
