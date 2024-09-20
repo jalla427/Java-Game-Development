@@ -102,7 +102,12 @@ public class WispEnemy extends GameObject {
 		homingTimer++;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
-			AudioPlayer.playSound("/wisp_ambient_2.wav");
+			if((Math.random() * 2) >= 1) {
+				AudioPlayer.playSound("/wisp_ambient_2.wav");
+			} else {
+				AudioPlayer.playSound("/wisp_ambient_1.wav");
+			}
+
 		}
 		
 		if(!attacking) {
