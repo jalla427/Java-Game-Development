@@ -259,7 +259,7 @@ public class Game extends Canvas implements Runnable {
 			if (coinsLeft == 0 && hud.getLevel() == 11) {
 				startLevelTransition(dungeon_blocks_20x20, 12, 12, sWidth / 2 - 16, sHeight - 180);
 			}
-			//Level 13 Transition
+			//Level 13 Transition, start of section 3
 			if (coinsLeft == 0 && hud.getLevel() == 12) {
 				if(!gameOver) {
 					levelBackgroundImg = infernoBackgroundImg;
@@ -268,11 +268,23 @@ public class Game extends Canvas implements Runnable {
 			}
 			//Level 14 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 13) {
-				startLevelTransition(burning_blocks_20x20, 14, 10, sWidth / 2 - 16, sHeight - 250);
+				startLevelTransition(burning_blocks_20x20, 14, 10, sWidth / 2 - 16, sHeight - 350);
 			}
 			//Level 15 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 14) {
-				startLevelTransition(burning_blocks_20x20, 15, 10, sWidth / 2 - 16, sHeight - 180);
+				startLevelTransition(burning_blocks_20x20, 15, 10, sWidth / 2 - 16, sHeight - 240);
+			}
+			//Level 16 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 15) {
+				startLevelTransition(burning_blocks_20x20, 16, 10, sWidth / 2 - 16, sHeight - 250);
+			}
+			//Level 17 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 16) {
+				startLevelTransition(burning_blocks_20x20, 17, 12, sWidth / 2 - 16, sHeight - 250);
+			}
+			//Level 18 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 17) {
+				startLevelTransition(burning_blocks_20x20, 18, 12, sWidth / 2 - 16, sHeight - 250);
 			}
 
 			//Level Transition Timer
