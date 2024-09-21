@@ -19,7 +19,7 @@ public class WispEnemy extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	int maxSpeed = 4;
+	int maxSpeed = 2;
 	int homingTimer = 0;
 	int retreatTimer;
 	boolean attacking = true;
