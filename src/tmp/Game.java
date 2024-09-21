@@ -42,6 +42,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage levelBackgroundImg;
 	public static BufferedImage tombBackgroundImg;
 	public static BufferedImage dungeonBackgroundImg;
+	public static BufferedImage infernoBackgroundImg;
 	public static BufferedImage sprite_sheet_menu_buttons;
 	public static BufferedImage tomb_blocks_20x20;
 	public static BufferedImage dungeon_blocks_20x20;
@@ -73,6 +74,7 @@ public class Game extends Canvas implements Runnable {
 		backgroundImg = loader.loadImage("/tombMainMenu.png");
 		tombBackgroundImg = loader.loadImage("/tombBackground.png");
 		dungeonBackgroundImg = loader.loadImage("/dungeonBackground.png");
+		infernoBackgroundImg = loader.loadImage("/infernoBackground.png");
 		sprite_sheet_menu_buttons = loader.loadImage("/sprite_sheet_menu_buttons.png");
 		tomb_blocks_20x20 = loader.loadImage("/tomb_blocks_20x20.png");
 		dungeon_blocks_20x20 = loader.loadImage("/dungeon_blocks_20x20.png");
@@ -203,7 +205,6 @@ public class Game extends Canvas implements Runnable {
 			if (HUD.HEALTH <= 0 && !escapeGame) {
 				escapeGame = true;
 			}
-
 			if (escapeGame) {
 				if (!gameOver) {
 					beginGameOver();
@@ -215,27 +216,22 @@ public class Game extends Canvas implements Runnable {
 			if (coinsLeft == 0 && hud.getLevel() == 1) {
 				startLevelTransition(tomb_blocks_20x20, 2, 4, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
-
 			//Level 3 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 2) {
 				startLevelTransition(tomb_blocks_20x20, 3, 6, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
-
 			//Level 4 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 3) {
 				startLevelTransition(tomb_blocks_20x20, 4, 8, sWidth / 2 - 16, sHeight - 60);
 			}
-
 			//Level 5 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 4) {
 				startLevelTransition(tomb_blocks_20x20, 5, 10, sWidth / 2 - 16, sHeight - 200);
 			}
-
 			//Level 6 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 5) {
 				startLevelTransition(tomb_blocks_20x20, 6, 10, sWidth / 2 - 16, sHeight - 100);
 			}
-
 			//Level 7 Transition, start of section 2
 			if (coinsLeft == 0 && hud.getLevel() == 6) {
 				if(!gameOver) {
@@ -243,30 +239,40 @@ public class Game extends Canvas implements Runnable {
 				}
 				startLevelTransition(dungeon_blocks_20x20, 7, 6, sWidth / 2 - 16, sHeight - 300);
 			}
-
 			//Level 8 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 7) {
 				startLevelTransition(dungeon_blocks_20x20, 8, 8, sWidth / 2 - 16, sHeight - 200);
 			}
-
 			//Level 9 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 8) {
 				startLevelTransition(dungeon_blocks_20x20, 9, 10, sWidth / 2 - 16, sHeight - 200);
 			}
-
 			//Level 10 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 9) {
 				startLevelTransition(dungeon_blocks_20x20, 10, 10, sWidth / 2 - 16, sHeight - 200);
 			}
-
 			//Level 11 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 10) {
 				startLevelTransition(dungeon_blocks_20x20, 11, 10, sWidth / 2 - 16, sHeight - 180);
 			}
-
 			//Level 12 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 11) {
 				startLevelTransition(dungeon_blocks_20x20, 12, 12, sWidth / 2 - 16, sHeight - 180);
+			}
+			//Level 13 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 12) {
+				if(!gameOver) {
+					levelBackgroundImg = infernoBackgroundImg;
+				}
+				startLevelTransition(burning_blocks_20x20, 13, 8, sWidth / 2 - 16, sHeight/2);
+			}
+			//Level 14 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 13) {
+				startLevelTransition(burning_blocks_20x20, 14, 10, sWidth / 2 - 16, sHeight - 250);
+			}
+			//Level 15 Transition
+			if (coinsLeft == 0 && hud.getLevel() == 14) {
+				startLevelTransition(burning_blocks_20x20, 15, 10, sWidth / 2 - 16, sHeight - 180);
 			}
 
 			//Level Transition Timer
@@ -281,29 +287,26 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 2) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 50));
 						handler.addObject(new HawkEnemy(3 * (sWidth / 4), 100, 32, 32, ID.Enemy, handler, 120));
 						handler.addObject(new SentryEnemy(0, 200, 20, 20, ID.Enemy, handler, 150, 0));
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 3) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 200));
 						handler.addObject(new SentryEnemy(120, 100, 20, 20, ID.Enemy, handler, 250, 30));
 						handler.addObject(new SentryEnemy(440, 100, 20, 20, ID.Enemy, handler, 250, 60));
 						handler.addObject(new SentryEnemy(760, 100, 20, 20, ID.Enemy, handler, 250, 0));
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 4) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new HawkEnemy(200, 100,32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(200, 100,32, 32, ID.Enemy, handler, 100));
 						handler.addObject(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 250, 50));
 						handler.addObject(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, handler, 250, 150));
 						handler.addObject(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, handler, 250, 50));
@@ -311,20 +314,18 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 5) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 0));
-						handler.addObject(new HawkEnemy(200, 300, 32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 200));
+						handler.addObject(new HawkEnemy(200, 300, 32, 32, ID.Enemy, handler, 100));
 						handler.addObject(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 50));
 						handler.addObject(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 150));
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 6) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 0));
+						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 250));
 						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 200, 100));
 						handler.addObject(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 200, 110));
 						handler.addObject(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 200, 120));
@@ -332,7 +333,6 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 7) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 150, 32, 32, ID.Enemy, handler));
@@ -340,7 +340,6 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 8) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
@@ -349,7 +348,6 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 9) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
@@ -358,7 +356,6 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 10) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy, handler));
@@ -368,7 +365,6 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 11) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy, handler));
@@ -378,13 +374,52 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-
 				if (hud.getLevel() == 12) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(30, 220, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) + 48, 300, 32, 32, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 13) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						handler.addObject(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 14) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 100));
+						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 15) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
+						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 200));
+						handler.addObject(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 16) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 17) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						endLevelTransition();
+					}
+				}
+				if (hud.getLevel() == 18) {
+					if (transitionTimer >= 200) {
+						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}

@@ -41,6 +41,24 @@ public class LevelCollection {
 		if(num == 12) {
 			level = arrayTo2DArray(DungeonLevels.getLevelSix());
 		}
+		if(num == 13) {
+			level = arrayTo2DArray(BurningLevels.getLevelOne());
+		}
+		if(num == 14) {
+			level = arrayTo2DArray(BurningLevels.getLevelTwo());
+		}
+		if(num == 15) {
+			level = arrayTo2DArray(BurningLevels.getLevelThree());
+		}
+		if(num == 16) {
+			level = arrayTo2DArray(BurningLevels.getLevelFour());
+		}
+		if(num == 17) {
+			level = arrayTo2DArray(BurningLevels.getLevelFive());
+		}
+		if(num == 18) {
+			level = arrayTo2DArray(BurningLevels.getLevelSix());
+		}
 
 		return level;
 	}
