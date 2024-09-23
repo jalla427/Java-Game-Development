@@ -280,7 +280,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			//Level 17 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 16) {
-				startLevelTransition(burning_blocks_20x20, 17, 12, sWidth / 2 - 16, sHeight - 250);
+				startLevelTransition(burning_blocks_20x20, 17, 12, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 18 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 17) {
@@ -419,19 +419,26 @@ public class Game extends Canvas implements Runnable {
 				}
 				if (hud.getLevel() == 16) {
 					if (transitionTimer >= 200) {
+						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 200));
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						handler.addObject(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
 				if (hud.getLevel() == 17) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
+						handler.addObject(new GolemEnemy(80, Game.sHeight - 180, 40, 40, ID.Enemy, handler));
+						handler.addObject(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
 				if (hud.getLevel() == 18) {
 					if (transitionTimer >= 200) {
+						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
+						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 200));
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						handler.addObject(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
