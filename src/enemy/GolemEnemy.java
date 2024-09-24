@@ -4,6 +4,7 @@ import tmp.*;
 
 import java.awt.*;
 import java.awt.geom.Area;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 public class GolemEnemy extends GameObject {
@@ -14,20 +15,20 @@ public class GolemEnemy extends GameObject {
 	private int animationDelay = 5;
 	private int animationDelayTimer;
 	private int direction = 1;
-	long walkAudioTimer = 0;
+	private long walkAudioTimer = 0;
 	SpriteSheet ss;
 
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
 
-	int maxSpeed = 3;
-	int jumpTimer = 0;
-	int waitTimer = 0;
-	boolean attacking = false;
-	boolean rising = false;
-	boolean jumping = false;
-	boolean xCollided = false;
+	private int maxSpeed = 3;
+	private int jumpTimer = 0;
+	private int waitTimer = 0;
+	private boolean attacking = false;
+	private boolean rising = false;
+	private boolean jumping = false;
+	private boolean xCollided = false;
 
 	public GolemEnemy(int x, int y, int width, int height, ID id, Handler handler) {
 		super(x, y, width, height, id);
@@ -236,7 +237,7 @@ public class GolemEnemy extends GameObject {
 		}
 
 		//Decide to jump
-		if(!this.jumping && ((this.xCollided && this.isGrounded()) || (Handler.playerY < this.y && this.isGrounded() && this.jumpTimer >= 150))) {
+		if(!this.jumping && this.isGrounded() && (this.xCollided || shouldJump())) {
 			this.jumpTimer = (int) (20 * Math.random());
 			this.setVelY(this.getVelY() - 20);
 			this.setGrounded(false);
@@ -284,5 +285,47 @@ public class GolemEnemy extends GameObject {
 		if(attacking) {
 			this.direction += 2;
 		}
+	}
+
+	private boolean shouldJump() {
+		//Determines if ceiling is too close
+		Area area1;
+		Area area2;
+		Area area3 = new Area(Handler.currentLevelArea);
+		int upDist = 80;
+		int ledgeDist = 200;
+		int xGap = 60;
+		int widthAccount = 0;
+
+		//Account for direction of movement
+		if(this.getVelX() < 0) {
+			xGap = (xGap * -1);
+		} else {
+			widthAccount = (int) this.getWidth();
+		}
+
+		int[] xZone1 = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) x};
+		int[] xZone2 = new int[] {(int) x + widthAccount, ((int) x) + xGap + widthAccount, ((int) x) + xGap + widthAccount, (int) x + widthAccount};
+		int[] yZone1 = new int[] {(int) y - upDist, (int) y - upDist, ((int) y) + height, ((int) y) + height};
+		int[] yZone2 = new int[] {(int) y - ledgeDist, (int) y - ledgeDist, ((int) y) + height, ((int) y) + height};
+
+		//Used for detecting obstructions above the enemy
+		Polygon pa1 = new Polygon();
+		pa1.xpoints = xZone1;
+		pa1.ypoints = yZone1;
+		pa1.npoints = xZone1.length;
+
+		//Used for detecting upcoming ledges that could be jumped onto
+		Polygon pa2 = new Polygon();
+		pa2.xpoints = xZone2;
+		pa2.ypoints = yZone2;
+		pa2.npoints = xZone2.length;
+
+		area1 = new Area(pa1);
+		area2 = new Area(pa2);
+		area1.intersect(area3);
+		area2.intersect(area3);
+
+        return this.isGrounded() && Handler.playerY < this.y && area1.isEmpty() && ((this.jumpTimer >= 150 && (this.y - Handler.playerY) < 200) || (!area2.isEmpty() && !this.attacking));
 	}
 }
