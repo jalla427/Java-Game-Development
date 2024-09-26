@@ -137,6 +137,7 @@ public class Player extends GameObject {
 				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
 					HUD.HEALTH--;
+					if(Game.hardMode) { HUD.HEALTH--; }
 					player_image = ss.grabImage(playerSkin, 2, width, height);
 				}
 			}

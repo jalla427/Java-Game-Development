@@ -56,12 +56,41 @@ public class Menu extends MouseAdapter {
 		}
 
 		if(Game.gameState == STATE.Settings && buttonClicked != null) {
+			//Volume
 			if(buttonClicked.getName() == "LeftVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume - 10, 0, 100);
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			if(buttonClicked.getName() == "RightVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume + 10, 0, 100);
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
+			//Difficulty Mods
+			if(buttonClicked.getName() == "Hard Mode: Off") {
+				Game.hardMode = true;
+				buttonClicked.setName("Hard Mode: On");
+				AudioPlayer.playSound("/buttonClick.wav");
+			} else if(buttonClicked.getName() == "Hard Mode: On") {
+				Game.hardMode = false;
+				buttonClicked.setName("Hard Mode: Off");
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
+			if(buttonClicked.getName() == "Dark Mode: Off") {
+				Game.darkMode = true;
+				buttonClicked.setName("Dark Mode: On");
+				AudioPlayer.playSound("/buttonClick.wav");
+			} else if(buttonClicked.getName() == "Dark Mode: On") {
+				Game.darkMode = false;
+				buttonClicked.setName("Dark Mode: Off");
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
+			if(buttonClicked.getName() == "Crazy Coins: Off") {
+				Game.crazyCoins = true;
+				buttonClicked.setName("Crazy Coins: On");
+				AudioPlayer.playSound("/buttonClick.wav");
+			} else if(buttonClicked.getName() == "Crazy Coins: On") {
+				Game.crazyCoins = false;
+				buttonClicked.setName("Crazy Coins: Off");
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			//Back
@@ -101,8 +130,9 @@ public class Menu extends MouseAdapter {
 		Font fnt = new Font("arial", 1, 50);
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
-		Color deepRed = new Color(100, 0, 0);
 		Color tan = new Color(71, 45, 0);
+		Color deepRed = new Color(100, 0, 0);
+		Color gold = new Color(205, 165, 0);
 		boolean buttonsFound = handler.areButtons();
 
 		if(Game.gameState == STATE.Menu) {
@@ -115,21 +145,39 @@ public class Menu extends MouseAdapter {
 
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
+				//Create volume buttons
 				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
 				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 
-				//Player skin buttons
+				//Create difficulty mod buttons
+				if(Game.hardMode) {
+					handler.addButton(new RectTextButton(handler, fnt3, deepRed, Color.WHITE, "Hard Mode: On", (Game.sWidth/2 - 200) - 80, 330, 160, 32));
+				} else {
+					handler.addButton(new RectTextButton(handler, fnt3, deepRed, Color.WHITE, "Hard Mode: Off", (Game.sWidth/2 - 200) - 80, 330, 160, 32));
+				}
+				if(Game.darkMode) {
+					handler.addButton(new RectTextButton(handler, fnt3, Color.BLACK, Color.WHITE, "Dark Mode: On", (Game.sWidth/2 - 200) - 80, 370, 160, 32));
+				} else {
+					handler.addButton(new RectTextButton(handler, fnt3, Color.BLACK, Color.WHITE, "Dark Mode: Off", (Game.sWidth/2 - 200) - 80, 370, 160, 32));
+				}
+				if(Game.crazyCoins) {
+					handler.addButton(new RectTextButton(handler, fnt3, gold, Color.WHITE, "Crazy Coins: On", (Game.sWidth/2 - 200) - 80, 410, 160, 32));
+				} else {
+					handler.addButton(new RectTextButton(handler, fnt3, gold, Color.WHITE, "Crazy Coins: Off", (Game.sWidth/2 - 200) - 80, 410, 160, 32));
+				}
+
+				//Create player skin buttons
 				for(int i = 1; i <= Game.unlockedSkins.length; i++) {
 					int rowHeightMod = 0;
 					if(i > Game.unlockedSkins.length / 2) { rowHeightMod = 1; }
 					if(Game.playerSkin == i) {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					}
 					else if(Game.unlockedSkins[i - 1]) {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 3, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 3, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					} else {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 4, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 4, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					}
 				}
 			}
@@ -163,6 +211,7 @@ public class Menu extends MouseAdapter {
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
 			drawBoxedText(g, fnt3, tan, Color.WHITE, "Volume: "+ Game.gameVolume + "%", (Game.sWidth/2) - 80, 230, 160, 32);
 			drawBoxedText(g, fnt3, tan, Color.WHITE, "Player Skin", (Game.sWidth/2) - 80, 280, 160, 32);
+			drawBoxedText(g, fnt3, tan, Color.WHITE, "Score Modifiers", (Game.sWidth/2 - 200) - 80, 280, 160, 32);
 		}
 		
 		if(Game.gameState == STATE.Game) {

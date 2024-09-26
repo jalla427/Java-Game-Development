@@ -11,7 +11,13 @@ public class Lighting {
         darkness[1] = new Color(0, 0, 0, 25);
         darkness[2] = new Color(0, 0, 0, 50);
         darkness[3] = new Color(0, 0, 0, 75);
-        darkness[4] = new Color(0, 0, 0, 100);
+
+        //Account for dark mode
+        if(Game.darkMode) {
+            darkness[4] = new Color(0, 0, 0, 255);
+        } else {
+            darkness[4] = new Color(0, 0, 0, 100);
+        }
 
         Area[] lightBounds = new Area[5];
         lightBounds[0] = new Area(new Rectangle.Double(0, 0, Game.sWidth, Game.sHeight));
