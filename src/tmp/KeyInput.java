@@ -60,6 +60,7 @@ public class KeyInput extends KeyAdapter {
 						tempObject.setGrounded(false);  
 					}
 				}
+				break;
 			}
 		}
 		

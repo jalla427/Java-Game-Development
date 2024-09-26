@@ -58,6 +58,7 @@ public class Game extends Canvas implements Runnable {
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 
+	//Score modifiers
 	public static boolean hardMode = false;
 	public static boolean darkMode = false;
 	public static boolean crazyCoins = false;
