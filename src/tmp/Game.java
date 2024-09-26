@@ -57,6 +57,10 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_coin;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
+
+	public static boolean hardMode = false;
+	public static boolean darkMode = false;
+	public static boolean crazyCoins = false;
 	
 	//Used for determining the current scene
 	public enum STATE {

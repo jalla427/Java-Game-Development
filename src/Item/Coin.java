@@ -38,6 +38,13 @@ public class Coin extends GameObject {
 		this.luminosity = 50;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
+
+		if(Game.hardMode) { this.coinValue += 25; }
+		if(Game.darkMode) { this.coinValue += 25; }
+		if(Game.crazyCoins) {
+			this.coinValue += 25;
+			this.maxSpeed += 3;
+		}
 	}
 
 	public void tick() {
@@ -193,10 +200,6 @@ public class Coin extends GameObject {
 		if(Game.debugMode && collision != null) {
 			g.setColor(Color.GREEN);
 			g.drawPolygon(collision);
-
-//			System.out.println("--------------");
-//			System.out.println("velX: " + this.getVelX());
-//			System.out.println("velY: " + this.getVelY());
 		}
 		
 	}
@@ -224,6 +227,8 @@ public class Coin extends GameObject {
 	public double[] getSpeed(float x, float y) {
 		double[] speeds = new double[2];
 		int coinSpeed = 2;
+
+		if(Game.crazyCoins) { coinSpeed = coinSpeed * 2; }
 
 		double dx = x;
 		double dy = y;
