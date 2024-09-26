@@ -56,6 +56,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_golem;
 	public static BufferedImage sprite_sheet_coin;
 	public static int playerSkin = 1;
+	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 	
 	//Used for determining the current scene
 	public enum STATE {
@@ -236,6 +237,7 @@ public class Game extends Canvas implements Runnable {
 			if (coinsLeft == 0 && hud.getLevel() == 6) {
 				if(!gameOver) {
 					levelBackgroundImg = dungeonBackgroundImg;
+					unlockedSkins[1] = true;
 				}
 				startLevelTransition(dungeon_blocks_20x20, 7, 6, sWidth / 2 - 16, sHeight - 300);
 			}
@@ -263,6 +265,7 @@ public class Game extends Canvas implements Runnable {
 			if (coinsLeft == 0 && hud.getLevel() == 12) {
 				if(!gameOver) {
 					levelBackgroundImg = infernoBackgroundImg;
+					unlockedSkins[2] = true;
 				}
 				startLevelTransition(burning_blocks_20x20, 13, 8, sWidth / 2 - 16, sHeight/2);
 			}

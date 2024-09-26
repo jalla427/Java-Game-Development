@@ -73,7 +73,7 @@ public class Menu extends MouseAdapter {
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-4)
 				int skinNum = Integer.valueOf(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
-				if(Game.playerSkin != skinNum && skinNum <= 4 && skinNum >= 1) {
+				if(Game.playerSkin != skinNum && skinNum <= Game.unlockedSkins.length && skinNum >= 1 && Game.unlockedSkins[skinNum - 1]) {
 					handler.getImageButtonByName(buttonClicked.getName()).setImage(player_skins.grabImage(skinNum, 1, 32, 32));
 					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImage(Game.playerSkin, 3, 32, 32));
 					Game.playerSkin = skinNum;
@@ -120,12 +120,16 @@ public class Menu extends MouseAdapter {
 				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 
 				//Player skin buttons
-				for(int i = 1; i < 5; i++) {
+				for(int i = 1; i <= Game.unlockedSkins.length; i++) {
+					int rowHeightMod = 0;
+					if(i > Game.unlockedSkins.length / 2) { rowHeightMod = 1; }
 					if(Game.playerSkin == i) {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105, 320, 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
 					}
-					else {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 3, 32, 32), (Game.sWidth/2) + (i * 36) - 105, 320, 32, 32));
+					else if(Game.unlockedSkins[i - 1]) {
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 3, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
+					} else {
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 4, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 40), 32, 32));
 					}
 				}
 			}
