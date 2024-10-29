@@ -64,13 +64,6 @@ public class KeyInput extends KeyAdapter {
 			}
 		}
 		
-		//Pause
-		if(key == KeyEvent.VK_P) {
-			if(Game.gameState == STATE.Game) {
-
-			}
-		}
-		
 		//Debug Mode
 		if(key == KeyEvent.VK_F3) {
 			if(!Game.debugMode) {
@@ -85,7 +78,12 @@ public class KeyInput extends KeyAdapter {
 		
 		//Quit game
 		if(key == KeyEvent.VK_ESCAPE && Game.gameState == STATE.Game && !Game.transitioning) {
-			Game.escapeGame = true;
+			if(Game.paused == false) {
+				Game.paused = true;
+			} else {
+				Handler.clearButtons();
+				Game.paused = false;
+			}
 		}
 	}
 	

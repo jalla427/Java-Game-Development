@@ -9,23 +9,26 @@ import java.util.Objects;
 public class Handler {
 	
 	public LinkedList<GameObject> object = new LinkedList<>();
-	public LinkedList<Button> buttonList = new LinkedList<>();
-	public LinkedList<ImageButton> imageButtonList = new LinkedList<>();
+	public static LinkedList<Button> buttonList = new LinkedList<>();
+	public static LinkedList<ImageButton> imageButtonList = new LinkedList<>();
 	public static float playerX = 0;
 	public static float playerY = 0;
 	public static Area currentLevelArea = null;
 	
 	public void tick() {
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			tempObject.tick();
+		if(!Game.paused) {
+			for(int i = 0; i < object.size(); i++) {
+				GameObject tempObject = object.get(i);
+				tempObject.tick();
 
-			//While looping through all objects, retrieve current player cords for easy access
-			if(tempObject.getID() == ID.Player) {
-				playerX = tempObject.getX();
-				playerY = tempObject.getY();
+				//While looping through all objects, retrieve current player cords for easy access
+				if(tempObject.getID() == ID.Player) {
+					playerX = tempObject.getX();
+					playerY = tempObject.getY();
+				}
 			}
 		}
+
 		for(int i = 0; i < buttonList.size(); i++) {
 			Button tempObject = buttonList.get(i);
 			tempObject.tick();
@@ -119,7 +122,7 @@ public class Handler {
 		}
 	}
 
-	public void clearButtons() {
+	public static void clearButtons() {
 		while(areButtons()) {
 			buttonList.pop();
 		}
@@ -188,7 +191,7 @@ public class Handler {
 		return foundLevel;
 	}
 
-	public boolean areButtons() {
+	public static boolean areButtons() {
 		boolean foundButton = false;
 		if(buttonList.size() > 0) {
 			foundButton = true;
@@ -196,7 +199,7 @@ public class Handler {
 		return foundButton;
 	}
 
-	public boolean areImageButtons() {
+	public static boolean areImageButtons() {
 		boolean foundButton = false;
 		if(imageButtonList.size() > 0) {
 			foundButton = true;

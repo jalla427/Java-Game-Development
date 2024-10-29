@@ -121,7 +121,13 @@ public class Menu extends MouseAdapter {
 				Game.gameOver = false;
 				Game.gameState = STATE.Menu;
 				handler.clearButtons();
+				Game.paused = false;
 				Game.quit = true;
+			}
+			if(buttonClicked.getName() == "Resume") {
+				AudioPlayer.playSound("/buttonClick.wav");
+				Handler.clearButtons();
+				Game.paused = false;
 			}
 		}
 	}
@@ -184,8 +190,11 @@ public class Menu extends MouseAdapter {
 		}
 
 		if(Game.gameState == STATE.Game) {
-			if(Game.escapeGame) {
+			if(Game.escapeGame || Game.paused) {
 				if(!buttonsFound) {
+					if(Game.paused) {
+						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Resume", (Game.sWidth/2) - 100, 275, bWidth, bHeight));
+					}
 					handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 				}
 			}

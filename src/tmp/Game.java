@@ -14,6 +14,7 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 	private boolean running = false;
+	public static boolean paused = false;
 	public static boolean escapeGame = false;
 	public static boolean gameOver = false;
 	public static boolean quit = false;
@@ -180,7 +181,7 @@ public class Game extends Canvas implements Runnable {
 		if(gameState == STATE.Game) {
 			handler.tick();
 			hud.tick();
-			if(escapeGame) {
+			if(escapeGame || Game.paused) {
 				menu.tick();
 			}
 		}
