@@ -219,6 +219,14 @@ public class Game extends Canvas implements Runnable {
 				}
 			}
 
+			//Score-based skin unlocks
+			if(HUD.score >= 8000) {
+				if(!unlockedSkins[4]) { unlockedSkins[4] = true; }
+				if(!unlockedSkins[5] && hardMode && HUD.score >= 10000) { unlockedSkins[5] = true; }
+				if(!unlockedSkins[6] && crazyCoins && HUD.score >= 10000) { unlockedSkins[6] = true; }
+				if(!unlockedSkins[7] && darkMode && HUD.score >= 10000) { unlockedSkins[7] = true; }
+			}
+
 			//Level 2 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 1) {
 				startLevelTransition(tomb_blocks_20x20, 2, 4, sWidth / 2 - 16, sHeight / 2 + 232);

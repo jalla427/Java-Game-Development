@@ -10,7 +10,7 @@ public class HUD {
 	private int greenValue = 255;
 	protected int coinStart = 1;
 	
-	private int score = 0;
+	protected static int score = 0;
 	private int scoreTimer = 0;
 	private int level = 0;
 	
