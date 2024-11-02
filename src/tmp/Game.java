@@ -24,10 +24,11 @@ public class Game extends Canvas implements Runnable {
 	public static int sHeight = 670;
 
 	//Global volume
-	public static int gameVolume = 30;
+	public static int gameVolume = 50;
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
+	protected static boolean levelEnd = false;
 	protected static boolean transitioning = false;
 	private static int transitionTimer = 0;
 	private static String transitionMessage = "";
@@ -181,7 +182,7 @@ public class Game extends Canvas implements Runnable {
 		if(gameState == STATE.Game) {
 			handler.tick();
 			hud.tick();
-			if(escapeGame || Game.paused) {
+			if(escapeGame || Game.paused || Game.levelEnd) {
 				menu.tick();
 			}
 		}
@@ -227,6 +228,14 @@ public class Game extends Canvas implements Runnable {
 				if(!unlockedSkins[7] && darkMode && HUD.score >= 10000) { unlockedSkins[7] = true; }
 			}
 
+			//Detect level completion
+			if(coinsLeft == 0 && !gameOver && !transitioning && !levelEnd) {
+				levelEnd = true;
+				while(handler.areEnemies()) {
+					handler.clearEnemies();
+				}
+				playerControl = false;
+			}
 			//Level 2 Transition
 			if (coinsLeft == 0 && hud.getLevel() == 1) {
 				startLevelTransition(tomb_blocks_20x20, 2, 4, sWidth / 2 - 16, sHeight / 2 + 232);
@@ -249,7 +258,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			//Level 7 Transition, start of section 2
 			if (coinsLeft == 0 && hud.getLevel() == 6) {
-				if(!gameOver) {
+				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = dungeonBackgroundImg;
 					unlockedSkins[1] = true;
 				}
@@ -277,7 +286,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			//Level 13 Transition, start of section 3
 			if (coinsLeft == 0 && hud.getLevel() == 12) {
-				if(!gameOver) {
+				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = infernoBackgroundImg;
 					unlockedSkins[2] = true;
 				}
@@ -518,19 +527,20 @@ public class Game extends Canvas implements Runnable {
 	//Start transitioning level
 	private void startLevelTransition(BufferedImage tileMap, int nextLevel, int coins, int playerX, int playerY) {
 		if(!gameOver) {
-			transitioning = true;
-			playerControl = false;
-			for(int i = 0;  i < KeyInput.keyDown.length; i++) {
-				KeyInput.keyDown[i] = false;
+			if(!levelEnd) {
+				transitioning = true;
+				for(int i = 0;  i < KeyInput.keyDown.length; i++) {
+					KeyInput.keyDown[i] = false;
+				}
+				while(handler.areLevel()) {
+					handler.clearLevel();
+				}
+				tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
+				handler.findTotalLevelArea();
+				handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
+				hud.setLevel(nextLevel);
+				setLevelCoinGoal(coins);
 			}
-			while(handler.areLevel()) {
-				handler.clearLevel();
-			}
-			tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
-			handler.findTotalLevelArea();
-			handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
-			hud.setLevel(nextLevel);
-			setLevelCoinGoal(coins);
 		}
 	}
 	

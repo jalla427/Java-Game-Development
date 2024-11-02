@@ -77,7 +77,7 @@ public class KeyInput extends KeyAdapter {
 		}
 		
 		//Quit game
-		if(key == KeyEvent.VK_ESCAPE && Game.gameState == STATE.Game && !Game.transitioning) {
+		if(key == KeyEvent.VK_ESCAPE && Game.gameState == STATE.Game && !Game.transitioning && !Game.levelEnd) {
 			if(Game.paused == false) {
 				Game.paused = true;
 			} else {

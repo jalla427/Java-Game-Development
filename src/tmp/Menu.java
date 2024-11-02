@@ -129,6 +129,12 @@ public class Menu extends MouseAdapter {
 				Handler.clearButtons();
 				Game.paused = false;
 			}
+			if(buttonClicked.getName() == "Next Level") {
+				AudioPlayer.playSound("/buttonClick.wav");
+				Handler.clearButtons();
+				Game.transitioning = true;
+				Game.levelEnd = false;
+			}
 		}
 	}
 	
@@ -190,12 +196,17 @@ public class Menu extends MouseAdapter {
 		}
 
 		if(Game.gameState == STATE.Game) {
-			if(Game.escapeGame || Game.paused) {
+			if(Game.escapeGame || Game.paused || Game.levelEnd) {
 				if(!buttonsFound) {
 					if(Game.paused) {
 						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Resume", (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
-					handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+					if(Game.levelEnd) {
+						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Next Level", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+					}
+					if(Game.paused || Game.gameOver) {
+						handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+					}
 				}
 			}
 		}
@@ -226,6 +237,8 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Game) {
 			if(Game.escapeGame) {
 				drawBoxedText(g, fnt2, deepRed, Color.WHITE, "Gameover!", (Game.sWidth/2) - 100, 275, bWidth, bHeight);
+			} else if(Game.levelEnd) {
+				drawBoxedText(g, fnt2, deepRed, Color.WHITE, "Level Compelete!", (Game.sWidth/2) - bWidth, 275, bWidth * 2, bHeight);
 			}
 		}
 	}

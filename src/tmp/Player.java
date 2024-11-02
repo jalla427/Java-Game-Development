@@ -214,7 +214,7 @@ public class Player extends GameObject {
 		//Limit X velocity
 		velX = Game.clamp(velX, -5, 5);
 
-		if(Game.gameOver) {
+		if(Game.gameOver || Game.levelEnd) {
 			this.setVelX(0);
 			this.setxDirection(2);
 		}
