@@ -25,42 +25,34 @@ public class KeyInput extends KeyAdapter {
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			
-			//Character Controls
-			if(tempObject.getID() == ID.Player && Game.playerControl) {
-				//Directional movement
-				if(key == KeyEvent.VK_D && !keyDown[3]) {
-					tempObject.setxDirection(1); 
-					keyDown[2] = true; 
-				}
-				else if(key == KeyEvent.VK_D) { 
-					tempObject.setxDirection(2); 
-					keyDown[2] = true; 
-				}
-				if(key == KeyEvent.VK_A && !keyDown[2]) {
-					tempObject.setxDirection(0); 
-					keyDown[3] = true; 
-				}
-				else if(key == KeyEvent.VK_A) { 
-					tempObject.setxDirection(2); 
-					keyDown[3] = true; 
-				}
+
+		//Character Controls
+		if(Game.playerControl) {
+			//Directional movement
+			if(key == KeyEvent.VK_D && !keyDown[3]) {
+				handler.playerObject.setxDirection(1);
+				keyDown[2] = true;
+			}
+			else if(key == KeyEvent.VK_D) {
+				handler.playerObject.setxDirection(2);
+				keyDown[2] = true;
+			}
+			if(key == KeyEvent.VK_A && !keyDown[2]) {
+				handler.playerObject.setxDirection(0);
+				keyDown[3] = true;
+			}
+			else if(key == KeyEvent.VK_A) {
+				handler.playerObject.setxDirection(2);
+				keyDown[3] = true;
+			}
 				
-				//Jump
-				if(key == KeyEvent.VK_SPACE) { 
-					keyDown[4] = true;
-					if(tempObject.isGrounded()) {
-						if(Game.debugMode) {
-							System.out.println("Jumped!");
-						}
-						tempObject.velY -= 20; 
-						tempObject.setGrounded(false);  
-					}
+			//Jump
+			if(key == KeyEvent.VK_SPACE) {
+				keyDown[4] = true;
+				if(handler.playerObject.isGrounded()) {
+					handler.playerObject.velY -= 20;
+					handler.playerObject.setGrounded(false);
 				}
-				break;
 			}
 		}
 		
@@ -89,36 +81,32 @@ public class KeyInput extends KeyAdapter {
 	
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
-			
-			if(tempObject.getID() == ID.Player && Game.playerControl) {
-				//Key events for player
-				if(key == KeyEvent.VK_W) keyDown[0] = false; 
-				if(key == KeyEvent.VK_S) keyDown[1] = false; 
-				if(key == KeyEvent.VK_D) {
-					if(keyDown[3]){
-						tempObject.setxDirection(0);
-					}
-					keyDown[2] = false; 
+
+		if(Game.playerControl) {
+			//Key events for player
+			if(key == KeyEvent.VK_W) keyDown[0] = false;
+			if(key == KeyEvent.VK_S) keyDown[1] = false;
+			if(key == KeyEvent.VK_D) {
+				if(keyDown[3]){
+					handler.playerObject.setxDirection(0);
 				}
-				if(key == KeyEvent.VK_A) {
-					if(keyDown[2]){
-						tempObject.setxDirection(1);
-					}
-					keyDown[3] = false;
-				}
-				if(key == KeyEvent.VK_SPACE) {
-					keyDown[4] = false;
-					if(!tempObject.isGrounded() && tempObject.velY < -5) {
-						tempObject.velY = -5;
-					}
-				}
-				
-				//Horizontal movement
-				if(!keyDown[2] && !keyDown[3]) tempObject.setxDirection(2);
+				keyDown[2] = false;
 			}
+			if(key == KeyEvent.VK_A) {
+				if(keyDown[2]){
+					handler.playerObject.setxDirection(1);
+				}
+				keyDown[3] = false;
+			}
+			if(key == KeyEvent.VK_SPACE) {
+				keyDown[4] = false;
+				if(!handler.playerObject.isGrounded() && handler.playerObject.velY < -5) {
+					handler.playerObject.velY = -5;
+				}
+			}
+				
+			//Horizontal movement
+			if(!keyDown[2] && !keyDown[3]) handler.playerObject.setxDirection(2);
 		}
 	}
 }
