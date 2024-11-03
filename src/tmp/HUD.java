@@ -29,6 +29,7 @@ public class HUD {
 		g.fillRect(24, 24, HEALTH * 2, 32);
 		g.setColor(Color.white);
 		g.drawRect(24, 24, 200, 32);
+		g.drawImage(Game.meter_overlay, 24, 24, null);
 
 		//Score + Level
 		g.setFont(new Font("Helvetica", Font.PLAIN, 12));
@@ -42,6 +43,7 @@ public class HUD {
 		g.fillRect(Game.sWidth - 224, 24, (int)(((double)Game.coinsLeft/(double)coinStart) * 200), 32);
 		g.setColor(Color.white);
 		g.drawRect(Game.sWidth - 224, 24, 200, 32);
+		g.drawImage(Game.meter_overlay, Game.sWidth - 224, 24, null);
 	}
 
 	private void handleScoreByTime() {

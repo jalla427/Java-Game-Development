@@ -57,6 +57,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_wisp;
 	public static BufferedImage sprite_sheet_golem;
 	public static BufferedImage sprite_sheet_coin;
+	public static BufferedImage meter_overlay;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 
@@ -95,6 +96,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_wisp = loader.loadImage("/sprite_sheet_wisp.png");
 		sprite_sheet_golem = loader.loadImage("/sprite_sheet_golem.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
+		meter_overlay = loader.loadImage("/meter_overlay.png");
 
 		//Create core objects
 		handler = new Handler();
@@ -221,11 +223,11 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Score-based skin unlocks
-			if(HUD.score >= 8000) {
+			if(HUD.score >= 6000) {
 				if(!unlockedSkins[4]) { unlockedSkins[4] = true; }
-				if(!unlockedSkins[5] && hardMode && HUD.score >= 10000) { unlockedSkins[5] = true; }
-				if(!unlockedSkins[6] && crazyCoins && HUD.score >= 10000) { unlockedSkins[6] = true; }
-				if(!unlockedSkins[7] && darkMode && HUD.score >= 10000) { unlockedSkins[7] = true; }
+				if(!unlockedSkins[5] && hardMode && HUD.score >= 7000) { unlockedSkins[5] = true; }
+				if(!unlockedSkins[6] && crazyCoins && HUD.score >= 7000) { unlockedSkins[6] = true; }
+				if(!unlockedSkins[7] && darkMode && HUD.score >= 7000) { unlockedSkins[7] = true; }
 			}
 
 			//Detect level completion
