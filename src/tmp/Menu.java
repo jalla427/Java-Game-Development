@@ -201,7 +201,7 @@ public class Menu extends MouseAdapter {
 					if(Game.paused) {
 						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Resume", (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
-					if(Game.levelEnd) {
+					if(Game.levelEnd && Game.hud.getLevel() < 22) {
 						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Next Level", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 					}
 					if(Game.paused || Game.gameOver) {

@@ -59,6 +59,18 @@ public class LevelCollection {
 		if(num == 18) {
 			level = arrayTo2DArray(BurningLevels.getLevelSix());
 		}
+		if(num == 19) {
+			level = arrayTo2DArray(FinalLevels.getLevelOne());
+		}
+		if(num == 20) {
+			level = arrayTo2DArray(FinalLevels.getLevelTwo());
+		}
+		if(num == 21) {
+			level = arrayTo2DArray(FinalLevels.getLevelThree());
+		}
+		if(num == 22) {
+			level = arrayTo2DArray(FinalLevels.getLevelFour());
+		}
 
 		return level;
 	}
