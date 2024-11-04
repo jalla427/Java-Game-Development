@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import tmp.Game.STATE;
@@ -149,16 +150,16 @@ public class Menu extends MouseAdapter {
 
 		if(Game.gameState == STATE.Menu) {
 			if(!buttonsFound) {
-				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Play", (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
-				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Settings", (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
-				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Play", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Settings", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 			}
 		}
 
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				//Create volume buttons
-				handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Menu", (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Menu", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
 				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 
@@ -198,14 +199,20 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Game) {
 			if(Game.escapeGame || Game.paused || Game.levelEnd) {
 				if(!buttonsFound) {
+					//In game button appearance should match the level appearance
+					BufferedImage currentBtnType = Game.tombButton;
+					if(Game.hud.getLevel() < 7 || Game.hud.getLevel() == 19) { currentBtnType = Game.tombButton; }
+					if((Game.hud.getLevel() < 13 && Game.hud.getLevel() > 6) || Game.hud.getLevel() == 20 || Game.hud.getLevel() == 22) { currentBtnType = Game.dungeonButton; }
+					if((Game.hud.getLevel() < 19 && Game.hud.getLevel() > 12) || Game.hud.getLevel() == 21) { currentBtnType = Game.burningButton; }
+
 					if(Game.paused) {
-						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Resume", (Game.sWidth/2) - 100, 275, bWidth, bHeight));
+						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Resume", currentBtnType, (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
 					if(Game.levelEnd && Game.hud.getLevel() < 22) {
-						handler.addButton(new RectTextButton(handler, fnt2, gold, Color.WHITE, "Next Level", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Next Level", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 					}
 					if(Game.paused || Game.gameOver) {
-						handler.addButton(new RectTextButton(handler, fnt2, tan, Color.WHITE, "Quit", (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 					}
 				}
 			}

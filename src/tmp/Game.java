@@ -60,6 +60,12 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_golem;
 	public static BufferedImage sprite_sheet_coin;
 	public static BufferedImage meter_overlay;
+	public static BufferedImage tombButton;
+	public static BufferedImage tombButton_small;
+	public static BufferedImage dungeonButton;
+	public static BufferedImage dungeonButton_small;
+	public static BufferedImage burningButton;
+	public static BufferedImage burningButton_small;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 
@@ -101,6 +107,12 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_golem = loader.loadImage("/sprite_sheet_golem.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 		meter_overlay = loader.loadImage("/meter_overlay.png");
+		tombButton = loader.loadImage("/tombButton.png");
+		tombButton_small = loader.loadImage("/tombButton_small.png");
+		dungeonButton = loader.loadImage("/dungeonButton.png");
+		dungeonButton_small = loader.loadImage("/dungeonButton_small.png");
+		burningButton = loader.loadImage("/burningButton.png");
+		burningButton_small = loader.loadImage("/burningButton_small.png");
 
 		//Create core objects
 		handler = new Handler();

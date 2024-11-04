@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageButton extends Button {
-    BufferedImage image;
+    private BufferedImage image;
 
     public ImageButton(Handler handler, String name, BufferedImage image, int x, int y, int width, int height) {
         super(handler, name, x, y, width, height);
