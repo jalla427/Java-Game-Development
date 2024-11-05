@@ -66,6 +66,8 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage dungeonButton_small;
 	public static BufferedImage burningButton;
 	public static BufferedImage burningButton_small;
+	public static BufferedImage brightRedButton;
+	public static BufferedImage brightBlueButton_long;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 
@@ -113,6 +115,8 @@ public class Game extends Canvas implements Runnable {
 		dungeonButton_small = loader.loadImage("/dungeonButton_small.png");
 		burningButton = loader.loadImage("/burningButton.png");
 		burningButton_small = loader.loadImage("/burningButton_small.png");
+		brightRedButton = loader.loadImage("/brightRedButton.png");
+		brightBlueButton_long = loader.loadImage("/brightBlueButton_long.png");
 
 		//Create core objects
 		handler = new Handler();

@@ -209,10 +209,14 @@ public class Menu extends MouseAdapter {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Resume", currentBtnType, (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
 					if(Game.levelEnd && Game.hud.getLevel() < 22) {
+						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Level Compelete!", Game.brightBlueButton_long, (Game.sWidth/2) - (150), 275, 300, bHeight));
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Next Level", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 					}
 					if(Game.paused || Game.gameOver) {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+					}
+					if(Game.escapeGame) {
+						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Gameover!", Game.brightRedButton, (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
 				}
 			}
@@ -240,12 +244,12 @@ public class Menu extends MouseAdapter {
 			drawBoxedText(g, fnt3, tan, Color.WHITE, "Player Skin", (Game.sWidth/2) - 80, 280, 160, 32);
 			drawBoxedText(g, fnt3, tan, Color.WHITE, "Score Modifiers", (Game.sWidth/2 - 200) - 80, 280, 160, 32);
 		}
-		
+
 		if(Game.gameState == STATE.Game) {
-			if(Game.escapeGame) {
-				drawBoxedText(g, fnt2, deepRed, Color.WHITE, "Gameover!", (Game.sWidth/2) - 100, 275, bWidth, bHeight);
-			} else if(Game.levelEnd) {
-				drawBoxedText(g, fnt2, deepRed, Color.WHITE, "Level Compelete!", (Game.sWidth/2) - bWidth, 275, bWidth * 2, bHeight);
+			if(Game.paused) {
+				g.setFont(fnt);
+				g.setColor(Color.WHITE);
+				g.drawString("Paused", (Game.sWidth/2) - 95, 200);
 			}
 		}
 	}
