@@ -18,23 +18,21 @@ public class Handler {
 	
 	public void tick() {
 		if(!Game.paused) {
-			for(int i = 0; i < object.size(); i++) {
-				GameObject tempObject = object.get(i);
-				tempObject.tick();
+            for (GameObject tempObject : object) {
+                tempObject.tick();
 
-				//While looping through all objects, retrieve current player cords for easy access
-				if(tempObject.getID() == ID.Player) {
-					playerObject = tempObject;
-					playerX = tempObject.getX();
-					playerY = tempObject.getY();
-				}
-			}
+                //While looping through all objects, retrieve current player cords for easy access
+                if (tempObject.getID() == ID.Player) {
+                    playerObject = tempObject;
+                    playerX = tempObject.getX();
+                    playerY = tempObject.getY();
+                }
+            }
 		}
 
-		for(int i = 0; i < buttonList.size(); i++) {
-			Button tempObject = buttonList.get(i);
-			tempObject.tick();
-		}
+        for (Button tempObject : buttonList) {
+            tempObject.tick();
+        }
 	}
 	
 	public void render(Graphics g) {
@@ -68,24 +66,23 @@ public class Handler {
 		this.object.remove(object);
 	}
 
-	public void addButton(Button button) { this.buttonList.add(button); }
+	public void addButton(Button button) { buttonList.add(button); }
 	public void addImageButton(ImageButton button) {
-		this.buttonList.add(button);
-		this.imageButtonList.add(button);
+		buttonList.add(button);
+		imageButtonList.add(button);
 	}
-	public void removeButton(Button button) { this.buttonList.remove(button); }
+	public void removeButton(Button button) { buttonList.remove(button); }
 	public void removeImageButton(ImageButton button) {
-		this.buttonList.remove(button);
-		this.imageButtonList.remove(button);
+		buttonList.remove(button);
+		imageButtonList.remove(button);
 	}
 	
 	public void clearPlayer() {
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Player) {
-				removeObject(object.get(i));
-			}
-		}
+        for (GameObject tempObject : object) {
+            if (tempObject.getID() == ID.Player) {
+                removeObject(tempObject);
+            }
+        }
 	}
 	
 	public void clearTiles() {
@@ -195,7 +192,7 @@ public class Handler {
 
 	public static boolean areButtons() {
 		boolean foundButton = false;
-		if(buttonList.size() > 0) {
+		if(!buttonList.isEmpty()) {
 			foundButton = true;
 		}
 		return foundButton;
@@ -203,7 +200,7 @@ public class Handler {
 
 	public static boolean areImageButtons() {
 		boolean foundButton = false;
-		if(imageButtonList.size() > 0) {
+		if(!imageButtonList.isEmpty()) {
 			foundButton = true;
 		}
 		return foundButton;
