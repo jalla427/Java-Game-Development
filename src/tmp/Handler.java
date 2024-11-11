@@ -18,7 +18,8 @@ public class Handler {
 	
 	public void tick() {
 		if(!Game.paused) {
-            for (GameObject tempObject : object) {
+			for(int i = 0; i < object.size(); i++) {
+				GameObject tempObject = object.get(i);
                 tempObject.tick();
 
                 //While looping through all objects, retrieve current player cords for easy access
@@ -30,7 +31,8 @@ public class Handler {
             }
 		}
 
-        for (Button tempObject : buttonList) {
+		for(int i = 0; i < buttonList.size(); i++) {
+			Button tempObject = buttonList.get(i);
             tempObject.tick();
         }
 	}
@@ -78,7 +80,8 @@ public class Handler {
 	}
 	
 	public void clearPlayer() {
-        for (GameObject tempObject : object) {
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
             if (tempObject.getID() == ID.Player) {
                 removeObject(tempObject);
             }
