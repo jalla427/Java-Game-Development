@@ -96,8 +96,8 @@ public class Menu extends MouseAdapter {
 			}
 			//Back
 			if(buttonClicked.getName() == "Menu") {
-				Game.gameState = STATE.Menu;
 				handler.clearButtons();
+				Game.gameState = STATE.Menu;
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			if(buttonClicked.getName().contains("playerSkinOption")) {
@@ -165,19 +165,19 @@ public class Menu extends MouseAdapter {
 
 				//Create difficulty mod buttons
 				if(Game.hardMode) {
-					handler.addButton(new RectTextButton(handler, fnt3, deepRed, Color.WHITE, "Hard Mode: On", (Game.sWidth/2 - 200) - 80, 330, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Hard Mode: On", Game.burningButton_small, (Game.sWidth/2 - 200) - 80, 330, 160, 32));
 				} else {
-					handler.addButton(new RectTextButton(handler, fnt3, deepRed, Color.WHITE, "Hard Mode: Off", (Game.sWidth/2 - 200) - 80, 330, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Hard Mode: Off", Game.burningButton_small, (Game.sWidth/2 - 200) - 80, 330, 160, 32));
 				}
 				if(Game.darkMode) {
-					handler.addButton(new RectTextButton(handler, fnt3, Color.BLACK, Color.WHITE, "Dark Mode: On", (Game.sWidth/2 - 200) - 80, 370, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Dark Mode: On", Game.dungeonButton_small, (Game.sWidth/2 - 200) - 80, 370, 160, 32));
 				} else {
-					handler.addButton(new RectTextButton(handler, fnt3, Color.BLACK, Color.WHITE, "Dark Mode: Off", (Game.sWidth/2 - 200) - 80, 370, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Dark Mode: Off", Game.dungeonButton_small, (Game.sWidth/2 - 200) - 80, 370, 160, 32));
 				}
 				if(Game.crazyCoins) {
-					handler.addButton(new RectTextButton(handler, fnt3, gold, Color.WHITE, "Crazy Coins: On", (Game.sWidth/2 - 200) - 80, 410, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Crazy Coins: On", Game.tombButton_small, (Game.sWidth/2 - 200) - 80, 410, 160, 32));
 				} else {
-					handler.addButton(new RectTextButton(handler, fnt3, gold, Color.WHITE, "Crazy Coins: Off", (Game.sWidth/2 - 200) - 80, 410, 160, 32));
+					handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Crazy Coins: Off", Game.tombButton_small, (Game.sWidth/2 - 200) - 80, 410, 160, 32));
 				}
 
 				//Create player skin buttons
@@ -240,9 +240,9 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
-			drawBoxedText(g, fnt3, tan, Color.WHITE, "Volume: "+ Game.gameVolume + "%", (Game.sWidth/2) - 80, 230, 160, 32);
-			drawBoxedText(g, fnt3, tan, Color.WHITE, "Player Skin", (Game.sWidth/2) - 80, 280, 160, 32);
-			drawBoxedText(g, fnt3, tan, Color.WHITE, "Score Modifiers", (Game.sWidth/2 - 200) - 80, 280, 160, 32);
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Volume: "+ Game.gameVolume + "%", Game.tombButton_small, (Game.sWidth/2) - 80, 230, 160, 32));
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Player Skin", Game.tombButton_small, (Game.sWidth/2) - 80, 280, 160, 32));
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Score Modifiers", Game.tombButton_small, (Game.sWidth/2 - 200) - 80, 280, 160, 32));
 		}
 
 		if(Game.gameState == STATE.Game) {
