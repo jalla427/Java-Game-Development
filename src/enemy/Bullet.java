@@ -57,7 +57,7 @@ public class Bullet extends GameObject {
 		//Cycles animation frame
 		bullet_image = ss.grabImage(this.sprite, animationFrame, (int) this.getWidth(), (int) this.getHeight());
 		this.animationDelay++;
-		if(this.animationDelay >= 15) {
+		if(this.animationDelay >= 5) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 4) {
 				this.animationFrame++;
