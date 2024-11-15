@@ -58,6 +58,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_thumper;
 	public static BufferedImage sprite_sheet_wisp;
 	public static BufferedImage sprite_sheet_golem;
+	public static BufferedImage sprite_sheet_core;
 	public static BufferedImage sprite_sheet_coin;
 	public static BufferedImage meter_overlay;
 	public static BufferedImage tombButton;
@@ -107,6 +108,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_thumper = loader.loadImage("/sprite_sheet_thumper.png");
 		sprite_sheet_wisp = loader.loadImage("/sprite_sheet_wisp.png");
 		sprite_sheet_golem = loader.loadImage("/sprite_sheet_golem.png");
+		sprite_sheet_core = loader.loadImage("/sprite_sheet_core.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 		meter_overlay = loader.loadImage("/meter_overlay.png");
 		tombButton = loader.loadImage("/tombButton.png");
