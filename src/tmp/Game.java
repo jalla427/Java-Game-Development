@@ -553,6 +553,8 @@ public class Game extends Canvas implements Runnable {
 				}
 				if (hud.getLevel() == 22) {
 					if (transitionTimer >= 200) {
+						handler.addObject(new CoreEnemy(100, 100, 20, 20, ID.Enemy, handler));
+						handler.addObject(new CoreEnemy(sWidth - 100, 100, 20, 20, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
