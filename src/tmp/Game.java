@@ -61,8 +61,10 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage sprite_sheet_core;
 	public static BufferedImage sprite_sheet_coin;
 	public static BufferedImage meter_overlay;
+	public static BufferedImage tombGameBanner;
 	public static BufferedImage tombButton;
 	public static BufferedImage tombButton_small;
+	public static BufferedImage tombButton_long;
 	public static BufferedImage dungeonButton;
 	public static BufferedImage dungeonButton_small;
 	public static BufferedImage burningButton;
@@ -112,8 +114,10 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_core = loader.loadImage("/sprite_sheet_core.png");
 		sprite_sheet_coin = loader.loadImage("/sprite_sheet_coin.png");
 		meter_overlay = loader.loadImage("/meter_overlay.png");
+		tombGameBanner = loader.loadImage("/tombGameBanner.png");
 		tombButton = loader.loadImage("/tombButton.png");
 		tombButton_small = loader.loadImage("/tombButton_small.png");
+		tombButton_long = loader.loadImage("/tombButton_long.png");
 		dungeonButton = loader.loadImage("/dungeonButton.png");
 		dungeonButton_small = loader.loadImage("/dungeonButton_small.png");
 		burningButton = loader.loadImage("/burningButton.png");

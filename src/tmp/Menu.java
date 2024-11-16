@@ -50,7 +50,7 @@ public class Menu extends MouseAdapter {
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			//Play
-			if(buttonClicked.getName() == "Play") {
+			if(buttonClicked.getName() == "Play Game") {
 				Game.hud.setLevel(1);
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
@@ -150,9 +150,13 @@ public class Menu extends MouseAdapter {
 
 		if(Game.gameState == STATE.Menu) {
 			if(!buttonsFound) {
-				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Play", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 250, bWidth, bHeight));
-				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Settings", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 350, bWidth, bHeight));
-				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
+				handler.addButton(new ImageButton(handler, "Tomb Game Banner", Game.tombGameBanner, (Game.sWidth/2) - 150, 115, 300, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Play Game", Game.tombButton_long, (Game.sWidth/2) - 150, 286, 300, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Play Blitz", Game.tombButton, (Game.sWidth/2) - bWidth - 10, 355, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Level Select", Game.tombButton, (Game.sWidth/2) + 10, 355, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Settings", Game.tombButton, (Game.sWidth/2) - bWidth - 10, 425, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Statistics", Game.tombButton, (Game.sWidth/2) + 10, 425, bWidth, bHeight));
+				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 494, bWidth, bHeight));
 			}
 		}
 
@@ -233,7 +237,6 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Menu) {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
-			g.drawString("Menu", (Game.sWidth/2) - 65, 200);
 		}
 		
 		if(Game.gameState == STATE.Settings) {
