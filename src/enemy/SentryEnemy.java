@@ -16,7 +16,8 @@ public class SentryEnemy extends GameObject {
 	
 	public Handler handler;
 	private BufferedImage enemy_image;
-	SpriteSheet ss;
+	private SpriteSheet ss;
+	private int spriteSet = 0;
 	
 	private int timer = 0;
 	private int fireRate = 150;
@@ -32,19 +33,20 @@ public class SentryEnemy extends GameObject {
 		timer = Game.clamp(timerOffset, 0, fireRate - 10);
 		
 		ss = new SpriteSheet(Game.sprite_sheet_sentry);
-		enemy_image = ss.grabImage(1, 2, width, height);
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
+		enemy_image = ss.grabImage(1, 2 + spriteSet, width, height);
 	}
 
 	public void tick() {
 		timer++;
 		if(timer == fireRate - 10) {
 			luminosity = width;
-			enemy_image = ss.grabImage(1, 1, width, height);
+			enemy_image = ss.grabImage(1, 1 + spriteSet, width, height);
 		}
 		if(timer >= fireRate) {
 			timer = 0;
 			luminosity = 0;
-			enemy_image = ss.grabImage(1, 2, width, height);
+			enemy_image = ss.grabImage(1, 2 + spriteSet, width, height);
 
 			AudioPlayer.playSound("/bulletFire.wav");
 			handler.addObject(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 16, 7, 1));

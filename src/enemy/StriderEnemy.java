@@ -15,7 +15,8 @@ public class StriderEnemy extends GameObject {
 	private int animationDelayTimer;
 	int animType;
 	long walkAudioTimer = 0;
-	SpriteSheet ss;
+	private SpriteSheet ss;
+	private int spriteSet = 0;
 
 	private Polygon collision;
 	private int[] xCollision;
@@ -41,7 +42,8 @@ public class StriderEnemy extends GameObject {
 		this.sightRange += (int) (Math.random() * 5);
 		
 		ss = new SpriteSheet(Game.sprite_sheet_strider);
-		enemy_image = ss.grabImage(1, 1, width, height);
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
+		enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
 		
 		velX = 5;
 		velY = 5;
@@ -185,7 +187,7 @@ public class StriderEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImage(animType, this.animationFrame, width, height);
+		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box

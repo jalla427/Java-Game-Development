@@ -69,6 +69,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage burningButton_small;
 	public static BufferedImage brightRedButton;
 	public static BufferedImage brightBlueButton_long;
+	public static double altEnemySkinOdds = 0.005;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
 
@@ -455,7 +456,6 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(160, 180, 32, 32, ID.Enemy, handler));
-						handler.addObject(new ThumperEnemy(340, 180, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(540, 180, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
@@ -464,14 +464,12 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy, handler));
-						handler.addObject(new StriderEnemy(sWidth - 200, sHeight - 165, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(180, 160, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
 				if (hud.getLevel() == 12) {
 					if (transitionTimer >= 200) {
-						handler.addObject(new StriderEnemy(30, 220, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) + 48, 300, 32, 32, ID.Enemy, handler));
@@ -528,10 +526,10 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
 						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 175));
-						handler.addObject(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 200, 100));
+						handler.addObject(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 300, 200));
 						handler.addObject(new SentryEnemy(40, 220, 20, 20, ID.Enemy, handler, 200, 110));
-						handler.addObject(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, handler, 200, 120));
-						handler.addObject(new SentryEnemy(sWidth - 60, 220, 20, 20, ID.Enemy, handler, 200, 130));
+						handler.addObject(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, handler, 300, 120));
+						handler.addObject(new SentryEnemy(sWidth - 60, 220, 20, 20, ID.Enemy, handler, 200, 230));
 						endLevelTransition();
 					}
 				}

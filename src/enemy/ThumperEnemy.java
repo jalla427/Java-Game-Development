@@ -14,7 +14,8 @@ public class ThumperEnemy extends GameObject {
 	private int animationDelay = 200;
 	private int animationDelayTimer;
 	int animType;
-	SpriteSheet ss;
+	private SpriteSheet ss;
+	private int spriteSet = 0;
 
 	private Polygon collision;
 	private int[] xCollision;
@@ -38,7 +39,8 @@ public class ThumperEnemy extends GameObject {
 		this.animationDelayTimer = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_thumper);
-		enemy_image = ss.grabImage(1, 1, width, height);
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
+		enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
 		
 		this.velX = 0;
 		this.velY = 0;
@@ -161,7 +163,7 @@ public class ThumperEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImage(animType, this.animationFrame, width, height);
+		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box

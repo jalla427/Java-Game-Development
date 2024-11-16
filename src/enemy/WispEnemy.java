@@ -12,7 +12,8 @@ public class WispEnemy extends GameObject {
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
-	SpriteSheet ss;
+	private SpriteSheet ss;
+	private int spriteSet = 0;
 	int direction = 1;
 
 	private Polygon collision;
@@ -34,7 +35,8 @@ public class WispEnemy extends GameObject {
 		this.animationDelay = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_wisp);
-		enemy_image = ss.grabImage(direction, this.animationFrame, width, height);
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
+		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
 		
 		velX = 0;
 		velY = 0;
@@ -56,7 +58,7 @@ public class WispEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		enemy_image = ss.grabImage(direction, this.animationFrame, width, height);
+		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
 		this.animationDelay++;
 		if(this.animationDelay >= 15) {
 			this.animationDelay = 1;

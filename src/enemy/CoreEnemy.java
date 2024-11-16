@@ -13,7 +13,8 @@ public class CoreEnemy extends GameObject {
 	private int animationFrame;
 	private int attackMode;
 	private int animationDelay;
-	SpriteSheet ss;
+	private SpriteSheet ss;
+	private int spriteSet = 0;
 
 	private Polygon collision;
 	private int[] xCollision;
@@ -34,7 +35,7 @@ public class CoreEnemy extends GameObject {
 		this.animationDelay = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet_core);
-		enemy_image = ss.grabImage(this.attackMode, this.animationFrame, width, height);
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 3; }
 		
 		velX = 5;
 		velY = 5;
@@ -135,8 +136,7 @@ public class CoreEnemy extends GameObject {
 				this.animationFrame = 1;
 			}
 		}
-
-		enemy_image = ss.grabImage(this.attackMode, this.animationFrame, width, height);
+		enemy_image = ss.grabImage(this.attackMode + spriteSet, this.animationFrame, width, height);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box
