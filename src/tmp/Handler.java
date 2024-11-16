@@ -32,8 +32,13 @@ public class Handler {
 		}
 
 		for(int i = 0; i < buttonList.size(); i++) {
-			Button tempObject = buttonList.get(i);
-            tempObject.tick();
+			try {
+				Button tempObject = buttonList.get(i);
+				tempObject.tick();
+			}
+			catch(java.lang.NullPointerException e) {
+				System.out.println("Error: Failed to tick button, skipping");
+			}
         }
 	}
 	
