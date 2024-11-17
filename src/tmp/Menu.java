@@ -121,6 +121,7 @@ public class Menu extends MouseAdapter {
 				Game.escapeGame = false;
 				Game.gameOver = false;
 				Game.gameState = STATE.Menu;
+				Game.levelEnd = false;
 				handler.clearButtons();
 				Game.paused = false;
 				Game.quit = true;
@@ -212,14 +213,14 @@ public class Menu extends MouseAdapter {
 					if(Game.paused) {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Resume", currentBtnType, (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
-					if(Game.levelEnd && Game.hud.getLevel() < 22) {
+					if(Game.levelEnd) {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Level Compelete!", Game.brightBlueButton_long, (Game.sWidth/2) - (150), 275, 300, bHeight));
-						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Next Level", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
+						if(Game.hud.getLevel() < 22) { handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Next Level", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight)); }
 					}
-					if(Game.paused || Game.gameOver) {
+					if(Game.paused || Game.gameOver || Game.escapeGame || (Game.levelEnd && Game.hud.getLevel() == 22)) {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Quit", currentBtnType, (Game.sWidth/2) - 100, 350, bWidth, bHeight));
 					}
-					if(Game.escapeGame) {
+					if(Game.escapeGame && !(Game.coinsLeft == 0 && Game.hud.getLevel() == 22)) {
 						handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Gameover!", Game.brightRedButton, (Game.sWidth/2) - 100, 275, bWidth, bHeight));
 					}
 				}

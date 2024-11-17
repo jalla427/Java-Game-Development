@@ -239,10 +239,10 @@ public class Game extends Canvas implements Runnable {
 		//In game
 		if(gameState == STATE.Game) {
 			//Game Over
-			if (HUD.HEALTH <= 0 && !escapeGame) {
+			if(HUD.HEALTH <= 0 && !escapeGame) {
 				escapeGame = true;
 			}
-			if (escapeGame) {
+			if(escapeGame) {
 				if (!gameOver) {
 					beginGameOver();
 					gameOver = true;
@@ -368,11 +368,12 @@ public class Game extends Canvas implements Runnable {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = finalBackgroundImg;
 				}
-				startLevelTransition(final_blocks_20x20, 22, 9, sWidth / 2 - 16, sHeight - 250);
+				startLevelTransition(final_blocks_20x20, 22, 12, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Game Won
 			if (coinsLeft == 0 && hud.getLevel() == 22) {
-				escapeGame = true;
+				levelEnd = true;
+				beginGameOver();
 			}
 
 			//Level Transition Timer
@@ -563,7 +564,7 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Handle coin collection during level
-			coinSpawner();
+			if(!escapeGame) { coinSpawner(); }
 		}
 	}
 	
