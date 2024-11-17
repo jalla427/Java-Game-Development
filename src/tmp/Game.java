@@ -4,6 +4,9 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import enemy.*;
 import Item.Coin;
@@ -25,6 +28,9 @@ public class Game extends Canvas implements Runnable {
 
 	//Global volume
 	public static int gameVolume = 50;
+	protected static int highScore = 0;
+	protected static int blitzHighScore = 0;
+	private static int[] saveData = new int[33];
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
@@ -74,6 +80,7 @@ public class Game extends Canvas implements Runnable {
 	public static double altEnemySkinOdds = 0.005;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
+	public static boolean[] unlockedLevels = new boolean[] {true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
 	//Score modifiers
 	public static boolean hardMode = false;
@@ -132,6 +139,7 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD();
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addMouseListener(menu);
+		loadInSaveData();
 
 		//Create game window
 		new Main("Tomb Game", sWidth, sHeight, this);
@@ -747,6 +755,97 @@ public class Game extends Canvas implements Runnable {
 
 	public static boolean isPointInBounds(int mx, int my, int x, int y, int width, int height) {
 		return mx > x && mx < x + width && my > y && my < y + height;
+	}
+
+	protected static void loadInSaveData() {
+		String filePath = "./save/savedata.txt"; //Save location
+		String fileDir = "./save"; //Save directory
+
+		ensureSaveFilesExist(fileDir, filePath);
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line = reader.readLine(); //Ensure file is not empty
+			if (line != null) {
+				String[] parts = line.split(",\\s*"); //Split by comma and optional spaces
+				for (int i = 0; i < parts.length && i < saveData.length; i++) {
+					saveData[i] = Integer.parseInt(parts[i]);
+				}
+			} else {
+				saveData = new int[] {50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				writeOutSaveData();
+			}
+		} catch (IOException e) {
+			System.out.println("Encountered an error while attempting to load save data.");
+		}
+
+		//Set game values based on retrieved save data
+		for (int i = 0; i < saveData.length; i++) {
+			if(i == 0) {
+				gameVolume = saveData[i];
+			} else if(i == 1) {
+				highScore = saveData[i];
+			} else if(i == 2) {
+				blitzHighScore = saveData[i];
+			} else if(i <= 10) {
+                unlockedSkins[i - 3] = saveData[i] == 1;
+			} else {
+                unlockedLevels[i - 11] = saveData[i] == 1;
+			}
+		}
+	}
+
+	protected static void writeOutSaveData() {
+		String filePath = "./save/savedata.txt"; //Save location
+		String fileDir = "./save"; //Save directory
+
+		//Set save data values based on current game values
+		for (int i = 0; i < saveData.length; i++) {
+			if (i == 0) {
+				 saveData[i] = gameVolume;
+			} else if (i == 1) {
+				 saveData[i] = highScore;
+			} else if (i == 2) {
+				saveData[i] = blitzHighScore;
+			} else if (i <= 10) {
+				saveData[i] = unlockedSkins[i - 3] ? 1 : 0;
+			} else {
+				saveData[i] = unlockedLevels[i - 11] ? 1 : 0;
+			}
+		}
+
+		ensureSaveFilesExist(fileDir, filePath);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+			//Convert array to string format
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < saveData.length; i++) {
+				sb.append(saveData[i]);
+				if (i < saveData.length - 1) {
+					sb.append(", ");
+				}
+			}
+			writer.write(sb.toString());
+		} catch (IOException e) {
+			System.out.println("Encountered an error while attempting to save data.");
+		}
+	}
+
+	protected static void ensureSaveFilesExist(String dirPath, String filePath) {
+		try {
+			//Create directory if it doesn't exist
+			Files.createDirectories(Paths.get(dirPath));
+
+			//Create file if it doesn't exist
+			File saveFile = new File(filePath);
+			if (!saveFile.exists()) {
+				saveFile.createNewFile();
+
+				//Write out default data
+				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile))) {
+					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("Encountered an error while looking for save data.");
+		}
 	}
 	
 	//Main method

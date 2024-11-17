@@ -41,6 +41,7 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Menu && buttonClicked != null) {
 			//Quit
 			if(buttonClicked.getName() == "Quit") {
+				Game.writeOutSaveData();
 				System.exit(1);
 			}
 			//Settings

@@ -61,8 +61,12 @@ public class Handler {
 
 	public void renderHigherElements(Graphics g) {
 		for(int i = 0; i < buttonList.size(); i++) {
-			Button tempObject = buttonList.get(i);
-			tempObject.render(g);
+			try {
+				Button tempObject = buttonList.get(i);
+				tempObject.render(g);
+			} catch(java.lang.NullPointerException e)	{
+				System.out.println("Error: Failed to render element, skipping");
+			}
 		}
 	}
 	
