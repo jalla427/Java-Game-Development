@@ -18,9 +18,9 @@ public class KeyInput extends KeyAdapter {
 		
 		keyDown[0] = false;
 		keyDown[1] = false;
-		keyDown[2] = false;
-		keyDown[3] = false;
-		keyDown[4] = false;
+		keyDown[2] = false; //Right
+		keyDown[3] = false; //Left
+		keyDown[4] = false; //Jump
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -87,14 +87,20 @@ public class KeyInput extends KeyAdapter {
 			if(key == KeyEvent.VK_W) keyDown[0] = false;
 			if(key == KeyEvent.VK_S) keyDown[1] = false;
 			if(key == KeyEvent.VK_D) {
-				if(keyDown[3]){
+				if(keyDown[3]){ //Opposite direction key still pressed, move that way from rest
 					handler.playerObject.setxDirection(0);
+				} else { //Both direction keys are released, lower player X velocity
+					handler.playerObject.setxDirection(2);
+					handler.playerObject.setVelX(Game.clamp(handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[2] = false;
 			}
 			if(key == KeyEvent.VK_A) {
-				if(keyDown[2]){
+				if(keyDown[2]){ //Opposite direction key still pressed, move that way from rest
 					handler.playerObject.setxDirection(1);
+				} else { //Both direction keys are released, lower player X velocity
+					handler.playerObject.setxDirection(2);
+					handler.playerObject.setVelX(Game.clamp(handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[3] = false;
 			}
