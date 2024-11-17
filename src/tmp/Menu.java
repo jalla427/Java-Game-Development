@@ -100,6 +100,7 @@ public class Menu extends MouseAdapter {
 				handler.clearButtons();
 				Game.gameState = STATE.Menu;
 				AudioPlayer.playSound("/buttonClick.wav");
+				Game.writeOutSaveData();
 			}
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-4)
@@ -126,6 +127,7 @@ public class Menu extends MouseAdapter {
 				handler.clearButtons();
 				Game.paused = false;
 				Game.quit = true;
+				Game.writeOutSaveData();
 			}
 			if(buttonClicked.getName() == "Resume") {
 				AudioPlayer.playSound("/buttonClick.wav");
