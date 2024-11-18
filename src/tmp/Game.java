@@ -17,6 +17,7 @@ public class Game extends Canvas implements Runnable {
 
 	private Thread thread;
 	private boolean running = false;
+	protected static boolean clearButtons = false;
 	public static boolean paused = false;
 	public static boolean escapeGame = false;
 	public static boolean gameOver = false;
@@ -91,6 +92,9 @@ public class Game extends Canvas implements Runnable {
 	public enum STATE {
 		Menu,
 		Settings,
+		Statistics,
+		LevelSelect,
+		Blitz,
 		Game
 	}
 
@@ -215,6 +219,12 @@ public class Game extends Canvas implements Runnable {
 	
 	//Update method
 	private void tick() {
+		//Buttons are set to be cleared
+		if(clearButtons) {
+			Handler.clearButtons();
+			clearButtons = false;
+		}
+
 		//Based on gamestate, determine what needs to tick
 		if(gameState == STATE.Game) {
 			handler.tick();
@@ -223,7 +233,7 @@ public class Game extends Canvas implements Runnable {
 				menu.tick();
 			}
 		}
-		else if(gameState == STATE.Menu || gameState == STATE.Settings) {
+		else if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect) {
 			handler.tick();
 			menu.tick();
 		}
@@ -590,7 +600,7 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, sWidth, sHeight);
 
-		if(gameState == STATE.Menu || gameState == STATE.Settings) {
+		if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect) {
 			g.drawImage(backgroundImg, 0, 0, null);
 		}
 		if(gameState == STATE.Game) {
@@ -640,6 +650,7 @@ public class Game extends Canvas implements Runnable {
 				handler.findTotalLevelArea();
 				handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
 				hud.setLevel(nextLevel);
+				unlockedLevels[nextLevel - 1] = true;
 				setLevelCoinGoal(coins);
 			}
 		}

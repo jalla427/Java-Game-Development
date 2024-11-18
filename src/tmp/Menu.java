@@ -47,7 +47,13 @@ public class Menu extends MouseAdapter {
 			//Settings
 			if(buttonClicked.getName() == "Settings") {
 				Game.gameState = STATE.Settings;
-				handler.clearButtons();
+				Game.clearButtons = true;
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
+			//Level Select
+			if(buttonClicked.getName() == "Level Select") {
+				Game.gameState = STATE.LevelSelect;
+				Game.clearButtons = true;
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
 			//Play
@@ -95,13 +101,6 @@ public class Menu extends MouseAdapter {
 				buttonClicked.setName("Crazy Coins: Off");
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
-			//Back
-			if(buttonClicked.getName() == "Menu") {
-				handler.clearButtons();
-				Game.gameState = STATE.Menu;
-				AudioPlayer.playSound("/buttonClick.wav");
-				Game.writeOutSaveData();
-			}
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-4)
 				int skinNum = Integer.valueOf(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
@@ -110,6 +109,16 @@ public class Menu extends MouseAdapter {
 					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImage(Game.playerSkin, 3, 32, 32));
 					Game.playerSkin = skinNum;
 				}
+			}
+		}
+
+		if((Game.gameState == STATE.Settings || Game.gameState == STATE.LevelSelect || Game.gameState == STATE.Statistics) && buttonClicked != null) {
+			//Back to main menu
+			if(buttonClicked.getName() == "Menu") {
+				Game.clearButtons = true;
+				Game.gameState = STATE.Menu;
+				AudioPlayer.playSound("/buttonClick.wav");
+				Game.writeOutSaveData();
 			}
 		}
 
@@ -124,19 +133,19 @@ public class Menu extends MouseAdapter {
 				Game.gameOver = false;
 				Game.gameState = STATE.Menu;
 				Game.levelEnd = false;
-				handler.clearButtons();
+				Game.clearButtons = true;
 				Game.paused = false;
 				Game.quit = true;
 				Game.writeOutSaveData();
 			}
 			if(buttonClicked.getName() == "Resume") {
 				AudioPlayer.playSound("/buttonClick.wav");
-				Handler.clearButtons();
+				Game.clearButtons = true;
 				Game.paused = false;
 			}
 			if(buttonClicked.getName() == "Next Level") {
 				AudioPlayer.playSound("/buttonClick.wav");
-				Handler.clearButtons();
+				Game.clearButtons = true;
 				Game.transitioning = true;
 				Game.levelEnd = false;
 			}
@@ -167,7 +176,6 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				//Create volume buttons
-				handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Menu", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
 				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 
@@ -202,6 +210,40 @@ public class Menu extends MouseAdapter {
 					}
 				}
 			}
+		}
+
+		if(Game.gameState == STATE.LevelSelect) {
+			handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Select Level", Game.brightBlueButton_long, (Game.sWidth/2) - 150, 110, 300, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 1", Game.tombButton_small, (Game.sWidth/2) - 330, 190, 160, 32));
+			if(Game.unlockedLevels[1]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 2", Game.tombButton_small, (Game.sWidth/2) - 165, 190, 160, 32)); }
+			if(Game.unlockedLevels[2]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 3", Game.tombButton_small, (Game.sWidth/2) + 5, 190, 160, 32)); }
+			if(Game.unlockedLevels[3]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 4", Game.tombButton_small, (Game.sWidth/2) + 170, 190, 160, 32)); }
+			if(Game.unlockedLevels[4]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 5", Game.tombButton_small, (Game.sWidth/2) - 330, 230, 160, 32)); }
+			if(Game.unlockedLevels[5]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 6", Game.tombButton_small, (Game.sWidth/2) - 165, 230, 160, 32)); }
+			if(Game.unlockedLevels[6]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 7", Game.dungeonButton_small, (Game.sWidth/2) + 5, 230, 160, 32)); }
+			if(Game.unlockedLevels[7]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 8", Game.dungeonButton_small, (Game.sWidth/2) + 170, 230, 160, 32)); }
+			if(Game.unlockedLevels[8]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 9", Game.dungeonButton_small, (Game.sWidth/2) - 330, 270, 160, 32)); }
+			if(Game.unlockedLevels[9]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 10", Game.dungeonButton_small, (Game.sWidth/2) - 165, 270, 160, 32)); }
+			if(Game.unlockedLevels[10]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 11", Game.dungeonButton_small, (Game.sWidth/2) + 5, 270, 160, 32)); }
+			if(Game.unlockedLevels[11]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 12", Game.dungeonButton_small, (Game.sWidth/2) + 170, 270, 160, 32)); }
+			if(Game.unlockedLevels[12]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 13", Game.burningButton_small, (Game.sWidth/2) - 330, 310, 160, 32)); }
+			if(Game.unlockedLevels[13]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 14", Game.burningButton_small, (Game.sWidth/2) - 165, 310, 160, 32)); }
+			if(Game.unlockedLevels[14]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 15", Game.burningButton_small, (Game.sWidth/2) + 5, 310, 160, 32)); }
+			if(Game.unlockedLevels[15]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 16", Game.burningButton_small, (Game.sWidth/2) + 170, 310, 160, 32)); }
+			if(Game.unlockedLevels[16]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 17", Game.burningButton_small, (Game.sWidth/2) - 330, 350, 160, 32)); }
+			if(Game.unlockedLevels[17]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 18", Game.burningButton_small, (Game.sWidth/2) - 165, 350, 160, 32)); }
+			if(Game.unlockedLevels[18]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 19", Game.tombButton_small, (Game.sWidth/2) + 5, 350, 160, 32)); }
+			if(Game.unlockedLevels[19]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 20", Game.dungeonButton_small, (Game.sWidth/2) + 170, 350, 160, 32)); }
+			if(Game.unlockedLevels[20]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 21", Game.burningButton_small, (Game.sWidth/2) - 165, 390, 160, 32)); }
+			if(Game.unlockedLevels[21]) { handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Level 22", Game.dungeonButton_small, (Game.sWidth/2) + 5, 390, 160, 32)); }
+		}
+
+		if(Game.gameState == STATE.Statistics) {
+
+		}
+
+		if(Game.gameState == STATE.Settings || Game.gameState == STATE.LevelSelect || Game.gameState == STATE.Statistics) {
+			handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Menu", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 		}
 
 		if(Game.gameState == STATE.Game) {
