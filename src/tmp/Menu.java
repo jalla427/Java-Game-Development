@@ -103,12 +103,19 @@ public class Menu extends MouseAdapter {
 			}
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-4)
-				int skinNum = Integer.valueOf(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
+				int skinNum = Integer.parseInt(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
 				if(Game.playerSkin != skinNum && skinNum <= Game.unlockedSkins.length && skinNum >= 1 && Game.unlockedSkins[skinNum - 1]) {
 					handler.getImageButtonByName(buttonClicked.getName()).setImage(player_skins.grabImage(skinNum, 1, 32, 32));
 					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImage(Game.playerSkin, 3, 32, 32));
 					Game.playerSkin = skinNum;
 				}
+			}
+		}
+
+		if(Game.gameState == STATE.LevelSelect && buttonClicked != null) {
+			if(buttonClicked.getName().contains("Level ") && buttonClicked.getName() != "Level Select") {
+				AudioPlayer.playSound("/buttonClick.wav");
+				Game.levelSelected = Integer.parseInt(buttonClicked.getName().replaceAll("[^\\d]", ""));
 			}
 		}
 

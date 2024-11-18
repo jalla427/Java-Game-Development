@@ -18,6 +18,7 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	private boolean running = false;
 	protected static boolean clearButtons = false;
+	protected static int levelSelected = 0;
 	public static boolean paused = false;
 	public static boolean escapeGame = false;
 	public static boolean gameOver = false;
@@ -246,12 +247,29 @@ public class Game extends Canvas implements Runnable {
 			quit = false;
 		}
 
-		//Game start, Level 1 Transition
-		if(gameState == STATE.Menu && hud.getLevel() == 1) {
+		//Game starts regularly, transition to level 1
+		if((gameState == STATE.Menu && hud.getLevel() == 1) || (gameState == STATE.LevelSelect && levelSelected == 1)) {
 			levelBackgroundImg = tombBackgroundImg;
 			gameState = STATE.Game;
-			handler.clearButtons();
+			clearButtons = true;
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
+		}
+
+		//Game start by level selection
+		if(gameState == STATE.LevelSelect && levelSelected > 0) {
+			beginGame(levelSelected);
+			if((levelSelected >= 1 && levelSelected <= 6) || levelSelected == 19) {
+				levelBackgroundImg = tombBackgroundImg;
+			}
+			if((levelSelected >= 7 && levelSelected <= 12) || levelSelected == 20) {
+				levelBackgroundImg = dungeonBackgroundImg;
+			}
+			if((levelSelected >= 13 && levelSelected <= 18) || levelSelected == 21) {
+				levelBackgroundImg = infernoBackgroundImg;
+			}
+			if(levelSelected == 22) {
+				levelBackgroundImg = finalBackgroundImg;
+			}
 		}
 
 		//In game
@@ -284,27 +302,27 @@ public class Game extends Canvas implements Runnable {
 				playerControl = false;
 			}
 			//Level 2 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 1) {
+			if((coinsLeft == 0 && hud.getLevel() == 1) || levelSelected == 2) {
 				startLevelTransition(tomb_blocks_20x20, 2, 4, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 			//Level 3 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 2) {
+			if((coinsLeft == 0 && hud.getLevel() == 2) || levelSelected == 3) {
 				startLevelTransition(tomb_blocks_20x20, 3, 6, sWidth / 2 - 16, sHeight / 2 + 232);
 			}
 			//Level 4 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 3) {
+			if((coinsLeft == 0 && hud.getLevel() == 3) || levelSelected == 4) {
 				startLevelTransition(tomb_blocks_20x20, 4, 8, sWidth / 2 - 16, sHeight - 60);
 			}
 			//Level 5 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 4) {
+			if((coinsLeft == 0 && hud.getLevel() == 4) || levelSelected == 5) {
 				startLevelTransition(tomb_blocks_20x20, 5, 9, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 6 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 5) {
+			if((coinsLeft == 0 && hud.getLevel() == 5) || levelSelected == 6) {
 				startLevelTransition(tomb_blocks_20x20, 6, 9, sWidth / 2 - 16, sHeight - 100);
 			}
 			//Level 7 Transition, start of section 2
-			if (coinsLeft == 0 && hud.getLevel() == 6) {
+			if((coinsLeft == 0 && hud.getLevel() == 6) || levelSelected == 7) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = dungeonBackgroundImg;
 					unlockedSkins[1] = true;
@@ -312,27 +330,27 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(dungeon_blocks_20x20, 7, 6, sWidth / 2 - 16, sHeight - 300);
 			}
 			//Level 8 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 7) {
+			if((coinsLeft == 0 && hud.getLevel() == 7) || levelSelected == 8) {
 				startLevelTransition(dungeon_blocks_20x20, 8, 8, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 9 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 8) {
+			if((coinsLeft == 0 && hud.getLevel() == 8) || levelSelected == 9) {
 				startLevelTransition(dungeon_blocks_20x20, 9, 9, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 10 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 9) {
+			if((coinsLeft == 0 && hud.getLevel() == 9) || levelSelected == 10) {
 				startLevelTransition(dungeon_blocks_20x20, 10, 8, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 11 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 10) {
+			if((coinsLeft == 0 && hud.getLevel() == 10) || levelSelected == 11) {
 				startLevelTransition(dungeon_blocks_20x20, 11, 8, sWidth / 2 - 16, sHeight - 180);
 			}
 			//Level 12 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 11) {
+			if((coinsLeft == 0 && hud.getLevel() == 11) || levelSelected == 12) {
 				startLevelTransition(dungeon_blocks_20x20, 12, 9, sWidth / 2 - 16, sHeight - 180);
 			}
 			//Level 13 Transition, start of section 3
-			if (coinsLeft == 0 && hud.getLevel() == 12) {
+			if((coinsLeft == 0 && hud.getLevel() == 12) || levelSelected == 13) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = infernoBackgroundImg;
 					unlockedSkins[2] = true;
@@ -340,27 +358,27 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(burning_blocks_20x20, 13, 8, sWidth / 2 - 16, sHeight/2);
 			}
 			//Level 14 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 13) {
+			if((coinsLeft == 0 && hud.getLevel() == 13) || levelSelected == 14) {
 				startLevelTransition(burning_blocks_20x20, 14, 9, sWidth / 2 - 16, sHeight - 350);
 			}
 			//Level 15 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 14) {
+			if((coinsLeft == 0 && hud.getLevel() == 14) || levelSelected == 15) {
 				startLevelTransition(burning_blocks_20x20, 15, 9, sWidth / 2 - 16, sHeight - 240);
 			}
 			//Level 16 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 15) {
+			if((coinsLeft == 0 && hud.getLevel() == 15) || levelSelected == 16) {
 				startLevelTransition(burning_blocks_20x20, 16, 9, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Level 17 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 16) {
+			if((coinsLeft == 0 && hud.getLevel() == 16) || levelSelected == 17) {
 				startLevelTransition(burning_blocks_20x20, 17, 9, sWidth / 2 - 16, sHeight - 200);
 			}
 			//Level 18 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 17) {
+			if((coinsLeft == 0 && hud.getLevel() == 17) || levelSelected == 18) {
 				startLevelTransition(burning_blocks_20x20, 18, 9, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Level 19 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 18) {
+			if((coinsLeft == 0 && hud.getLevel() == 18) || levelSelected == 19) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = tombBackgroundImg;
 					unlockedSkins[3] = true;
@@ -368,45 +386,46 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(tomb_blocks_20x20, 19, 9, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Level 20 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 19) {
+			if((coinsLeft == 0 && hud.getLevel() == 19) || levelSelected == 20) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = dungeonBackgroundImg;
 				}
 				startLevelTransition(dungeon_blocks_20x20, 20, 9, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Level 21 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 20) {
+			if((coinsLeft == 0 && hud.getLevel() == 20) || levelSelected == 21) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = infernoBackgroundImg;
 				}
 				startLevelTransition(burning_blocks_20x20, 21, 9, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Level 22 Transition
-			if (coinsLeft == 0 && hud.getLevel() == 21) {
+			if((coinsLeft == 0 && hud.getLevel() == 21) || levelSelected == 22) {
 				if(!gameOver && !levelEnd) {
 					levelBackgroundImg = finalBackgroundImg;
 				}
 				startLevelTransition(final_blocks_20x20, 22, 12, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Game Won
-			if (coinsLeft == 0 && hud.getLevel() == 22) {
+			if(coinsLeft == 0 && hud.getLevel() == 22) {
 				levelEnd = true;
 				beginGameOver();
 			}
+			levelSelected = 0; //Level select should have occurred, clear value
 
 			//Level Transition Timer
-			if (transitioning && !escapeGame) {
+			if(transitioning && !escapeGame) {
 				transitionTimer++;
 				transitionMessage = "Level " + hud.getLevel();
 
 				//Brief pause between levels before calling enemies
-				if (hud.getLevel() == 1) {
+				if(hud.getLevel() == 1) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(100, 100, 32, 32, ID.Enemy, handler, 300));
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 2) {
+				if(hud.getLevel() == 2) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 50));
 						handler.addObject(new HawkEnemy(3 * (sWidth / 4), 100, 32, 32, ID.Enemy, handler, 120));
@@ -414,7 +433,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 3) {
+				if(hud.getLevel() == 3) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 200));
 						handler.addObject(new SentryEnemy(120, 100, 20, 20, ID.Enemy, handler, 250, 30));
@@ -423,7 +442,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 4) {
+				if(hud.getLevel() == 4) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100,32, 32, ID.Enemy, handler, 100));
 						handler.addObject(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 250, 50));
@@ -433,7 +452,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 5) {
+				if(hud.getLevel() == 5) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 200));
 						handler.addObject(new HawkEnemy(200, 300, 32, 32, ID.Enemy, handler, 100));
@@ -442,7 +461,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 6) {
+				if(hud.getLevel() == 6) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 250));
 						handler.addObject(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 200, 100));
@@ -452,14 +471,14 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 7) {
+				if(hud.getLevel() == 7) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 150, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 100, 100, 32, 32, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 8) {
+				if(hud.getLevel() == 8) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(sWidth - 132, 400, 32, 32, ID.Enemy, handler));
@@ -467,7 +486,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 9) {
+				if(hud.getLevel() == 9) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
@@ -475,7 +494,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 10) {
+				if(hud.getLevel() == 10) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy(160, 180, 32, 32, ID.Enemy, handler));
@@ -483,7 +502,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 11) {
+				if(hud.getLevel() == 11) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy, handler));
@@ -491,7 +510,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 12) {
+				if(hud.getLevel() == 12) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy, handler));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy, handler));
@@ -499,21 +518,21 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 13) {
+				if(hud.getLevel() == 13) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
 						handler.addObject(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 14) {
+				if(hud.getLevel() == 14) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 100));
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 15) {
+				if(hud.getLevel() == 15) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
 						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 200));
@@ -521,7 +540,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 16) {
+				if(hud.getLevel() == 16) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 75));
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
@@ -529,7 +548,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 17) {
+				if(hud.getLevel() == 17) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
 						handler.addObject(new GolemEnemy(80, Game.sHeight - 180, 40, 40, ID.Enemy, handler));
@@ -537,7 +556,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 18) {
+				if(hud.getLevel() == 18) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 150));
 						handler.addObject(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
@@ -545,7 +564,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 19) {
+				if(hud.getLevel() == 19) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
 						handler.addObject(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 175));
@@ -556,7 +575,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 20) {
+				if(hud.getLevel() == 20) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy, handler));
 						handler.addObject(new StriderEnemy(30, 220, 32, 32, ID.Enemy, handler));
@@ -564,7 +583,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 21) {
+				if(hud.getLevel() == 21) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 200));
 						handler.addObject(new ThumperEnemy((Game.sWidth/2) - 80, 200, 32, 32, ID.Enemy, handler));
@@ -572,7 +591,7 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
-				if (hud.getLevel() == 22) {
+				if(hud.getLevel() == 22) {
 					if (transitionTimer >= 200) {
 						handler.addObject(new CoreEnemy(100, 100, 20, 20, ID.Enemy, handler));
 						handler.addObject(new CoreEnemy(sWidth - 100, 100, 20, 20, ID.Enemy, handler));
@@ -582,7 +601,7 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Handle coin collection during level
-			if(!escapeGame) { coinSpawner(); }
+			if(!escapeGame && !transitioning) { coinSpawner(); }
 		}
 	}
 	
@@ -633,6 +652,12 @@ public class Game extends Canvas implements Runnable {
 		menu.render(g);
 		g.dispose();
 		bs.show();
+	}
+
+	protected static void beginGame(int level) {
+		gameState = STATE.Game;
+		clearButtons = true;
+		hud.setLevel(level - 1);
 	}
 	
 	//Start transitioning level
