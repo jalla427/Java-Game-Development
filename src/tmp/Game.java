@@ -190,9 +190,9 @@ public class Game extends Canvas implements Runnable {
 
 			while(delta >= 1) {
 				tick();
+				render();
 				delta--;
 			}
-			render();
 			frames++;
 
 			//Sleep to maintain the target FPS

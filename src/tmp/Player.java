@@ -15,10 +15,17 @@ import tmp.ID;
 
 public class Player extends GameObject {
 
-	Handler handler;
-	BufferedImage player_image;
-	SpriteSheet ss;
-	int playerSkin = 1;
+	public Handler handler;
+	private BufferedImage player_image;
+	private final SpriteSheet ss;
+	private int playerSkin = 1;
+	private int animationFrame;
+	private int animationDelay = 5;
+	private int animationDelayTimer;
+	private int direction = 1;
+	private int animationOffset = 0;
+	private boolean damaged = false;
+	protected boolean jumping = false;
 	
 	private Polygon collision;
 	private int[] xCollision;
@@ -29,6 +36,9 @@ public class Player extends GameObject {
 		this.handler = handler;
 		this.luminosity = 300;
 		this.playerSkin = playerSkin;
+		this.direction = 1;
+		this.animationFrame = 1;
+		this.animationDelayTimer = 1;
 		
 		ss = new SpriteSheet(Game.sprite_sheet);
 		player_image = ss.grabImage(this.playerSkin, 1, width, height);
@@ -45,12 +55,12 @@ public class Player extends GameObject {
 	
 	//Updates position and adjusts if the player is colliding with any tiles
 	private void collision() {
+		damaged = false;
 		Area a1;
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision, enemy collision check
 		x += velX;
-		player_image = ss.grabImage(playerSkin, 1, width, height);
 		updateCollision();
 
 		//Find area shared by player and tile
@@ -83,6 +93,7 @@ public class Player extends GameObject {
 		//Vertical Collision
 		y += velY;
 		updateCollision();
+		if(velY >= 0) { jumping = false; } //Player is now falling
 		
 		//Set grounded to false in case player has walked over an edge
 		this.setGrounded(false);
@@ -122,6 +133,7 @@ public class Player extends GameObject {
 		if(KeyInput.keyDown[4] && this.isGrounded() && Game.playerControl) {
 			this.velY -= 20;
 			this.setGrounded(false);
+			this.jumping = true;
 		}
 
 		//Check for enemy collisions
@@ -138,21 +150,41 @@ public class Player extends GameObject {
 				if(!a1.isEmpty()) {
 					HUD.HEALTH--;
 					if(Game.hardMode) { HUD.HEALTH--; }
-					player_image = ss.grabImage(playerSkin, 2, width, height);
+					damaged = true;
 				}
 			}
 		}
 	}
 
 	public void render(Graphics g) {
-		//Dim player if gameover
-		if(Game.gameOver) {
+		this.animationDelayTimer++;
+		animationOffset = 0;
+
+		if(Game.gameOver) { //Dim player if gameover
 			if(this.getLuminosity() > 0) {
 				this.setLuminosity(this.getLuminosity() - 1);
+				player_image = ss.grabImage(playerSkin, 1, width, height);
 			}
 			else {
-				player_image = ss.grabImage(playerSkin, 3, width, height);
+				player_image = ss.grabImage(playerSkin, 14, width, height);
 			}
+		} else if(damaged) {
+			player_image = ss.grabImage(playerSkin, 13, width, height);
+		} else if(this.animationDelayTimer >= this.animationDelay) { //Cycles animation frame
+			this.animationDelayTimer = 1;
+			if(this.animationFrame < 4) {
+				//If attacking, enemy is walking and frame progression is normal
+				if(this.getVelX() == 0) {
+					this.animationFrame = 1;
+				} else {
+					this.animationFrame++;
+				}
+			}
+			else {
+				this.animationFrame = 1;
+			}
+			if(jumping) { animationOffset = animationOffset + 4; }
+			player_image = ss.grabImage(playerSkin, animationFrame + animationOffset, width, height);
 		}
 
 		//Draw player

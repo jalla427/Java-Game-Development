@@ -11,7 +11,7 @@ public class Handler {
 	public LinkedList<GameObject> object = new LinkedList<>();
 	public static LinkedList<Button> buttonList = new LinkedList<>();
 	public static LinkedList<ImageButton> imageButtonList = new LinkedList<>();
-	GameObject playerObject;
+	Player playerObject;
 	public static float playerX = 0;
 	public static float playerY = 0;
 	public static Area currentLevelArea = null;
@@ -24,7 +24,7 @@ public class Handler {
 
                 //While looping through all objects, retrieve current player cords for easy access
                 if (tempObject.getID() == ID.Player) {
-                    playerObject = tempObject;
+                    playerObject = (Player) tempObject;
                     playerX = tempObject.getX();
                     playerY = tempObject.getY();
                 }

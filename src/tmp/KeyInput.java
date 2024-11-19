@@ -52,6 +52,7 @@ public class KeyInput extends KeyAdapter {
 				if(handler.playerObject.isGrounded()) {
 					handler.playerObject.velY -= 20;
 					handler.playerObject.setGrounded(false);
+					handler.playerObject.jumping = true;
 				}
 			}
 		}
