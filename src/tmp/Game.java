@@ -294,7 +294,7 @@ public class Game extends Canvas implements Runnable {
 			}
 
 			//Detect level completion
-			if(coinsLeft == 0 && !gameOver && !transitioning && !levelEnd) {
+			if(coinsLeft == 0 && !gameOver && !transitioning && !levelEnd && levelSelected == 0) {
 				levelEnd = true;
 				while(handler.areEnemies()) {
 					handler.clearEnemies();
@@ -407,9 +407,9 @@ public class Game extends Canvas implements Runnable {
 				startLevelTransition(final_blocks_20x20, 22, 12, sWidth / 2 - 16, sHeight - 250);
 			}
 			//Game Won
-			if(coinsLeft == 0 && hud.getLevel() == 22) {
-				levelEnd = true;
-				beginGameOver();
+			if(coinsLeft == 0 && hud.getLevel() == 22 && !levelEnd) {
+					levelEnd = true;
+					beginGameOver();
 			}
 			levelSelected = 0; //Level select should have occurred, clear value
 
@@ -657,7 +657,7 @@ public class Game extends Canvas implements Runnable {
 	protected static void beginGame(int level) {
 		gameState = STATE.Game;
 		clearButtons = true;
-		hud.setLevel(level - 1);
+		hud.setLevel(level);
 	}
 	
 	//Start transitioning level
@@ -691,14 +691,14 @@ public class Game extends Canvas implements Runnable {
 	
 	//Transition to gameover
 	public static void beginGameOver() {
-		escapeGame = true;
 		playerControl = false;
 		for(int i = 0;  i < KeyInput.keyDown.length; i++) {
 			KeyInput.keyDown[i] = false;
 		}
 		transitioning = false;
 		transitionTimer = 0;
-		coinsLeft = 0;
+		setLevelCoinGoal(1);
+		levelSelected = 0;
 		while(handler.areEnemies() || handler.areCoins()) {
 			handler.clearEnemies();
 			handler.clearItems();
@@ -706,7 +706,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	//Set level coin goal during level transition
-	private void setLevelCoinGoal(int goal) {
+	private static void setLevelCoinGoal(int goal) {
 		coinsLeft = goal;
 		hud.coinStart = coinsLeft;
 	}
