@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Handler {
 	
-	public LinkedList<GameObject> object = new LinkedList<>();
+	public static LinkedList<GameObject> object = new LinkedList<>();
 	public static LinkedList<Button> buttonList = new LinkedList<>();
 	public static LinkedList<ImageButton> imageButtonList = new LinkedList<>();
 	Player playerObject;
@@ -73,8 +73,8 @@ public class Handler {
 	public void addObject(GameObject object) {
 		this.object.add(object);
 	}
-	public void removeObject(GameObject object) {
-		this.object.remove(object);
+	public static void removeObject(GameObject object) {
+		Handler.object.remove(object);
 	}
 
 	public void addButton(Button button) { buttonList.add(button); }
@@ -106,7 +106,7 @@ public class Handler {
 		}
 	}
 	
-	public void clearEnemies() {
+	public static void clearEnemies() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Enemy) {
@@ -118,7 +118,7 @@ public class Handler {
 	public void clearItems() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Coin) {
+			if(tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
 				removeObject(object.get(i));
 			}
 		}
@@ -127,7 +127,7 @@ public class Handler {
 	public void clearLevel() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin) {
+			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
 				removeObject(object.get(i));
 			}
 		}
@@ -166,7 +166,7 @@ public class Handler {
 		return foundTile;
 	}
 	
-	public boolean areEnemies() {
+	public static boolean areEnemies() {
 		boolean foundEnemy = false;
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
@@ -188,6 +188,18 @@ public class Handler {
 			}
 		}
 		return foundCoin;
+	}
+
+	public boolean areOrbs() {
+		boolean foundOrb = false;
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			if(tempObject.getID() == ID.Orb) {
+				foundOrb = true;
+				break;
+			}
+		}
+		return foundOrb;
 	}
 	
 	public boolean areLevel() {

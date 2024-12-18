@@ -8,6 +8,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import Item.BlitzOrb;
+import Item.HealOrb;
 import enemy.*;
 import Item.Coin;
 import level.LevelCollection;
@@ -827,10 +829,12 @@ public class Game extends Canvas implements Runnable {
 
 			handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
 
-			//If in blitz game mode, spawn an enemy every 5 coins
+			//If in blitz game mode, spawn an enemy every 8 coins, heal orb every 15 coins, and blitz orb every 50 coins
 			if(hud.getLevel() == 99) {
 				handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
-				if((coinsLeft + 1) % 8 == 0) blitzRandomEnemySpawner();
+				if((coinsLeft + 1) % 5 == 0) blitzRandomEnemySpawner();
+				if((coinsLeft) % 15 == 0) handler.addObject(new HealOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb, handler));
+				if((coinsLeft) % 40 == 0) handler.addObject(new BlitzOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb, handler));
 			}
 		}
 	}

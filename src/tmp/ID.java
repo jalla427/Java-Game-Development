@@ -5,5 +5,6 @@ public enum ID {
 	Level(),
 	Enemy(),
 	Coin(),
+	Orb(),
 	Button()
 }

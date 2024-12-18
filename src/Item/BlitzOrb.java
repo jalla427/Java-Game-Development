@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
-public class Coin extends GameObject {
+public class BlitzOrb extends GameObject {
 
 	private final Handler handler;
 	private BufferedImage coin_image;
@@ -19,11 +19,9 @@ public class Coin extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	private int coinValue = 50;
-	private int coinHeal = 5;
-	private int maxSpeed = 5;
+	private int maxSpeed = 7;
 
-	public Coin(float x, float y, int width, int height, float speedOne, float speedTwo, ID id, Handler handler) {
+	public BlitzOrb(float x, float y, int width, int height, float speedOne, float speedTwo, ID id, Handler handler) {
 		super(x, y, width, height, id);
 		
 		double[] speeds = getSpeed(speedOne, speedTwo);
@@ -33,18 +31,11 @@ public class Coin extends GameObject {
 		this.animationDelay = 1;
 
 		ss = new SpriteSheet(Game.sprite_sheet_coin);
-		coin_image = ss.grabImage(1, 1, width, height);
+		coin_image = ss.grabImage(3, 1, width, height);
 
 		this.luminosity = 50;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
-
-		if(Game.hardMode) { this.coinValue += 25; }
-		if(Game.darkMode) { this.coinValue += 25; }
-		if(Game.crazyCoins) {
-			this.coinValue += 25;
-			this.maxSpeed += 3;
-		}
 	}
 
 	public void tick() {
@@ -56,7 +47,7 @@ public class Coin extends GameObject {
 		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
 			handler.object.remove(this);
 			if(Game.debugMode) {
-				System.out.println("*** Coin Out of Bounds! ***");
+				System.out.println("*** Blitz Orb Out of Bounds! ***");
 			}
 		}
 	}
@@ -157,8 +148,7 @@ public class Coin extends GameObject {
 				//Determine if area is shared by coin and player
 				if (!a1.isEmpty()) {
 					Game.coinsLeft--;
-					Game.hud.setScore(Game.hud.getScore() + coinValue);
-					HUD.HEALTH += coinHeal;
+					Handler.clearEnemies();
 					AudioPlayer.playSound("/coinGet.wav");
 					handler.object.remove(this);
 				}
@@ -170,7 +160,7 @@ public class Coin extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		coin_image = ss.grabImage(1, this.animationFrame, width, height);
+		coin_image = ss.grabImage(3, this.animationFrame, width, height);
 		this.animationDelay++;
 		if(this.animationDelay >= 3) {
 			this.animationDelay = 1;
