@@ -876,7 +876,7 @@ public class Game extends Canvas implements Runnable {
 
 				//Write out default data
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile))) {
-					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
+					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
 				}
 			}
 		} catch (IOException e) {

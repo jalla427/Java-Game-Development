@@ -50,6 +50,12 @@ public class Menu extends MouseAdapter {
 				Game.clearButtons = true;
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
+			//Statistics
+			if(buttonClicked.getName() == "Statistics") {
+				Game.gameState = STATE.Statistics;
+				Game.clearButtons = true;
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
 			//Level Select
 			if(buttonClicked.getName() == "Level Select") {
 				Game.gameState = STATE.LevelSelect;
@@ -134,6 +140,7 @@ public class Menu extends MouseAdapter {
 			if(buttonClicked.getName() == "Quit") {
 				AudioPlayer.playSound("/buttonClick.wav");
 				HUD.HEALTH = 100;
+				if(Game.highScore < Game.hud.getScore()) { Game.highScore = Game.hud.getScore(); }
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);
 				Game.escapeGame = false;
@@ -163,6 +170,7 @@ public class Menu extends MouseAdapter {
 		Font fnt = new Font("arial", 1, 50);
 		Font fnt2 = new Font("arial", 1, 30);
 		Font fnt3 = new Font("arial", 1, 18);
+		Font fnt4 = new Font("arial", 1, 14);
 		Color tan = new Color(71, 45, 0);
 		Color deepRed = new Color(100, 0, 0);
 		Color gold = new Color(205, 165, 0);
@@ -246,10 +254,40 @@ public class Menu extends MouseAdapter {
 		}
 
 		if(Game.gameState == STATE.Statistics) {
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "High Score: " + Game.highScore, Game.brightBlueButton_long, (Game.sWidth/2) - 310, 110, 300, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt3, Color.WHITE, "Blitz High Score: " + Game.blitzHighScore, Game.brightBlueButton_long, (Game.sWidth/2) + 10, 110, 300, bHeight));
 
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Reach the cavern levels", Game.brightRedButton, (Game.sWidth/2) - 310, 179, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Reach the burning levels", Game.brightRedButton, (Game.sWidth/2) + 10, 179, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Reach the final levels", Game.brightRedButton, (Game.sWidth/2) - 310, 248, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Score 6000 points", Game.brightRedButton, (Game.sWidth/2) + 10, 248, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Score 7000 in hard mode", Game.brightRedButton, (Game.sWidth/2) - 310, 317, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Score 7000 on crazy coins", Game.brightRedButton, (Game.sWidth/2) + 10, 317, bWidth, bHeight));
+			handler.addButton(new ImageTextButton(handler, fnt4, Color.WHITE, "Score 7000 in dark mode", Game.brightRedButton, (Game.sWidth/2) - 310, 386, bWidth, bHeight));
+
+			for(int i = 1; i <= Game.unlockedSkins.length; i++) {
+				int skinButtonX;
+				int skinButtonY;
+
+				if(i % 2 == 0) { skinButtonX = (Game.sWidth/2) - 71; }
+				else { skinButtonX = (Game.sWidth/2) + bWidth + 50; }
+
+				if(i / 2 <= 1) { skinButtonY = 195; }
+				else if(i / 2 <= 2) { skinButtonY = 264; }
+				else if(i / 2 <= 3) { skinButtonY = 333; }
+				else { skinButtonY = 402; }
+
+				if(Game.unlockedSkins[i - 1]) {
+					handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImage(i, 1, 32, 32), skinButtonX, skinButtonY, 32, 32));
+				} else {
+					handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImage(i, 15, 32, 32), skinButtonX, skinButtonY, 32, 32));
+				}
+			}
+
+			handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Menu", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 475, bWidth, bHeight));
 		}
 
-		if(Game.gameState == STATE.Settings || Game.gameState == STATE.LevelSelect || Game.gameState == STATE.Statistics) {
+		if(Game.gameState == STATE.Settings || Game.gameState == STATE.LevelSelect) {
 			handler.addButton(new ImageTextButton(handler, fnt2, Color.WHITE, "Menu", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 450, bWidth, bHeight));
 		}
 
