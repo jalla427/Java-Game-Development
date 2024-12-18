@@ -165,6 +165,13 @@ public class ThumperEnemy extends GameObject {
 
 		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
+
+		if(attacking) {
+			this.setLuminosity(Game.clamp(this.getLuminosity() + 7, 0, 100));
+		}
+		else {
+			this.setLuminosity(0);
+		}
 		
 		//Draw collision box
 		if(Game.debugMode) {

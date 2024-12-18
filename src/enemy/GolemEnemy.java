@@ -150,24 +150,27 @@ public class GolemEnemy extends GameObject {
 		if(this.animationDelayTimer >= this.animationDelay) {
 			this.animationDelayTimer = 1;
 			if(this.animationFrame <= 9) {
-				//If attacking, enemy is walking and frame progression is normal
+				//If not attacking, enemy is walking and frame progression is normal
 				if(!attacking) {
+					this.setLuminosity(Game.clamp(this.getLuminosity() + 7, 0, 100));
 					if(this.getVelX() == 0) {
 						this.animationFrame = 1;
 					} else {
 						this.animationFrame++;
 					}
 				} else {
-					//If not attacking, enemy reveals spikes and holds position
+					//If attacking, enemy reveals spikes and holds position
 					//When rising begins, play spike animation in reverse until fully risen
 					if(rising) {
 						animationFrame--;
+						this.setLuminosity(Game.clamp(this.getLuminosity() + 7, 0, 100));
 						if(animationFrame == 1) {
 							this.attacking = false;
 							this.rising = false;
 						}
 					} else if(this.animationFrame < 9) {
 						this.animationFrame++;
+						this.setLuminosity(Game.clamp(this.getLuminosity() - 7, 0, 100));
 					}
 				}
 			}
