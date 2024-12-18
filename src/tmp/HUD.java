@@ -33,13 +33,26 @@ public class HUD {
 		g.setColor(Color.white);
 		g.setFont(new Font("Helvetica", Font.PLAIN, 12));
 		g.drawString("Score: " + score, 240, 36);
-		g.drawString("Level: " + level, 240, 52);
+		if(getLevel() == 99) {
+			g.drawString("Blitz Infinite Survival", 240, 52);
+		}
+		else {
+			g.drawString("Level: " + level, 240, 52);
+		}
 
 		//Level progress bar
-		g.setColor(new Color(250, 250, 0));
-		g.fillRect(Game.sWidth - 224, 24, 200, 32);
-		g.setColor(Color.gray);
-		g.fillRect(Game.sWidth - 224, 24, (int)(((double)Game.coinsLeft/(double)coinStart) * 200), 32);
+		if(getLevel() < 99) {
+			g.setColor(new Color(250, 250, 0));
+			g.fillRect(Game.sWidth - 224, 24, 200, 32);
+			g.setColor(Color.gray);
+			g.fillRect(Game.sWidth - 224, 24, (int)(((double)Game.coinsLeft/(double)coinStart) * 200), 32);
+		}
+		else {
+			g.setColor(Color.MAGENTA);
+			if(!Game.gameOver) { g.fillRect(Game.sWidth - 224, 24, 200, 32); }
+			g.setColor(Color.gray);
+			g.fillRect(Game.sWidth - 224, 24, (int)((((double)Game.coinsLeft%40)/40) * 200), 32);
+		}
 		g.drawImage(Game.meter_overlay, Game.sWidth - 224, 24, null);
 	}
 

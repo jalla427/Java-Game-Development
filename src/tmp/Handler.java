@@ -107,10 +107,12 @@ public class Handler {
 	}
 	
 	public static void clearEnemies() {
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Enemy) {
-				removeObject(object.get(i));
+		while(areEnemies()) {
+			for (int i = 0; i < object.size(); i++) {
+				GameObject tempObject = object.get(i);
+				if (tempObject.getID() == ID.Enemy) {
+					removeObject(object.get(i));
+				}
 			}
 		}
 	}
