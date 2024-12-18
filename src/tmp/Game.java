@@ -54,11 +54,17 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage dungeonBackgroundImg;
 	public static BufferedImage infernoBackgroundImg;
 	public static BufferedImage finalBackgroundImg;
+	public static BufferedImage blitzBackgroundImg_1;
+	public static BufferedImage blitzBackgroundImg_2;
+	public static BufferedImage blitzBackgroundImg_3;
 	public static BufferedImage sprite_sheet_menu_buttons;
 	public static BufferedImage tomb_blocks_20x20;
 	public static BufferedImage dungeon_blocks_20x20;
 	public static BufferedImage burning_blocks_20x20;
 	public static BufferedImage final_blocks_20x20;
+	public static BufferedImage blitz_blocks_1_20x20;
+	public static BufferedImage blitz_blocks_2_20x20;
+	public static BufferedImage blitz_blocks_3_20x20;
 	public static BufferedImage sprite_sheet;
 	public static BufferedImage sprite_sheet_hawk;
 	public static BufferedImage sprite_sheet_sentry;
@@ -111,11 +117,17 @@ public class Game extends Canvas implements Runnable {
 		dungeonBackgroundImg = loader.loadImage("/dungeonBackground.png");
 		infernoBackgroundImg = loader.loadImage("/infernoBackground.png");
 		finalBackgroundImg = loader.loadImage("/finalBackground.png");
+		blitzBackgroundImg_1 = loader.loadImage("/blitzBackground_1.png");
+		blitzBackgroundImg_2 = loader.loadImage("/blitzBackground_2.png");
+		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_3.png");
 		sprite_sheet_menu_buttons = loader.loadImage("/sprite_sheet_menu_buttons.png");
 		tomb_blocks_20x20 = loader.loadImage("/tomb_blocks_20x20.png");
 		dungeon_blocks_20x20 = loader.loadImage("/dungeon_blocks_20x20.png");
 		burning_blocks_20x20 = loader.loadImage("/burning_blocks_20x20.png");
 		final_blocks_20x20 = loader.loadImage("/final_blocks_20x20.png");
+		blitz_blocks_1_20x20 = loader.loadImage("/blitz_blocks_1_20x20.png");
+		blitz_blocks_2_20x20 = loader.loadImage("/blitz_blocks_2_20x20.png");
+		blitz_blocks_3_20x20 = loader.loadImage("/blitz_blocks_3_20x20.png");
 		sprite_sheet = loader.loadImage("/sprite_sheet.png");
 		sprite_sheet_hawk = loader.loadImage("/sprite_sheet_hawk.png");
 		sprite_sheet_sentry = loader.loadImage("/sprite_sheet_sentry.png");
@@ -711,9 +723,12 @@ public class Game extends Canvas implements Runnable {
 	private void blitzLevelRandomizer() {
 		BufferedImage randomBlockChoice;
 		double randomChoice = Math.random();
-		if(randomChoice <= 0.25) { randomBlockChoice =  tomb_blocks_20x20; levelBackgroundImg = tombBackgroundImg; }
-		else if(randomChoice <= 0.5) { randomBlockChoice =  dungeon_blocks_20x20; levelBackgroundImg = dungeonBackgroundImg; }
-		else if(randomChoice <= 0.75) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
+		if(randomChoice <= 0.13) { randomBlockChoice =  tomb_blocks_20x20; levelBackgroundImg = tombBackgroundImg; }
+		else if(randomChoice <= 0.26) { randomBlockChoice =  dungeon_blocks_20x20; levelBackgroundImg = dungeonBackgroundImg; }
+		else if(randomChoice <= 0.39) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
+		else if(randomChoice <= 0.52) { randomBlockChoice =  blitz_blocks_1_20x20; levelBackgroundImg = blitzBackgroundImg_1; }
+		else if(randomChoice <= 0.65) { randomBlockChoice =  blitz_blocks_2_20x20; levelBackgroundImg = blitzBackgroundImg_2; }
+		else if(randomChoice <= 0.8) { randomBlockChoice =  blitz_blocks_3_20x20; levelBackgroundImg = blitzBackgroundImg_3; }
 		else { randomBlockChoice =  final_blocks_20x20; levelBackgroundImg = finalBackgroundImg; }
 
 		startLevelTransition(randomBlockChoice, 99, 999999, sWidth/2-16, sHeight/2-32);
