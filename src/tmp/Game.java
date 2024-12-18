@@ -255,6 +255,14 @@ public class Game extends Canvas implements Runnable {
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
 		}
 
+		//Game starts in blitz game mode
+		if((gameState == STATE.Menu && hud.getLevel() == 99)) {
+			levelBackgroundImg = tombBackgroundImg;
+			gameState = STATE.Game;
+			clearButtons = true;
+			blitzLevelRandomizer();
+		}
+
 		//Game start by level selection
 		if(gameState == STATE.LevelSelect && levelSelected > 0) {
 			beginGame(levelSelected);
@@ -416,7 +424,12 @@ public class Game extends Canvas implements Runnable {
 			//Level Transition Timer
 			if(transitioning && !escapeGame) {
 				transitionTimer++;
-				transitionMessage = "Level " + hud.getLevel();
+				if(hud.getLevel() == 99) {
+					transitionMessage = "Blitz Infinite Survival"; //Blitz
+				}
+				else {
+					transitionMessage = "Level " + hud.getLevel(); //Regular levels
+				}
 
 				//Brief pause between levels before calling enemies
 				if(hud.getLevel() == 1) {
@@ -598,6 +611,11 @@ public class Game extends Canvas implements Runnable {
 						endLevelTransition();
 					}
 				}
+				if(hud.getLevel() == 99) {
+					if (transitionTimer >= 200) {
+						endLevelTransition();
+					}
+				}
 			}
 
 			//Handle coin collection during level
@@ -675,7 +693,7 @@ public class Game extends Canvas implements Runnable {
 				handler.findTotalLevelArea();
 				handler.addObject(new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler));
 				hud.setLevel(nextLevel);
-				unlockedLevels[nextLevel - 1] = true;
+				if(nextLevel <= 22) { unlockedLevels[nextLevel - 1] = true; }
 				setLevelCoinGoal(coins);
 			}
 		}
@@ -687,6 +705,41 @@ public class Game extends Canvas implements Runnable {
 		transitionMessage = "";
 		transitioning = false;
 		playerControl = true;
+	}
+
+	//Randomize blitz level creation
+	private void blitzLevelRandomizer() {
+		BufferedImage randomBlockChoice;
+		double randomChoice = Math.random();
+		if(randomChoice <= 0.25) { randomBlockChoice =  tomb_blocks_20x20; levelBackgroundImg = tombBackgroundImg; }
+		else if(randomChoice <= 0.5) { randomBlockChoice =  dungeon_blocks_20x20; levelBackgroundImg = dungeonBackgroundImg; }
+		else if(randomChoice <= 0.75) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
+		else { randomBlockChoice =  final_blocks_20x20; levelBackgroundImg = finalBackgroundImg; }
+
+		startLevelTransition(randomBlockChoice, 99, 999999, sWidth/2-16, sHeight/2-32);
+	}
+
+	//Randomize blitz enemy spawning
+	private void blitzRandomEnemySpawner() {
+		double randomChoice = Math.random();
+		if(randomChoice <= 0.24) {
+			handler.addObject(new HawkEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler, 200));
+		}
+		else if(randomChoice <= 0.46) {
+			handler.addObject(new StriderEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+		}
+		else if(randomChoice <= 0.68) {
+			handler.addObject(new ThumperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+		}
+		else if(randomChoice <= 0.83) {
+			handler.addObject(new GolemEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
+		}
+		else if(randomChoice <= 0.98) {
+			handler.addObject(new WispEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, handler, 100));
+		}
+		else {
+			handler.addObject(new CoreEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 20, 20, ID.Enemy, handler));
+		}
 	}
 	
 	//Transition to gameover
@@ -758,6 +811,12 @@ public class Game extends Canvas implements Runnable {
 			} while (obstructed);
 
 			handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+
+			//If in blitz game mode, spawn an enemy every 5 coins
+			if(hud.getLevel() == 99) {
+				handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+				if((coinsLeft + 1) % 8 == 0) blitzRandomEnemySpawner();
+			}
 		}
 	}
 	

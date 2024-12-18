@@ -62,6 +62,11 @@ public class Menu extends MouseAdapter {
 				Game.clearButtons = true;
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
+			//Play Blitz
+			if(buttonClicked.getName() == "Play Blitz") {
+				Game.hud.setLevel(99);
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
 			//Play
 			if(buttonClicked.getName() == "Play Game") {
 				Game.hud.setLevel(1);
@@ -139,8 +144,9 @@ public class Menu extends MouseAdapter {
 			//Return to menu from gameover
 			if(buttonClicked.getName() == "Quit") {
 				AudioPlayer.playSound("/buttonClick.wav");
+				if(Game.highScore < Game.hud.getScore() && Game.hud.getLevel() <= 22) { Game.highScore = Game.hud.getScore(); }
+				if(Game.blitzHighScore < Game.hud.getScore() && Game.hud.getLevel() == 99) { Game.blitzHighScore = Game.hud.getScore(); }
 				HUD.HEALTH = 100;
-				if(Game.highScore < Game.hud.getScore()) { Game.highScore = Game.hud.getScore(); }
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);
 				Game.escapeGame = false;

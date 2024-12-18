@@ -71,6 +71,14 @@ public class LevelCollection {
 		if(num == 22) {
 			level = arrayTo2DArray(FinalLevels.getLevelFour());
 		}
+		if(num == 99) {
+			//Blitz picks a level randomly
+			double randomChoice = Math.random();
+			if(randomChoice <= 0.25) { level = arrayTo2DArray(BlitzLevels.getLevelOne()); }
+			else if(randomChoice <= 0.5) { level = arrayTo2DArray(BlitzLevels.getLevelTwo()); }
+			else if(randomChoice <= 0.75) { level = arrayTo2DArray(BlitzLevels.getLevelThree()); }
+			else { level = arrayTo2DArray(BlitzLevels.getLevelFour()); }
+		}
 
 		return level;
 	}
