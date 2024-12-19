@@ -51,7 +51,7 @@ public class HUD {
 			g.setColor(Color.MAGENTA);
 			if(!Game.gameOver) { g.fillRect(Game.sWidth - 224, 24, 200, 32); }
 			g.setColor(Color.gray);
-			g.fillRect(Game.sWidth - 224, 24, (int)((((double)Game.coinsLeft%40)/40) * 200), 32);
+			g.fillRect(Game.sWidth - 224, 24, (int)((((double)Game.coinsLeft%50)/50) * 200), 32);
 		}
 		g.drawImage(Game.meter_overlay, Game.sWidth - 224, 24, null);
 	}
