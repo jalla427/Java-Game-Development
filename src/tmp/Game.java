@@ -182,31 +182,18 @@ public class Game extends Canvas implements Runnable {
 	//Main game loop method
 	public void run() {
 		this.requestFocus();
-		final double maxDelta = 10.0;
-		long lastTime = System.nanoTime();
 		long sleepTime;
 		long timeTaken;
 		double amountOfTicks = 60;
 		double nsPerTick = 1000000000.0 / amountOfTicks;
-		double delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 
 		while(running){
 			long now = System.nanoTime();
-			delta += (now - lastTime) / nsPerTick;
-			lastTime = now;
 
-			//Cap the delta to avoid spiraling
-			if (delta > maxDelta) {
-				delta = maxDelta;
-			}
-
-			while(delta >= 1) {
-				tick();
-				render();
-				delta--;
-			}
+			tick();
+			render();
 			frames++;
 
 			//Sleep to maintain the target FPS
