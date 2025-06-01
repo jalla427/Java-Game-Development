@@ -23,7 +23,7 @@ public class StriderEnemy extends GameObject {
 	private int[] yCollision;
 
 	int maxSpeed = 3;
-	int sightRange = 300;
+	int sightRange = 295;
 	int jumpTimer = 0;
 	int wanderTimer = 0;
 	boolean attacking = true;
@@ -39,7 +39,7 @@ public class StriderEnemy extends GameObject {
 		this.animType = 1;
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
-		this.sightRange += (int) (Math.random() * 5);
+		this.sightRange += (int) (Math.random() * 10);
 		
 		ss = new SpriteSheet(Game.sprite_sheet_strider);
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
@@ -156,11 +156,11 @@ public class StriderEnemy extends GameObject {
 
 		int currentAnimType = this.animType;
 
-		if(this.getVelX() == 0) {
+		if(getVelX() == 0 && getVelY() == 0) {
 			this.animType = 1;
 			if(this.animType != currentAnimType) {
 				this.animationDelayTimer = 0;
-				this.animationDelay = 200;
+				this.animationDelay = 10;
 			}
 		}
 		else {
@@ -168,14 +168,14 @@ public class StriderEnemy extends GameObject {
 				this.animType = 2;
 				if(this.animType != currentAnimType) {
 					this.animationDelayTimer = 0;
-					this.animationDelay = 20;
+					this.animationDelay = 10;
 				}
 			}
 			else {
 				this.animType = 3;
 				if(this.animType != currentAnimType) {
 					this.animationDelayTimer = 0;
-					this.animationDelay = 20;
+					this.animationDelay = 10;
 				}
 			}
 		}
@@ -190,11 +190,11 @@ public class StriderEnemy extends GameObject {
 		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 
-		if(attacking) {
-			this.setLuminosity(Game.clamp(this.getLuminosity() + 5, 0, 100));
+		if(getVelX() != 0 || getVelY() != 0) {
+			this.setLuminosity(Game.clamp(this.getLuminosity() + 10, 10, 100));
 		}
 		else {
-			this.setLuminosity(Game.clamp(this.getLuminosity() - 2, 0, 100));
+			this.setLuminosity(Game.clamp(this.getLuminosity() - 10, 0, 100));
 		}
 		
 		//Draw collision box

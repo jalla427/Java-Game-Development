@@ -60,7 +60,7 @@ public class WispEnemy extends GameObject {
 		//Cycles animation frame
 		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
 		this.animationDelay++;
-		if(this.animationDelay >= 15) {
+		if(this.animationDelay >= 10) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 9) {
 				this.animationFrame++;

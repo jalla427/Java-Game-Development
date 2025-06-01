@@ -123,6 +123,21 @@ public class HawkEnemy extends GameObject {
 	}
 
 	public void render(Graphics g) {
+
+		//Cycles animation frame
+		if(attacking) {
+			this.animationDelay++;
+			if(this.animationDelay >= 10) {
+				this.animationDelay = 1;
+				if(this.animationFrame < 6) {
+					this.animationFrame++;
+				}
+				else {
+					this.animationFrame = 1;
+				}
+			}
+		}
+
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box
@@ -157,7 +172,7 @@ public class HawkEnemy extends GameObject {
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
 			luminosity = 0;
-			enemy_image = ss.grabImage(1, 4, width, height);
+			enemy_image = ss.grabImage(1, 7, width, height);
 			AudioPlayer.playSound("/hawkOffBeep.wav");
 		}
 		
@@ -186,18 +201,7 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		if(attacking) {
-			//Cycles animation frame
 			enemy_image = ss.grabImage(1 + spriteSet, this.animationFrame, width, height);
-			this.animationDelay++;
-			if(this.animationDelay >= 15) {
-				this.animationDelay = 1;
-				if(this.animationFrame < 3) {
-					this.animationFrame++;
-				}
-				else {
-					this.animationFrame = 1;
-				}
-			}
 
 			if(homingTimer >= 10) {
 				if(Handler.playerX > this.x) {
