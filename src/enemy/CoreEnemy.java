@@ -90,9 +90,6 @@ public class CoreEnemy extends GameObject {
 		//Vertical Collision
 		y += velY;
 		updateCollision();
-		
-		//Set grounded to false in case enemy has walked over an edge
-		this.setGrounded(false);
 
 		//Find area shared by enemy and tile
 		a1 = new Area(collision);
@@ -234,8 +231,8 @@ public class CoreEnemy extends GameObject {
 		//Sentry ranged attack
 		if(attackMode == 3 && modeTimer != -1) {
 			if(homingTimer >= 20) {
-				handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY - 24, (int) (4 + (Math.random()*5)), 2));
-				handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 56, (int) (4 + (Math.random()*5)), 2));
+				handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY - 24, (int) (10 + (Math.random()*5)), 2));
+				handler.addObject(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 56, (int) (10 + (Math.random()*5)), 2));
 				homingTimer = 0;
 			}
 			if(modeTimer >= 200) {

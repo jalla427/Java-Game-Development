@@ -71,7 +71,7 @@ public class Handler {
 	}
 	
 	public void addObject(GameObject object) {
-		this.object.add(object);
+		Handler.object.add(object);
 	}
 	public static void removeObject(GameObject object) {
 		Handler.object.remove(object);
