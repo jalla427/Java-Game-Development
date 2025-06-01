@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import Item.BlitzOrb;
 import Item.HealOrb;
@@ -50,8 +52,8 @@ public class Game extends Canvas implements Runnable {
 	protected static TileMapBuilder tombTileMapBuilder;
 
 	//Sprites
+	public static BufferedImage levelBackgroundImg; //Set dynamically
 	public static BufferedImage backgroundImg;
-	public static BufferedImage levelBackgroundImg;
 	public static BufferedImage tombBackgroundImg;
 	public static BufferedImage dungeonBackgroundImg;
 	public static BufferedImage infernoBackgroundImg;
@@ -87,6 +89,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage burningButton_small;
 	public static BufferedImage brightRedButton;
 	public static BufferedImage brightBlueButton_long;
+
 	public static double altEnemySkinOdds = 0.005;
 	public static int playerSkin = 1;
 	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
@@ -184,8 +187,8 @@ public class Game extends Canvas implements Runnable {
 		this.requestFocus();
 		long sleepTime;
 		long timeTaken;
-		double amountOfTicks = 60;
-		double nsPerTick = 1000000000.0 / amountOfTicks;
+		double fps = 60;
+		double nsPerTick = 1000000000.0 / fps;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 
