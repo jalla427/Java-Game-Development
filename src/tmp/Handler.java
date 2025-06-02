@@ -2,16 +2,18 @@ package tmp;
 
 import java.awt.Graphics;
 import java.awt.geom.Area;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
 
 public class Handler {
-	
-	public static LinkedList<GameObject> object = new LinkedList<>();
-	public static LinkedList<Button> buttonList = new LinkedList<>();
-	public static LinkedList<ImageButton> imageButtonList = new LinkedList<>();
-	Player playerObject;
+	public static ArrayList<GameObject> object = new ArrayList<>();
+	public static ArrayList<GameObject> enemyList = new ArrayList<>();
+	public static ArrayList<GameObject> bulletList = new ArrayList<>();
+	public static ArrayList<Button> buttonList = new ArrayList<>();
+	public static ArrayList<ImageButton> imageButtonList = new ArrayList<>();
+	public static Player playerObject = null;
 	public static float playerX = 0;
 	public static float playerY = 0;
 	public static Area currentLevelArea = null;
@@ -21,14 +23,22 @@ public class Handler {
 			for(int i = 0; i < object.size(); i++) {
 				GameObject tempObject = object.get(i);
                 tempObject.tick();
-
-                //While looping through all objects, retrieve current player cords for easy access
-                if (tempObject.getID() == ID.Player) {
-                    playerObject = (Player) tempObject;
-                    playerX = tempObject.getX();
-                    playerY = tempObject.getY();
-                }
             }
+
+			//Tick enemies, any newly generated bullets should be added to enemy list
+			enemyList.parallelStream().forEach(GameObject::tick);
+			int newBulletCount = bulletList.size();
+			for(int i = 0; i < newBulletCount; i++) {
+				Handler.addEnemy(bulletList.get(0));
+				Handler.removeBullet(bulletList.remove(0));
+			}
+
+			//Retrieve current player cords for easy access
+			if(playerObject != null) {
+				playerObject.tick();
+				playerX = playerObject.getX();
+				playerY = playerObject.getY();
+			}
 		}
 
 		for(int i = 0; i < buttonList.size(); i++) {
@@ -43,16 +53,10 @@ public class Handler {
 	}
 	
 	public void render(Graphics g) {
-		GameObject playerObject = null;
-
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() != ID.Player) {
-				tempObject.render(g);
-			}
-			else {
-				playerObject = tempObject;
-			}
+		object.parallelStream().forEach(obj -> obj.render(g));
+		for(int i = 0; i < enemyList.size(); i++) {
+			GameObject tempEnemyObject = enemyList.get(i);
+			tempEnemyObject.render(g);
 		}
 		if(playerObject != null) {
 			playerObject.render(g);
@@ -77,6 +81,19 @@ public class Handler {
 		Handler.object.remove(object);
 	}
 
+	public static void addEnemy(GameObject object) {
+		Handler.enemyList.add(object);
+	}
+	public static void removeEnemy(GameObject object) {
+		Handler.enemyList.remove(object);
+	}
+	public void addBullet(GameObject object) {
+		Handler.bulletList.add(object);
+	}
+	public static void removeBullet(GameObject object) {
+		Handler.bulletList.remove(object);
+	}
+
 	public void addButton(Button button) { buttonList.add(button); }
 	public void addImageButton(ImageButton button) {
 		buttonList.add(button);
@@ -89,12 +106,7 @@ public class Handler {
 	}
 	
 	public void clearPlayer() {
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-            if (tempObject.getID() == ID.Player) {
-                removeObject(tempObject);
-            }
-        }
+		Handler.playerObject = null;
 	}
 	
 	public void clearTiles() {
@@ -108,10 +120,10 @@ public class Handler {
 	
 	public static void clearEnemies() {
 		while(areEnemies()) {
-			for (int i = 0; i < object.size(); i++) {
-				GameObject tempObject = object.get(i);
+			for(int i = 0; i < enemyList.size(); i++) {
+				GameObject tempObject = enemyList.get(i);
 				if (tempObject.getID() == ID.Enemy) {
-					removeObject(object.get(i));
+					Handler.removeEnemy(enemyList.get(i));
 				}
 			}
 		}
@@ -129,31 +141,29 @@ public class Handler {
 	public void clearLevel() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Enemy || tempObject.getID() == ID.Player || tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
+			if(tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
 				removeObject(object.get(i));
 			}
 		}
+		clearEnemies();
+		clearPlayer();
 	}
 
 	public static void clearButtons() {
 		while(areButtons()) {
-			buttonList.pop();
+			buttonList.remove(0);
 		}
 		while(areImageButtons()) {
-			imageButtonList.pop();
+			imageButtonList.remove(0);
 		}
 	}
 	
 	public boolean arePlayers() {
-		boolean foundPlayer = false;
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Player) {
-				foundPlayer = true;
-				break;
-			}
+		if(playerObject != null) {
+			return true;
+		} else {
+			return false;
 		}
-		return foundPlayer;
 	}
 	
 	public boolean areTiles() {
@@ -169,15 +179,12 @@ public class Handler {
 	}
 	
 	public static boolean areEnemies() {
-		boolean foundEnemy = false;
-		for(int i = 0; i < object.size(); i++) {
-			GameObject tempObject = object.get(i);
-			if(tempObject.getID() == ID.Enemy) {
-				foundEnemy = true;
-				break;
-			}
+		if(Handler.enemyList.size() != 0) {
+			return true;
 		}
-		return foundEnemy;
+		else {
+			return false;
+		}
 	}
 
 	public boolean areCoins() {

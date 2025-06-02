@@ -72,7 +72,11 @@ public class Bullet extends GameObject {
 		//Draw collision box
 		if(Game.debugMode) {
 			g.setColor(Color.YELLOW);
-			g.drawPolygon(collision);
+			try{
+				g.drawPolygon(collision);
+			} catch(NullPointerException npe) {
+				System.out.println(npe);
+			}
 		}
 	}
 	

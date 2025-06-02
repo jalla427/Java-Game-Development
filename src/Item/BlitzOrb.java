@@ -135,24 +135,17 @@ public class BlitzOrb extends GameObject {
 			AudioPlayer.playSound("/coinBounce.wav");
 		}
 
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+		//Check for player collision, find area shared by orb and player
+		a1 = new Area(collision);
+		a2 = new Area(Handler.playerObject.getBounds());
+		a1.intersect(a2);
 
-			//Check for player collision
-			if (tempObject.getID() == ID.Player) {
-				//Find area shared by coin and player
-				a1 = new Area(collision);
-				a2 = new Area(tempObject.getBounds());
-				a1.intersect(a2);
-
-				//Determine if area is shared by coin and player
-				if (!a1.isEmpty()) {
-					Game.coinsLeft--;
-					Handler.clearEnemies();
-					AudioPlayer.playSound("/coinGet.wav");
-					handler.object.remove(this);
-				}
-			}
+		//Determine if area is shared by coin and player
+		if (!a1.isEmpty()) {
+			Game.coinsLeft--;
+			Handler.clearEnemies();
+			AudioPlayer.playSound("/coinGet.wav");
+			handler.object.remove(this);
 		}
 
 		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));

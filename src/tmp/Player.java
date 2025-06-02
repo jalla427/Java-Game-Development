@@ -59,7 +59,7 @@ public class Player extends GameObject {
 		Area a1;
 		Area a2 = Handler.currentLevelArea;
 		
-	    //Horizontal Collision, enemy collision check
+	    //Horizontal Collision
 		x += velX;
 		updateCollision();
 
@@ -137,10 +137,10 @@ public class Player extends GameObject {
 		}
 
 		//Check for enemy collisions
-		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+		for(int i = 0; i < Handler.enemyList.size(); i++) {
+			GameObject tempObject = Handler.enemyList.get(i);
 
-			if(tempObject.getID() == ID.Enemy && tempObject.getBounds() != null) {
+			if(tempObject.getBounds() != null) {
 				//Find area shared by player and enemy
 				a1 = new Area(collision);
 				a2 = new Area(tempObject.getBounds());
