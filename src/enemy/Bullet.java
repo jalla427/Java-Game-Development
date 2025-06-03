@@ -49,7 +49,7 @@ public class Bullet extends GameObject {
 		
 		//If bullet is offscreen, delete it
 		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
-			handler.object.remove(this);
+			Handler.bulletRemoveList.add(this);
 		}
 	}
 

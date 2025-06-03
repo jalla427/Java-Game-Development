@@ -8,11 +8,12 @@ import java.util.Objects;
 
 
 public class Handler {
-	public static ArrayList<GameObject> object = new ArrayList<>();
-	public static ArrayList<GameObject> enemyList = new ArrayList<>();
-	public static ArrayList<GameObject> bulletList = new ArrayList<>();
-	public static ArrayList<Button> buttonList = new ArrayList<>();
-	public static ArrayList<ImageButton> imageButtonList = new ArrayList<>();
+	public static ArrayList<GameObject> object = new ArrayList<>(100);
+	public static ArrayList<GameObject> enemyList = new ArrayList<>(50);
+	public static ArrayList<GameObject> bulletAddList = new ArrayList<>(10);
+	public static ArrayList<GameObject> bulletRemoveList = new ArrayList<>(10);
+	public static ArrayList<Button> buttonList = new ArrayList<>(30);
+	public static ArrayList<ImageButton> imageButtonList = new ArrayList<>(30);
 	public static Player playerObject = null;
 	public static float playerX = 0;
 	public static float playerY = 0;
@@ -25,13 +26,13 @@ public class Handler {
                 tempObject.tick();
             }
 
-			//Tick enemies, any newly generated bullets should be added to enemy list
+			//Tick enemies
+			//Newly generated bullets are added to enemy list, removes oob bullets
 			enemyList.parallelStream().forEach(GameObject::tick);
-			int newBulletCount = bulletList.size();
-			for(int i = 0; i < newBulletCount; i++) {
-				Handler.addEnemy(bulletList.get(0));
-				Handler.removeBullet(bulletList.remove(0));
-			}
+			enemyList.removeAll(bulletRemoveList);
+			bulletRemoveList.clear();
+			enemyList.addAll(bulletAddList);
+			bulletAddList.clear();
 
 			//Retrieve current player cords for easy access
 			if(playerObject != null) {
@@ -88,10 +89,10 @@ public class Handler {
 		Handler.enemyList.remove(object);
 	}
 	public void addBullet(GameObject object) {
-		Handler.bulletList.add(object);
+		Handler.bulletAddList.add(object);
 	}
-	public static void removeBullet(GameObject object) {
-		Handler.bulletList.remove(object);
+	public static void removeBullet(GameObject bullet) {
+		Handler.bulletRemoveList.add(bullet);
 	}
 
 	public void addButton(Button button) { buttonList.add(button); }
