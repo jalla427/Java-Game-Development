@@ -41,9 +41,9 @@ public class StriderEnemy extends GameObject {
 		this.animationDelayTimer = 1;
 		this.sightRange += (int) (Math.random() * 10);
 		
-		ss = new SpriteSheet(Game.sprite_sheet_strider);
+		ss = Game.sprite_sheet_strider;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
+		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 5;
 		velY = 5;
@@ -187,7 +187,7 @@ public class StriderEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
+		this.enemy_image = ss.grabImageFast(animType + spriteSet, this.animationFrame);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 
 		if(getVelX() != 0 || getVelY() != 0) {

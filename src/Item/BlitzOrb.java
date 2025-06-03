@@ -30,8 +30,8 @@ public class BlitzOrb extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 
-		ss = new SpriteSheet(Game.sprite_sheet_coin);
-		coin_image = ss.grabImage(3, 1, width, height);
+		ss = Game.sprite_sheet_coin;
+		coin_image = ss.grabImageFast(3, 1);
 
 		this.luminosity = 50;
 		this.velX = (float) speeds[0];
@@ -153,7 +153,7 @@ public class BlitzOrb extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		coin_image = ss.grabImage(3, this.animationFrame, width, height);
+		coin_image = ss.grabImageFast(3, this.animationFrame);
 		this.animationDelay++;
 		if(this.animationDelay >= 3) {
 			this.animationDelay = 1;

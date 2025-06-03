@@ -21,7 +21,7 @@ public class TileMapBuilder {
 	private BufferedImage holeRedBlock;
 	private BufferedImage holeGreenBlock;
 	
-	public void createLevel(BufferedImage tileSheetName, int[][] tiles, Handler handler) {
+	public void createLevel(SpriteSheet tileSheetName, int[][] tiles, Handler handler) {
 		this.handler = handler;
 		
 		prepTileImgs9x9(tileSheetName);
@@ -60,20 +60,18 @@ public class TileMapBuilder {
 				}
 			} 
 		}
-
 	}
 	
-	private void prepTileImgs9x9(BufferedImage tileSheetName) {
-		SpriteSheet ss = new SpriteSheet(tileSheetName);
-		brickBlock = ss.grabImage(1, 1, 20, 20);
-		plainBlock = ss.grabImage(1, 2, 20, 20);
-		fadedBlock = ss.grabImage(1, 3, 20, 20);
-		pillarBlock = ss.grabImage(2, 1, 20, 20);
-		holeEmptyBlock = ss.grabImage(2, 2, 20, 20);
-		edgelessBlock = ss.grabImage(2, 3, 20, 20);
-		holeBlueBlock = ss.grabImage(3, 1, 20, 20);
-		holeRedBlock = ss.grabImage(3, 2, 20, 20);
-		holeGreenBlock = ss.grabImage(3, 3, 20, 20);
+	private void prepTileImgs9x9(SpriteSheet tileSheetName) {
+		brickBlock = tileSheetName.grabImageFast(1, 1);
+		plainBlock = tileSheetName.grabImageFast(1, 2);
+		fadedBlock = tileSheetName.grabImageFast(1, 3);
+		pillarBlock = tileSheetName.grabImageFast(2, 1);
+		holeEmptyBlock = tileSheetName.grabImageFast(2, 2);
+		edgelessBlock = tileSheetName.grabImageFast(2, 3);
+		holeBlueBlock = tileSheetName.grabImageFast(3, 1);
+		holeRedBlock = tileSheetName.grabImageFast(3, 2);
+		holeGreenBlock = tileSheetName.grabImageFast(3, 3);
 	}
 	
 }

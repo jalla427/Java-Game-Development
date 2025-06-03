@@ -34,7 +34,7 @@ public class CoreEnemy extends GameObject {
 		this.attackMode = 1;
 		this.animationDelay = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet_core);
+		ss = Game.sprite_sheet_core;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 3; }
 		
 		velX = 5;
@@ -133,9 +133,9 @@ public class CoreEnemy extends GameObject {
 				this.animationFrame = 1;
 			}
 		}
-		enemy_image = ss.grabImage(this.attackMode + spriteSet, this.animationFrame, width, height);
+		enemy_image = ss.grabImageFast(this.attackMode + spriteSet, this.animationFrame);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
-		
+
 		//Draw collision box
 		if(Game.debugMode) {
 			try {
@@ -184,7 +184,7 @@ public class CoreEnemy extends GameObject {
 				homingTimer = 0;
 			}
 			if(modeTimer >= 300) {
-				if(Math.random() > 0.5) {
+				if(Math.random() > 0.5 || Handler.enemyList.size() > 8) {
 					attackMode = 2;
 					homingTimer = 0;
 					this.maxSpeed = 4;
@@ -215,7 +215,7 @@ public class CoreEnemy extends GameObject {
 				homingTimer = 0;
 			}
 			if(modeTimer >= 200 && !colliding) {
-				if(Math.random() > 0.5) {
+				if(Math.random() > 0.5 || Handler.enemyList.size() > 8) {
 					attackMode = 1;
 					homingTimer = 0;
 				} else {
@@ -230,12 +230,12 @@ public class CoreEnemy extends GameObject {
 		}
 		//Sentry ranged attack
 		if(attackMode == 3 && modeTimer != -1) {
-			if(homingTimer >= 20) {
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY - 24, (int) (10 + (Math.random()*5)), 2));
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 56, (int) (10 + (Math.random()*5)), 2));
+			if(homingTimer >= 20 && Handler.enemyList.size() <= 8) {
+				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), 2));
+				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), 2));
 				homingTimer = 0;
 			}
-			if(modeTimer >= 200) {
+			if(modeTimer >= 90) {
 				if(Math.random() > 0.5) {
 					attackMode = 1;
 					homingTimer = 0;

@@ -38,9 +38,9 @@ public class ThumperEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet_thumper);
+		ss = Game.sprite_sheet_thumper;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
-		enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
+		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		this.velX = 0;
 		this.velY = 0;
@@ -163,7 +163,7 @@ public class ThumperEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImage(animType + spriteSet, this.animationFrame, width, height);
+		this.enemy_image = ss.grabImageFast(animType + spriteSet, this.animationFrame);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 
 		if(attacking) {

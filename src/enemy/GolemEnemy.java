@@ -41,9 +41,9 @@ public class GolemEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet_golem);
+		ss = Game.sprite_sheet_golem;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
+		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		
 		velX = 5;
 		velY = 5;
@@ -180,7 +180,7 @@ public class GolemEnemy extends GameObject {
 		}
 
 		//Draws correct sprite
-		this.enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
+		this.enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		g.drawImage(this.enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box

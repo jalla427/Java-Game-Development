@@ -34,9 +34,9 @@ public class WispEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet_wisp);
+		ss = Game.sprite_sheet_wisp;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
+		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		
 		velX = 0;
 		velY = 0;
@@ -58,7 +58,7 @@ public class WispEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		enemy_image = ss.grabImage(direction + spriteSet, this.animationFrame, width, height);
+		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		this.animationDelay++;
 		if(this.animationDelay >= 10) {
 			this.animationDelay = 1;
@@ -134,9 +134,9 @@ public class WispEnemy extends GameObject {
 
 					//Fire barrage of fireballs
 					AudioPlayer.playSound("/wisp_fire.wav");
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY - 34, 7, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 16, 7, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, handler, Handler.playerX + 16, Handler.playerY + 66, 7, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, 2));
 				}
 			}
 		}

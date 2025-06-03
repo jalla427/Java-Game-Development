@@ -96,7 +96,7 @@ public class Handler {
 	}
 
 	public void addButton(Button button) { buttonList.add(button); }
-	public void addImageButton(ImageButton button) {
+	public static void addImageButton(ImageButton button) {
 		buttonList.add(button);
 		imageButtonList.add(button);
 	}

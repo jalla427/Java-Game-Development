@@ -35,9 +35,9 @@ public class HawkEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet_hawk);
+		ss = Game.sprite_sheet_hawk;
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 1; }
-		enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
+		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 5;
 		velY = 5;
@@ -172,7 +172,7 @@ public class HawkEnemy extends GameObject {
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
 			luminosity = 0;
-			enemy_image = ss.grabImage(1, 7, width, height);
+			enemy_image = ss.grabImageFast(1, 7);
 			AudioPlayer.playSound("/hawkOffBeep.wav");
 		}
 		
@@ -192,7 +192,7 @@ public class HawkEnemy extends GameObject {
 			if(retreatTimer <= 0) {
 				attacking = true;
 				luminosity = 100;
-				enemy_image = ss.grabImage(1 + spriteSet, 1, width, height);
+				enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 				AudioPlayer.playSound("/hawkOnBeep.wav");
 			}
 		}
@@ -201,7 +201,7 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		if(attacking) {
-			enemy_image = ss.grabImage(1 + spriteSet, this.animationFrame, width, height);
+			enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);
 
 			if(homingTimer >= 10) {
 				if(Handler.playerX > this.x) {

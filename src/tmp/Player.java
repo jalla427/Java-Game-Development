@@ -40,8 +40,8 @@ public class Player extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 		
-		ss = new SpriteSheet(Game.sprite_sheet);
-		player_image = ss.grabImage(this.playerSkin, 1, width, height);
+		ss = Game.sprite_sheet;
+		player_image = ss.grabImageFast(this.playerSkin, 1);
 		
 		updateCollision();
 	}
@@ -163,13 +163,13 @@ public class Player extends GameObject {
 		if(Game.gameOver) { //Dim player if gameover
 			if(this.getLuminosity() > 0) {
 				this.setLuminosity(this.getLuminosity() - 1);
-				player_image = ss.grabImage(playerSkin, 1, width, height);
+				player_image = ss.grabImageFast(playerSkin, 1);
 			}
 			else {
-				player_image = ss.grabImage(playerSkin, 14, width, height);
+				player_image = ss.grabImageFast(playerSkin, 14);
 			}
 		} else if(damaged) {
-			player_image = ss.grabImage(playerSkin, 13, width, height);
+			player_image = ss.grabImageFast(playerSkin, 13);
 		} else if(this.animationDelayTimer >= this.animationDelay) { //Cycles animation frame
 			this.animationDelayTimer = 1;
 			if(this.animationFrame < 4) {
@@ -184,7 +184,7 @@ public class Player extends GameObject {
 				this.animationFrame = 1;
 			}
 			if(jumping) { animationOffset = animationOffset + 4; }
-			player_image = ss.grabImage(playerSkin, animationFrame + animationOffset, width, height);
+			player_image = ss.grabImageFast(playerSkin, animationFrame + animationOffset);
 		}
 
 		//Draw player

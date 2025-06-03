@@ -24,8 +24,8 @@ public class Menu extends MouseAdapter {
 	
 	public Menu(Handler handler) {
 		this.handler = handler;
-		menu_buttons = new SpriteSheet(Game.sprite_sheet_menu_buttons);
-		player_skins = new SpriteSheet(Game.sprite_sheet);
+		menu_buttons = Game.sprite_sheet_menu_buttons;
+		player_skins = Game.sprite_sheet;
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -116,8 +116,8 @@ public class Menu extends MouseAdapter {
 				//Retrieve number at the end of button name (should be 1-8)
 				int skinNum = Integer.parseInt(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
 				if(Game.playerSkin != skinNum && skinNum <= Game.unlockedSkins.length && skinNum >= 1 && Game.unlockedSkins[skinNum - 1]) {
-					handler.getImageButtonByName(buttonClicked.getName()).setImage(player_skins.grabImage(skinNum, 1, 32, 32));
-					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImage(Game.playerSkin, 14, 32, 32));
+					handler.getImageButtonByName(buttonClicked.getName()).setImage(player_skins.grabImageFast(skinNum, 1));
+					handler.getImageButtonByName("playerSkinOption" + Game.playerSkin).setImage(player_skins.grabImageFast(Game.playerSkin, 14));
 					Game.playerSkin = skinNum;
 				}
 			}
@@ -197,8 +197,8 @@ public class Menu extends MouseAdapter {
 		if(Game.gameState == STATE.Settings) {
 			if(!buttonsFound) {
 				//Create volume buttons
-				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImage(1, 1, 32, 32), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
-				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImage(1, 2, 32, 32), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
+				handler.addImageButton(new ImageButton(handler,"LeftVolume", menu_buttons.grabImageFast(1, 1), ((Game.sWidth/2) - 16) - 100, 230, 32, 32));
+				handler.addImageButton(new ImageButton(handler,"RightVolume", menu_buttons.grabImageFast(1, 2), ((Game.sWidth/2) - 16) + 100, 230, 32, 32));
 
 				//Create difficulty mod buttons
 				if(Game.hardMode) {
@@ -222,12 +222,12 @@ public class Menu extends MouseAdapter {
 					int rowHeightMod = 0;
 					if(i > Game.unlockedSkins.length / 2) { rowHeightMod = 1; }
 					if(Game.playerSkin == i) {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 1, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImageFast(i, 1), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					}
 					else if(Game.unlockedSkins[i - 1]) {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 14, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImageFast(i, 14), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					} else {
-						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImage(i, 15, 32, 32), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
+						handler.addImageButton(new ImageButton(handler,"playerSkinOption" + i, player_skins.grabImageFast(i, 15), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					}
 				}
 			}
@@ -284,9 +284,9 @@ public class Menu extends MouseAdapter {
 				else { skinButtonY = 402; }
 
 				if(Game.unlockedSkins[i - 1]) {
-					handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImage(i, 1, 32, 32), skinButtonX, skinButtonY, 32, 32));
+					Handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImageFast(i, 1), skinButtonX, skinButtonY, 32, 32));
 				} else {
-					handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImage(i, 15, 32, 32), skinButtonX, skinButtonY, 32, 32));
+					Handler.addImageButton(new ImageButton(handler,"unlockedSkin" + i, player_skins.grabImageFast(i, 15), skinButtonX, skinButtonY, 32, 32));
 				}
 			}
 
