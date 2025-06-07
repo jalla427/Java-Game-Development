@@ -165,7 +165,7 @@ public class Game extends Canvas implements Runnable {
 		tombTileMapBuilder = new TileMapBuilder();
 		menu = new Menu();
 		hud = new HUD();
-		this.addKeyListener(new KeyInput(this));
+		this.addKeyListener(new KeyInput());
 		this.addMouseListener(menu);
 		loadInSaveData();
 

@@ -130,7 +130,7 @@ public class Player extends GameObject {
 		}
 				
 		//If jump button still held at the end of a jump, jump again
-		if(KeyInput.keyDown[4] && this.isGrounded() && Game.playerControl) {
+		if(KeyInput.keyDown[2] && this.isGrounded() && Game.playerControl) {
 			this.velY -= 20;
 			this.setGrounded(false);
 			this.jumping = true;
