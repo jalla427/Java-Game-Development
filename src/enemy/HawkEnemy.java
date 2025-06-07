@@ -138,6 +138,7 @@ public class HawkEnemy extends GameObject {
 			}
 		}
 
+		this.enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);
 		g.drawImage(enemy_image, (int) x, (int) y, null);
 		
 		//Draw collision box
