@@ -79,6 +79,7 @@ public class Game extends Canvas implements Runnable {
 	public static SpriteSheet sprite_sheet_wisp;
 	public static SpriteSheet sprite_sheet_golem;
 	public static SpriteSheet sprite_sheet_core;
+	public static SpriteSheet sprite_sheet_keeper;
 	public static SpriteSheet sprite_sheet_coin;
 	public static BufferedImage meter_overlay;
 	public static BufferedImage tombGameBanner;
@@ -148,6 +149,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_wisp = new SpriteSheet(loader.loadImage("/sprite_sheet_wisp.png"), 8, 10, 26, 26);
 		sprite_sheet_golem = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
 		sprite_sheet_core = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
+		sprite_sheet_keeper = new SpriteSheet(loader.loadImage("/sprite_sheet_keeper.png"), 2, 22, 32, 32);
 		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 3, 17, 10, 10);
 		meter_overlay = loader.loadImage("/meter_overlay.png");
 		tombGameBanner = loader.loadImage("/tombGameBanner.png");
@@ -742,6 +744,9 @@ public class Game extends Canvas implements Runnable {
 		}
 		else if(randomChoice <= 0.46) {
 			handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+		}
+		else if(randomChoice <= 0.52 && crazyCoins) {
+			handler.addEnemy(new KeeperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.65) {
 			handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
