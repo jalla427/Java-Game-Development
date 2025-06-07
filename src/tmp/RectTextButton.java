@@ -8,7 +8,7 @@ public class RectTextButton extends Button {
     private Color colorTwo;
 
     public RectTextButton(Handler handler, Font font, Color colorOne, Color colorTwo, String name, int x, int y, int width, int height) {
-        super(handler, name, x, y, width, height);
+        super(name, x, y, width, height);
         this.font = font;
         this.colorOne = colorOne;
         this.colorTwo = colorTwo;

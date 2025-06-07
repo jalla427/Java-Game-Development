@@ -126,7 +126,7 @@ public class Game extends Canvas implements Runnable {
 		blitzBackgroundImg_1 = loader.loadImage("/blitzBackground_1.png");
 		blitzBackgroundImg_2 = loader.loadImage("/blitzBackground_2.png");
 		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_3.png");
-		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 20, 20);
+		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
 		tomb_blocks_20x20 = new SpriteSheet(loader.loadImage("/tomb_blocks_20x20.png"), 3, 3, 20, 20);
 		dungeon_blocks_20x20 = new SpriteSheet(loader.loadImage("/dungeon_blocks_20x20.png"), 3, 3, 20, 20);
 		burning_blocks_20x20 = new SpriteSheet(loader.loadImage("/burning_blocks_20x20.png"), 3, 3, 20, 20);
@@ -159,7 +159,7 @@ public class Game extends Canvas implements Runnable {
 		//Create core objects
 		handler = new Handler();
 		tombTileMapBuilder = new TileMapBuilder();
-		menu = new Menu(handler);
+		menu = new Menu();
 		hud = new HUD();
 		this.addKeyListener(new KeyInput(this));
 		this.addMouseListener(menu);

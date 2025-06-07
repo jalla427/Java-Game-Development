@@ -8,8 +8,8 @@ public class ImageTextButton extends Button {
     private Color color;
     private final BufferedImage image;
 
-    public ImageTextButton(Handler handler, Font font, Color textColor, String name, BufferedImage image, int x, int y, int width, int height) {
-        super(handler, name, x, y, width, height);
+    public ImageTextButton(Font font, Color textColor, String name, BufferedImage image, int x, int y, int width, int height) {
+        super(name, x, y, width, height);
         this.font = font;
         this.color = textColor;
         this.image = image;

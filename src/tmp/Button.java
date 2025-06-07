@@ -3,7 +3,6 @@ package tmp;
 import java.awt.*;
 
 public abstract class Button {
-    private Handler handler;
     private ID id = ID.Button;
     private String name;
     private int x;
@@ -11,8 +10,7 @@ public abstract class Button {
     private int width;
     private int height;
 
-    public Button(Handler handler, String name, int x, int y, int width, int height) {
-        this.handler = handler;
+    public Button(String name, int x, int y, int width, int height) {
         this.name = name;
         this.x = x;
         this.y = y;

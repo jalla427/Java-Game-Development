@@ -95,7 +95,7 @@ public class Handler {
 		Handler.bulletRemoveList.add(bullet);
 	}
 
-	public void addButton(Button button) { buttonList.add(button); }
+	public static void addButton(Button button) { buttonList.add(button); }
 	public static void addImageButton(ImageButton button) {
 		buttonList.add(button);
 		imageButtonList.add(button);
@@ -240,7 +240,7 @@ public class Handler {
 		return foundButton;
 	}
 
-	public Button getButtonAtLocation(int mx, int my) {
+	public static Button getButtonAtLocation(int mx, int my) {
 		for(int i = 0; i < buttonList.size(); i++) {
 			Button tempObject = buttonList.get(i);
 			if(Game.isPointInBounds(mx, my, tempObject.getX(), tempObject.getY(), tempObject.getWidth(), tempObject.getHeight())) {
@@ -250,7 +250,7 @@ public class Handler {
 		return null;
 	}
 
-	public ImageButton getImageButtonByName(String name) {
+	public static ImageButton getImageButtonByName(String name) {
 		for(int i = 0; i < imageButtonList.size(); i++) {
 			ImageButton tempObject = imageButtonList.get(i);
 			if(Objects.equals(tempObject.getName(), name)) {
