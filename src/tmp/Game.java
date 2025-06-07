@@ -80,6 +80,7 @@ public class Game extends Canvas implements Runnable {
 	public static SpriteSheet sprite_sheet_golem;
 	public static SpriteSheet sprite_sheet_core;
 	public static SpriteSheet sprite_sheet_keeper;
+	public static SpriteSheet sprite_sheet_annihilator;
 	public static SpriteSheet sprite_sheet_coin;
 	public static BufferedImage meter_overlay;
 	public static BufferedImage tombGameBanner;
@@ -142,7 +143,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 8, 15, 32, 32);
 		sprite_sheet_hawk = new SpriteSheet(loader.loadImage("/sprite_sheet_hawk.png"), 2, 7, 32, 32);
 		sprite_sheet_sentry = new SpriteSheet(loader.loadImage("/sprite_sheet_sentry.png"), 4, 4, 20, 20);
-		sprite_sheet_bullet = new SpriteSheet(loader.loadImage("/sprite_sheet_bullet.png"), 2, 10, 16, 16);
+		sprite_sheet_bullet = new SpriteSheet(loader.loadImage("/sprite_sheet_bullet.png"), 3, 10, 16, 16);
 		sprite_sheet_strider = new SpriteSheet(loader.loadImage("/sprite_sheet_strider.png"), 8, 8, 32, 32);
 		sprite_sheet_thumper = new SpriteSheet(loader.loadImage("/sprite_sheet_thumper.png"), 4, 8, 32, 32);
 		sprite_sheet_wanderer = new SpriteSheet(loader.loadImage("/sprite_sheet_wanderer.png"), 8, 8, 32, 32);
@@ -150,6 +151,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_golem = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
 		sprite_sheet_core = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
 		sprite_sheet_keeper = new SpriteSheet(loader.loadImage("/sprite_sheet_keeper.png"), 2, 22, 32, 32);
+		sprite_sheet_annihilator = new SpriteSheet(loader.loadImage("/sprite_sheet_annihilator.png"), 4, 6, 64, 48);
 		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 3, 17, 10, 10);
 		meter_overlay = loader.loadImage("/meter_overlay.png");
 		tombGameBanner = loader.loadImage("/tombGameBanner.png");
@@ -756,6 +758,9 @@ public class Game extends Canvas implements Runnable {
 		}
 		else if(randomChoice <= 0.87) {
 			handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
+		}
+		else if(randomChoice <= 0.9 && hardMode) {
+			handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
 		}
 		else if(randomChoice <= 0.98) {
 			handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, handler, 100));

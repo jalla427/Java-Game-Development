@@ -228,11 +228,12 @@ public class CoreEnemy extends GameObject {
 				this.maxSpeed = 6;
 			}
 		}
+
 		//Sentry ranged attack
 		if(attackMode == 3 && modeTimer != -1) {
 			if(homingTimer >= 20 && Handler.enemyList.size() <= 8) {
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), 2));
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), 2));
+				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), false, 2));
+				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), false, 2));
 				homingTimer = 0;
 			}
 			if(modeTimer >= 90) {

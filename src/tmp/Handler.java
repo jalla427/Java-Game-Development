@@ -88,7 +88,7 @@ public class Handler {
 	public static void removeEnemy(GameObject object) {
 		Handler.enemyList.remove(object);
 	}
-	public void addBullet(GameObject object) {
+	public static void addBullet(GameObject object) {
 		Handler.bulletAddList.add(object);
 	}
 	public static void removeBullet(GameObject bullet) {

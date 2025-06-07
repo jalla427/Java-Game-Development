@@ -49,7 +49,7 @@ public class SentryEnemy extends GameObject {
 			enemy_image = ss.grabImageFast(1, 2 + spriteSet);
 
 			AudioPlayer.playSound("/bulletFire.wav");
-			handler.addBullet(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, 1));
+			handler.addBullet(new Bullet(this.x + (width/2), this.y + (height/2), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 1));
 		}
 	}
 
