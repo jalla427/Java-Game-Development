@@ -6,14 +6,11 @@ import java.awt.event.KeyEvent;
 import tmp.Game.STATE;
 
 public class KeyInput extends KeyAdapter {
-	
-	private final Handler handler;
 	protected static boolean[] keyDown = new boolean[5];
 	
 	Game game;
 	
-	public KeyInput(Handler handler, Game game) {
-		this.handler = handler;
+	public KeyInput(Game game) {
 		this.game = game;
 		
 		keyDown[0] = false;
@@ -30,29 +27,29 @@ public class KeyInput extends KeyAdapter {
 		if(Game.playerControl) {
 			//Directional movement
 			if(key == KeyEvent.VK_D && !keyDown[3]) {
-				handler.playerObject.setxDirection(1);
+				Handler.playerObject.setxDirection(1);
 				keyDown[2] = true;
 			}
 			else if(key == KeyEvent.VK_D) {
-				handler.playerObject.setxDirection(2);
+				Handler.playerObject.setxDirection(2);
 				keyDown[2] = true;
 			}
 			if(key == KeyEvent.VK_A && !keyDown[2]) {
-				handler.playerObject.setxDirection(0);
+				Handler.playerObject.setxDirection(0);
 				keyDown[3] = true;
 			}
 			else if(key == KeyEvent.VK_A) {
-				handler.playerObject.setxDirection(2);
+				Handler.playerObject.setxDirection(2);
 				keyDown[3] = true;
 			}
 				
 			//Jump
 			if(key == KeyEvent.VK_SPACE) {
 				keyDown[4] = true;
-				if(handler.playerObject.isGrounded()) {
-					handler.playerObject.velY -= 20;
-					handler.playerObject.setGrounded(false);
-					handler.playerObject.jumping = true;
+				if(Handler.playerObject.isGrounded()) {
+					Handler.playerObject.velY -= 20;
+					Handler.playerObject.setGrounded(false);
+					Handler.playerObject.jumping = true;
 				}
 			}
 		}
@@ -89,31 +86,31 @@ public class KeyInput extends KeyAdapter {
 			if(key == KeyEvent.VK_S) keyDown[1] = false;
 			if(key == KeyEvent.VK_D) {
 				if(keyDown[3]){ //Opposite direction key still pressed, move that way from rest
-					handler.playerObject.setxDirection(0);
+					Handler.playerObject.setxDirection(0);
 				} else { //Both direction keys are released, lower player X velocity
-					handler.playerObject.setxDirection(2);
-					handler.playerObject.setVelX(Game.clamp(handler.playerObject.getVelX(), -2, 2));
+					Handler.playerObject.setxDirection(2);
+					Handler.playerObject.setVelX(Game.clamp(Handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[2] = false;
 			}
 			if(key == KeyEvent.VK_A) {
 				if(keyDown[2]){ //Opposite direction key still pressed, move that way from rest
-					handler.playerObject.setxDirection(1);
+					Handler.playerObject.setxDirection(1);
 				} else { //Both direction keys are released, lower player X velocity
-					handler.playerObject.setxDirection(2);
-					handler.playerObject.setVelX(Game.clamp(handler.playerObject.getVelX(), -2, 2));
+					Handler.playerObject.setxDirection(2);
+					Handler.playerObject.setVelX(Game.clamp(Handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[3] = false;
 			}
 			if(key == KeyEvent.VK_SPACE) {
 				keyDown[4] = false;
-				if(!handler.playerObject.isGrounded() && handler.playerObject.velY < -5) {
-					handler.playerObject.velY = -5;
+				if(!Handler.playerObject.isGrounded() && Handler.playerObject.velY < -5) {
+					Handler.playerObject.velY = -5;
 				}
 			}
 				
 			//Horizontal movement
-			if(!keyDown[2] && !keyDown[3]) handler.playerObject.setxDirection(2);
+			if(!keyDown[2] && !keyDown[3]) Handler.playerObject.setxDirection(2);
 		}
 	}
 }
