@@ -62,6 +62,17 @@ public class KeyInput extends KeyAdapter {
 				System.out.println("** Debug Mode Off **");
 			}
 		}
+		//Log FPS mode
+		if(key == KeyEvent.VK_F2) {
+			if(!Game.logFPSMode) {
+				Game.logFPSMode = true;
+				System.out.println("** Log FPS On **");
+			}
+			else {
+				Game.logFPSMode = false;
+				System.out.println("** Log FPS Off **");
+			}
+		}
 		
 		//Quit game
 		if(key == KeyEvent.VK_ESCAPE && Game.gameState == STATE.Game && !Game.transitioning && !Game.levelEnd) {

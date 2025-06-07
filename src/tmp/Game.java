@@ -114,6 +114,7 @@ public class Game extends Canvas implements Runnable {
 
     public static STATE gameState = STATE.Menu;
 	public static boolean debugMode = false;
+	public static boolean logFPSMode = false;
 	
 	//Constructor
 	public Game() {
@@ -219,7 +220,7 @@ public class Game extends Canvas implements Runnable {
 			//Output current FPS if debug mode is active
 			if((System.currentTimeMillis() - timer) >= 1000) {
 				timer = System.currentTimeMillis();
-				if(debugMode) {
+				if(logFPSMode) {
 					System.out.println("FPS: " + frames);
 				}
 				frames = 0;
