@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 import Item.BlitzOrb;
 import Item.HealOrb;
@@ -77,6 +75,7 @@ public class Game extends Canvas implements Runnable {
 	public static SpriteSheet sprite_sheet_bullet;
 	public static SpriteSheet sprite_sheet_strider;
 	public static SpriteSheet sprite_sheet_thumper;
+	public static SpriteSheet sprite_sheet_wanderer;
 	public static SpriteSheet sprite_sheet_wisp;
 	public static SpriteSheet sprite_sheet_golem;
 	public static SpriteSheet sprite_sheet_core;
@@ -128,7 +127,7 @@ public class Game extends Canvas implements Runnable {
 		blitzBackgroundImg_1 = loader.loadImage("/blitzBackground_1.png");
 		blitzBackgroundImg_2 = loader.loadImage("/blitzBackground_2.png");
 		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_3.png");
-		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_4.png");
+		blitzBackgroundImg_4 = loader.loadImage("/blitzBackground_4.png");
 		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
 		tomb_blocks_20x20 = new SpriteSheet(loader.loadImage("/tomb_blocks_20x20.png"), 3, 3, 20, 20);
 		dungeon_blocks_20x20 = new SpriteSheet(loader.loadImage("/dungeon_blocks_20x20.png"), 3, 3, 20, 20);
@@ -144,6 +143,7 @@ public class Game extends Canvas implements Runnable {
 		sprite_sheet_bullet = new SpriteSheet(loader.loadImage("/sprite_sheet_bullet.png"), 2, 10, 16, 16);
 		sprite_sheet_strider = new SpriteSheet(loader.loadImage("/sprite_sheet_strider.png"), 8, 8, 32, 32);
 		sprite_sheet_thumper = new SpriteSheet(loader.loadImage("/sprite_sheet_thumper.png"), 4, 8, 32, 32);
+		sprite_sheet_wanderer = new SpriteSheet(loader.loadImage("/sprite_sheet_wanderer.png"), 8, 8, 32, 32);
 		sprite_sheet_wisp = new SpriteSheet(loader.loadImage("/sprite_sheet_wisp.png"), 8, 10, 26, 26);
 		sprite_sheet_golem = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
 		sprite_sheet_core = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
@@ -742,10 +742,13 @@ public class Game extends Canvas implements Runnable {
 		else if(randomChoice <= 0.46) {
 			handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
 		}
-		else if(randomChoice <= 0.68) {
+		else if(randomChoice <= 0.65) {
 			handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
 		}
-		else if(randomChoice <= 0.83) {
+		else if(randomChoice <= 0.76) {
+			handler.addEnemy(new WandererEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
+		}
+		else if(randomChoice <= 0.87) {
 			handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
 		}
 		else if(randomChoice <= 0.98) {
