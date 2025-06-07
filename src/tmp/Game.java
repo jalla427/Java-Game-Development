@@ -34,7 +34,7 @@ public class Game extends Canvas implements Runnable {
 	public static int gameVolume = 50;
 	protected static int highScore = 0;
 	protected static int blitzHighScore = 0;
-	private static int[] saveData = new int[33];
+	private static int[] saveData = new int[34];
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
@@ -885,7 +885,7 @@ public class Game extends Canvas implements Runnable {
 					saveData[i] = Integer.parseInt(parts[i]);
 				}
 			} else {
-				saveData = new int[] {50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				saveData = new int[] {50, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 				writeOutSaveData();
 			}
 		} catch (IOException e) {
@@ -900,10 +900,12 @@ public class Game extends Canvas implements Runnable {
 				highScore = saveData[i];
 			} else if(i == 2) {
 				blitzHighScore = saveData[i];
-			} else if(i <= 10) {
-                unlockedSkins[i - 3] = saveData[i] == 1;
+			} else if(i == 3) {
+				playerSkin = saveData[i];
+			} else if(i <= 11) {
+                unlockedSkins[i - 4] = saveData[i] == 1;
 			} else {
-                unlockedLevels[i - 11] = saveData[i] == 1;
+                unlockedLevels[i - 12] = saveData[i] == 1;
 			}
 		}
 	}
@@ -920,10 +922,12 @@ public class Game extends Canvas implements Runnable {
 				 saveData[i] = highScore;
 			} else if (i == 2) {
 				saveData[i] = blitzHighScore;
-			} else if (i <= 10) {
-				saveData[i] = unlockedSkins[i - 3] ? 1 : 0;
+			} else if (i == 3) {
+				saveData[i] = playerSkin;
+			} else if (i <= 11) {
+				saveData[i] = unlockedSkins[i - 4] ? 1 : 0;
 			} else {
-				saveData[i] = unlockedLevels[i - 11] ? 1 : 0;
+				saveData[i] = unlockedLevels[i - 12] ? 1 : 0;
 			}
 		}
 
