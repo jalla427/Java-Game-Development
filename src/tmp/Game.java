@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
 
 import Item.BlitzOrb;
 import Item.HealOrb;
@@ -43,6 +44,7 @@ public class Game extends Canvas implements Runnable {
 	private static int transitionTimer = 0;
 	private static String transitionMessage = "";
 	public static int coinsLeft = 1;
+	public Random random = new Random();
 	
 	private static Handler handler;
 	private final Menu menu;
@@ -725,7 +727,7 @@ public class Game extends Canvas implements Runnable {
 	//Randomize blitz level creation
 	private void blitzLevelRandomizer() {
 		SpriteSheet randomBlockChoice;
-		double randomChoice = Math.random();
+		double randomChoice = random.nextDouble();
 		if(randomChoice <= 0.13) { randomBlockChoice =  tomb_blocks_20x20; levelBackgroundImg = tombBackgroundImg; }
 		else if(randomChoice <= 0.26) { randomBlockChoice =  dungeon_blocks_20x20; levelBackgroundImg = dungeonBackgroundImg; }
 		else if(randomChoice <= 0.39) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
@@ -740,33 +742,33 @@ public class Game extends Canvas implements Runnable {
 
 	//Randomize blitz enemy spawning
 	private void blitzRandomEnemySpawner() {
-		double randomChoice = Math.random();
+		double randomChoice = random.nextDouble();
 		if(randomChoice <= 0.24) {
-			handler.addEnemy(new HawkEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler, 200));
+			Handler.addEnemy(new HawkEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler, 200));
 		}
 		else if(randomChoice <= 0.46) {
-			handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+			Handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
 		}
 		else if(randomChoice <= 0.52 && crazyCoins) {
-			handler.addEnemy(new KeeperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
+			Handler.addEnemy(new KeeperEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.65) {
-			handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+			Handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
 		}
 		else if(randomChoice <= 0.76) {
-			handler.addEnemy(new WandererEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
+			Handler.addEnemy(new WandererEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.87) {
-			handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
+			Handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
 		}
 		else if(randomChoice <= 0.91 && hardMode) {
-			handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
+			Handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
 		}
 		else if(randomChoice <= 0.98) {
-			handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, handler, 100));
+			Handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, handler, 100));
 		}
 		else {
-			handler.addEnemy(new CoreEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 20, 20, ID.Enemy, handler));
+			Handler.addEnemy(new CoreEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 20, 20, ID.Enemy, handler));
 		}
 	}
 	
