@@ -759,7 +759,7 @@ public class Game extends Canvas implements Runnable {
 		else if(randomChoice <= 0.87) {
 			handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
 		}
-		else if(randomChoice <= 0.9 && hardMode) {
+		else if(randomChoice <= 0.91 && hardMode) {
 			handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * Game.sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
 		}
 		else if(randomChoice <= 0.98) {
