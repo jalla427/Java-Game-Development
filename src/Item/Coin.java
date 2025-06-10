@@ -39,7 +39,10 @@ public class Coin extends GameObject {
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
 
-		if(Game.hardMode) { this.coinValue += 25; }
+		if(Game.hardMode) {
+			this.coinValue += 25;
+			this.coinHeal = 2;
+		}
 		if(Game.darkMode) { this.coinValue += 25; }
 		if(Game.crazyCoins) {
 			this.coinValue += 25;

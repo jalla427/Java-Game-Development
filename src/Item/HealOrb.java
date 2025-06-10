@@ -37,6 +37,10 @@ public class HealOrb extends GameObject {
 		this.luminosity = 50;
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
+
+		if(Game.hardMode) {
+			this.orbHeal = 10;
+		}
 	}
 
 	public void tick() {
