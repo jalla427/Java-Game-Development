@@ -35,7 +35,7 @@ public class Game extends Canvas implements Runnable {
 	public static int gameVolume = 50;
 	protected static int highScore = 0;
 	protected static int blitzHighScore = 0;
-	private static int[] saveData = new int[34];
+	private static int[] saveData = new int[38];
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
@@ -47,7 +47,7 @@ public class Game extends Canvas implements Runnable {
 	public Random random = new Random();
 	
 	private static Handler handler;
-	private final Menu menu;
+	protected final Menu menu;
 	public static HUD hud;
 	protected static TileMapBuilder tombTileMapBuilder;
 
@@ -112,7 +112,7 @@ public class Game extends Canvas implements Runnable {
 		Settings,
 		Statistics,
 		LevelSelect,
-		Blitz,
+		Controls,
 		Game
 	}
 
@@ -251,7 +251,7 @@ public class Game extends Canvas implements Runnable {
 				menu.tick();
 			}
 		}
-		else if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect) {
+		else if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect || gameState == STATE.Controls) {
 			handler.tick();
 			menu.tick();
 		}
@@ -654,7 +654,7 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, sWidth, sHeight);
 
-		if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect) {
+		if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect || gameState == STATE.Controls) {
 			g.drawImage(backgroundImg, 0, 0, null);
 		}
 		if(gameState == STATE.Game) {
@@ -906,18 +906,26 @@ public class Game extends Canvas implements Runnable {
 
 		//Set game values based on retrieved save data
 		for (int i = 0; i < saveData.length; i++) {
-			if(i == 0) {
+			if (i == 0) {
 				gameVolume = saveData[i];
-			} else if(i == 1) {
+			} else if (i == 1) {
 				highScore = saveData[i];
-			} else if(i == 2) {
+			} else if (i == 2) {
 				blitzHighScore = saveData[i];
-			} else if(i == 3) {
+			} else if (i <= 10) {
+				unlockedSkins[i - 3] = saveData[i] == 1;
+			} else if (i <= 32) {
+				unlockedLevels[i - 11] = saveData[i] == 1;
+			} else if (i == 33) {
 				playerSkin = saveData[i];
-			} else if(i <= 11) {
-                unlockedSkins[i - 4] = saveData[i] == 1;
-			} else {
-                unlockedLevels[i - 12] = saveData[i] == 1;
+			} else if (i <= 34) {
+				KeyInput.keyBinds[0] = saveData[i];
+			} else if (i <= 35) {
+				KeyInput.keyBinds[1] = saveData[i];
+			} else if (i <= 36) {
+				KeyInput.keyBinds[2] = saveData[i];
+			} else if (i <= 37) {
+				KeyInput.keyBinds[3] = saveData[i];
 			}
 		}
 	}
@@ -927,19 +935,27 @@ public class Game extends Canvas implements Runnable {
 		String fileDir = "./save"; //Save directory
 
 		//Set save data values based on current game values
-		for (int i = 0; i < saveData.length; i++) {
-			if (i == 0) {
+		for(int i = 0; i < saveData.length; i++) {
+			if(i == 0) {
 				 saveData[i] = gameVolume;
-			} else if (i == 1) {
+			} else if(i == 1) {
 				 saveData[i] = highScore;
-			} else if (i == 2) {
+			} else if(i == 2) {
 				saveData[i] = blitzHighScore;
-			} else if (i == 3) {
+			} else if(i <= 10) {
+				saveData[i] = unlockedSkins[i - 3] ? 1 : 0;
+			} else if(i <= 32) {
+				saveData[i] = unlockedLevels[i - 11] ? 1 : 0;
+			} else if(i <= 33) {
 				saveData[i] = playerSkin;
-			} else if (i <= 11) {
-				saveData[i] = unlockedSkins[i - 4] ? 1 : 0;
-			} else {
-				saveData[i] = unlockedLevels[i - 12] ? 1 : 0;
+			} else if(i <= 34) {
+				saveData[i] = KeyInput.keyBinds[0];
+			} else if(i <= 35) {
+				saveData[i] = KeyInput.keyBinds[1];
+			} else if(i <= 36) {
+				saveData[i] = KeyInput.keyBinds[2];
+			} else if(i <= 37) {
+				saveData[i] = KeyInput.keyBinds[3];
 			}
 		}
 
@@ -971,7 +987,7 @@ public class Game extends Canvas implements Runnable {
 
 				//Write out default data
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile))) {
-					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0");
+					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 68, 65, 32, 83");
 				}
 			}
 		} catch (IOException e) {

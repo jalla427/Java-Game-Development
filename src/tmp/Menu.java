@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 import java.util.Random;
 
 import tmp.Game.STATE;
@@ -19,15 +21,12 @@ public class Menu extends MouseAdapter {
 	private Random r;
 	protected static int bWidth = 200;
 	protected static int bHeight = 64;
-	public int finalScore = 0;
+	protected static boolean isBinding = false;
+	protected static int bindingTarget = -1;
 	
 	public Menu() {
 		menu_buttons = Game.sprite_sheet_menu_buttons;
 		player_skins = Game.sprite_sheet;
-	}
-	
-	public void mousePressed(MouseEvent e) {
-
 	}
 	
 	public void mouseReleased(MouseEvent e) {
@@ -36,6 +35,7 @@ public class Menu extends MouseAdapter {
 		int my = e.getY();
 		Button buttonClicked = Handler.getButtonAtLocation(mx, my);
 
+		//Main menu
 		if(Game.gameState == STATE.Menu && buttonClicked != null) {
 			//Quit
 			if(buttonClicked.getName() == "Quit") {
@@ -72,7 +72,14 @@ public class Menu extends MouseAdapter {
 			}
 		}
 
+		//Settings menu
 		if(Game.gameState == STATE.Settings && buttonClicked != null) {
+			//Controls menu
+			if(buttonClicked.getName() == "Controls") {
+				Handler.buttonList.clear();
+				Handler.imageButtonList.clear();
+				Game.gameState = STATE.Controls;
+			}
 			//Volume
 			if(buttonClicked.getName() == "LeftVolume") {
 				Game.gameVolume = Game.clamp(Game.gameVolume - 10, 0, 100);
@@ -86,7 +93,7 @@ public class Menu extends MouseAdapter {
 				Handler.buttonList.clear();
 				Handler.imageButtonList.clear();
 			}
-			//Difficulty Mods
+			//Difficulty modes
 			if(buttonClicked.getName() == "Hard Mode: Off") {
 				Game.hardMode = true;
 				buttonClicked.setName("Hard Mode: On");
@@ -114,6 +121,7 @@ public class Menu extends MouseAdapter {
 				buttonClicked.setName("Crazy Coins: Off");
 				AudioPlayer.playSound("/buttonClick.wav");
 			}
+			//Player skin select
 			if(buttonClicked.getName().contains("playerSkinOption")) {
 				//Retrieve number at the end of button name (should be 1-8)
 				int skinNum = Integer.parseInt(buttonClicked.getName().substring((buttonClicked.getName().length() - 1)));
@@ -125,6 +133,39 @@ public class Menu extends MouseAdapter {
 			}
 		}
 
+		//Controls menu
+		if(Game.gameState == STATE.Controls && buttonClicked != null && !isBinding) {
+			//Settings
+			if(buttonClicked.getName() == "Settings") {
+				Game.gameState = STATE.Settings;
+				Game.clearButtons = true;
+				AudioPlayer.playSound("/buttonClick.wav");
+			}
+
+			//Change keybindings
+			if(Objects.equals(buttonClicked.getName(), KeyEvent.getKeyText(KeyInput.keyBinds[0]))) {
+				isBinding = true;
+				bindingTarget = 0;
+				buttonClicked.setName("PRESS ANY KEY");
+			}
+			if(Objects.equals(buttonClicked.getName(), KeyEvent.getKeyText(KeyInput.keyBinds[1]))) {
+				isBinding = true;
+				bindingTarget = 1;
+				buttonClicked.setName("PRESS ANY KEY");
+			}
+			if(Objects.equals(buttonClicked.getName(), KeyEvent.getKeyText(KeyInput.keyBinds[2]))) {
+				isBinding = true;
+				bindingTarget = 2;
+				buttonClicked.setName("PRESS ANY KEY");
+			}
+			if(Objects.equals(buttonClicked.getName(), KeyEvent.getKeyText(KeyInput.keyBinds[3]))) {
+				isBinding = true;
+				bindingTarget = 3;
+				buttonClicked.setName("PRESS ANY KEY");
+			}
+		}
+
+		//Level select
 		if(Game.gameState == STATE.LevelSelect && buttonClicked != null) {
 			if(buttonClicked.getName().contains("Level ") && buttonClicked.getName() != "Level Select") {
 				AudioPlayer.playSound("/buttonClick.wav");
@@ -132,6 +173,7 @@ public class Menu extends MouseAdapter {
 			}
 		}
 
+		//Return to main menu
 		if((Game.gameState == STATE.Settings || Game.gameState == STATE.LevelSelect || Game.gameState == STATE.Statistics) && buttonClicked != null) {
 			//Back to main menu
 			if(buttonClicked.getName() == "Menu") {
@@ -234,8 +276,25 @@ public class Menu extends MouseAdapter {
 				}
 
 				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Player Skin", Game.tombButton_small, (Game.sWidth/2) - 80, 280, 160, 32));
-				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Score Modifiers", Game.tombButton_small, (Game.sWidth/2 - 200) - 80, 280, 160, 32));
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Score Modifiers", Game.tombButton_small, (Game.sWidth/2) - 280, 280, 160, 32));
 				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Volume: " + Game.gameVolume + "%", Game.tombButton_small, (Game.sWidth/2) - 80, 230, 160, 32));
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Controls", Game.tombButton_small, (Game.sWidth/2) - 80, 410, 160, 32));
+			}
+		}
+
+		if(Game.gameState == STATE.Controls) {
+			if(!buttonsFound) {
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, KeyEvent.getKeyText(KeyInput.keyBinds[0]), Game.tombButton_small, (Game.sWidth/2) - 50, 220, 160, 32));
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, KeyEvent.getKeyText(KeyInput.keyBinds[1]), Game.tombButton_small, (Game.sWidth/2) - 50, 260, 160, 32));
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, KeyEvent.getKeyText(KeyInput.keyBinds[2]), Game.tombButton_small, (Game.sWidth/2) - 50, 300, 160, 32));
+				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, KeyEvent.getKeyText(KeyInput.keyBinds[3]), Game.tombButton_small, (Game.sWidth/2) - 50, 340, 160, 32));
+
+				Handler.addButton(new ImageButton("Right Label", Game.sprite_sheet_menu_buttons.grabImageFast(2, 3), (Game.sWidth/2) - 90, 220, 32, 32));
+				Handler.addButton(new ImageButton("Left Label", Game.sprite_sheet_menu_buttons.grabImageFast(2, 2), (Game.sWidth/2) - 90, 260, 32, 32));
+				Handler.addButton(new ImageButton("Jump Label", Game.sprite_sheet_menu_buttons.grabImageFast(2, 1), (Game.sWidth/2) - 90, 300, 32, 32));
+				Handler.addButton(new ImageButton("Shield Label", Game.sprite_sheet_menu_buttons.grabImageFast(2, 4), (Game.sWidth/2) - 90, 340, 32, 32));
+
+				Handler.addButton(new ImageTextButton(fnt2, Color.WHITE, "Settings", Game.tombButton, (Game.sWidth/2) - (bWidth/2), 475, bWidth, bHeight));
 			}
 		}
 
@@ -352,6 +411,12 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
 			g.drawString("Settings", (Game.sWidth/2) - 95, 200);
+		}
+
+		if(Game.gameState == STATE.Controls) {
+			g.setFont(fnt);
+			g.setColor(Color.WHITE);
+			g.drawString("Controls", (Game.sWidth/2) - 95, 200);
 		}
 
 		if(Game.gameState == STATE.Game) {

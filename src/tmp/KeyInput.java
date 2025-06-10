@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import tmp.Game.STATE;
 
 public class KeyInput extends KeyAdapter {
-	protected static int[] keyBinds = new int[] {KeyEvent.VK_D, KeyEvent.VK_A, KeyEvent.VK_SPACE};
+	protected static int[] keyBinds = new int[] {KeyEvent.VK_D, KeyEvent.VK_A, KeyEvent.VK_SPACE, KeyEvent.VK_S};
 	protected static boolean[] keyDown = new boolean[5];
 	
 	public KeyInput() {
@@ -21,7 +21,7 @@ public class KeyInput extends KeyAdapter {
 		int key = e.getKeyCode();
 
 		//Character Controls
-		if(Game.playerControl) {
+		if(Game.gameState == STATE.Game && Game.playerControl) {
 			//Directional movement
 			if(key == keyBinds[0] && !keyDown[1]) {
 				Handler.playerObject.setxDirection(1);
@@ -83,12 +83,20 @@ public class KeyInput extends KeyAdapter {
 				Game.paused = false;
 			}
 		}
+
+		//Actively rebinding key in controls menu
+		if(Game.gameState == STATE.Controls && Menu.isBinding) {
+			keyBinds[Menu.bindingTarget] = key;
+			Menu.isBinding = false;
+			Menu.bindingTarget = -1;
+			Handler.clearButtons();
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if(Game.playerControl) {
+		if(Game.gameState == STATE.Game && Game.playerControl) {
 			//Key events for player
 			if(key == keyBinds[0]) {
 				if(keyDown[1]){ //Opposite direction key still pressed, move that way from rest
