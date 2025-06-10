@@ -25,7 +25,7 @@ public class Bullet extends GameObject {
 	public Bullet(float x, float y, int width, int height, ID id, float targetX, float targetY, int speed, boolean homing, int sprite) {
 		super(x, y, width, height, id);
 
-		this.luminosity = 6;
+		this.luminosity = 20;
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 		this.sprite = sprite;
