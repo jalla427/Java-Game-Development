@@ -136,6 +136,8 @@ public class HawkEnemy extends GameObject {
 					this.animationFrame = 1;
 				}
 			}
+		} else {
+			this.animationFrame = 7;
 		}
 
 		this.enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);

@@ -62,6 +62,7 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage blitzBackgroundImg_2;
 	public static BufferedImage blitzBackgroundImg_3;
 	public static BufferedImage blitzBackgroundImg_4;
+	public static BufferedImage blitzBackgroundImg_5;
 	public static SpriteSheet sprite_sheet_menu_buttons;
 	public static SpriteSheet tomb_blocks_20x20;
 	public static SpriteSheet dungeon_blocks_20x20;
@@ -71,6 +72,7 @@ public class Game extends Canvas implements Runnable {
 	public static SpriteSheet blitz_blocks_2_20x20;
 	public static SpriteSheet blitz_blocks_3_20x20;
 	public static SpriteSheet blitz_blocks_4_20x20;
+	public static SpriteSheet blitz_blocks_5_20x20;
 	public static SpriteSheet sprite_sheet;
 	public static SpriteSheet sprite_sheet_hawk;
 	public static SpriteSheet sprite_sheet_sentry;
@@ -133,6 +135,7 @@ public class Game extends Canvas implements Runnable {
 		blitzBackgroundImg_2 = loader.loadImage("/blitzBackground_2.png");
 		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_3.png");
 		blitzBackgroundImg_4 = loader.loadImage("/blitzBackground_4.png");
+		blitzBackgroundImg_5 = loader.loadImage("/blitzBackground_5.png");
 		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
 		tomb_blocks_20x20 = new SpriteSheet(loader.loadImage("/tomb_blocks_20x20.png"), 3, 3, 20, 20);
 		dungeon_blocks_20x20 = new SpriteSheet(loader.loadImage("/dungeon_blocks_20x20.png"), 3, 3, 20, 20);
@@ -142,6 +145,7 @@ public class Game extends Canvas implements Runnable {
 		blitz_blocks_2_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_2_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_3_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_3_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_4_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_4_20x20.png"), 3, 3, 20, 20);
+		blitz_blocks_5_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_5_20x20.png"), 3, 3, 20, 20);
 		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 8, 15, 32, 32);
 		sprite_sheet_hawk = new SpriteSheet(loader.loadImage("/sprite_sheet_hawk.png"), 2, 7, 32, 32);
 		sprite_sheet_sentry = new SpriteSheet(loader.loadImage("/sprite_sheet_sentry.png"), 4, 4, 20, 20);
@@ -730,11 +734,12 @@ public class Game extends Canvas implements Runnable {
 		double randomChoice = random.nextDouble();
 		if(randomChoice <= 0.13) { randomBlockChoice =  tomb_blocks_20x20; levelBackgroundImg = tombBackgroundImg; }
 		else if(randomChoice <= 0.26) { randomBlockChoice =  dungeon_blocks_20x20; levelBackgroundImg = dungeonBackgroundImg; }
-		else if(randomChoice <= 0.39) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
-		else if(randomChoice <= 0.52) { randomBlockChoice =  blitz_blocks_1_20x20; levelBackgroundImg = blitzBackgroundImg_1; }
-		else if(randomChoice <= 0.65) { randomBlockChoice =  blitz_blocks_2_20x20; levelBackgroundImg = blitzBackgroundImg_2; }
-		else if(randomChoice <= 0.75) { randomBlockChoice =  blitz_blocks_3_20x20; levelBackgroundImg = blitzBackgroundImg_3; }
-		else if(randomChoice <= 0.85) { randomBlockChoice =  blitz_blocks_4_20x20; levelBackgroundImg = blitzBackgroundImg_4; }
+		else if(randomChoice <= 0.32) { randomBlockChoice =  burning_blocks_20x20; levelBackgroundImg = infernoBackgroundImg; }
+		else if(randomChoice <= 0.39) { randomBlockChoice =  blitz_blocks_1_20x20; levelBackgroundImg = blitzBackgroundImg_1; }
+		else if(randomChoice <= 0.52) { randomBlockChoice =  blitz_blocks_2_20x20; levelBackgroundImg = blitzBackgroundImg_2; }
+		else if(randomChoice <= 0.65) { randomBlockChoice =  blitz_blocks_3_20x20; levelBackgroundImg = blitzBackgroundImg_3; }
+		else if(randomChoice <= 0.75) { randomBlockChoice =  blitz_blocks_4_20x20; levelBackgroundImg = blitzBackgroundImg_4; }
+		else if(randomChoice <= 0.85) { randomBlockChoice =  blitz_blocks_5_20x20; levelBackgroundImg = blitzBackgroundImg_5; }
 		else { randomBlockChoice =  final_blocks_20x20; levelBackgroundImg = finalBackgroundImg; }
 
 		startLevelTransition(randomBlockChoice, 99, 999999, sWidth/2-16, sHeight/2-32);
