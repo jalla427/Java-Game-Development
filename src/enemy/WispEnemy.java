@@ -134,9 +134,9 @@ public class WispEnemy extends GameObject {
 
 					//Fire barrage of fireballs
 					AudioPlayer.playSound("/wisp_fire.wav");
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, false, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, false, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, false, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 2));
+					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, false, 2));
 				}
 			}
 		}

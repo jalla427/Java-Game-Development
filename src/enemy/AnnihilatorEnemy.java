@@ -42,8 +42,8 @@ public class AnnihilatorEnemy extends GameObject {
 		if(firingTimer >= 120) {
 			firingOffset = 1;
 			if(firingTimer >= 140 && Handler.enemyList.size() < 15) {
-				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*6)), true, 3));
-				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*6)), true, 3));
+				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*6)), true, 3));
+				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*6)), true, 3));
 				firingTimer = 0;
 				firingOffset = 0;
 			}
