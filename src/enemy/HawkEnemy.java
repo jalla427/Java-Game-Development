@@ -9,8 +9,7 @@ import java.awt.image.BufferedImage;
 import tmp.*;
 
 public class HawkEnemy extends GameObject {
-	
-	private final Handler handler;
+
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
@@ -26,10 +25,9 @@ public class HawkEnemy extends GameObject {
 	int retreatTimer;
 	boolean attacking = true;
 	
-	public HawkEnemy(int x, int y, int width, int height, ID id, Handler handler, int retreatNum) {
+	public HawkEnemy(int x, int y, int width, int height, ID id, int retreatNum) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 100;
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
 		this.animationFrame = 1;

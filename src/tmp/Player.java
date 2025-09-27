@@ -15,7 +15,6 @@ import tmp.ID;
 
 public class Player extends GameObject {
 
-	public Handler handler;
 	private BufferedImage player_image;
 	private final SpriteSheet ss;
 	private int playerSkin = 1;
@@ -31,12 +30,10 @@ public class Player extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public Player(int x, int y, int width, int height, int playerSkin, ID id, Handler handler) {
+	public Player(int x, int y, int width, int height, int playerSkin, ID id) {
 		super(x, y, width, height, id);
-		this.handler = handler;
 		this.luminosity = 300;
 		this.playerSkin = playerSkin;
-		this.direction = 1;
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 		

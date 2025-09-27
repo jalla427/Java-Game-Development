@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class WispEnemy extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
@@ -25,10 +24,9 @@ public class WispEnemy extends GameObject {
 	int retreatTimer;
 	boolean attacking = true;
 
-	public WispEnemy(int x, int y, int width, int height, ID id, Handler handler, int retreatNum) {
+	public WispEnemy(int x, int y, int width, int height, ID id, int retreatNum) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 100;
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
 		this.animationFrame = 1;
@@ -134,9 +132,9 @@ public class WispEnemy extends GameObject {
 
 					//Fire barrage of fireballs
 					AudioPlayer.playSound("/wisp_fire.wav");
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, false, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 2));
-					handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, false, 2));
+					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, false, 2));
+					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 2));
+					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, false, 2));
 				}
 			}
 		}

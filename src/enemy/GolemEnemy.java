@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 public class GolemEnemy extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 5;
@@ -31,10 +30,9 @@ public class GolemEnemy extends GameObject {
 	private boolean jumping = false;
 	private boolean xCollided = false;
 
-	public GolemEnemy(int x, int y, int width, int height, ID id, Handler handler) {
+	public GolemEnemy(int x, int y, int width, int height, ID id) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 100;
 		this.setGrounded(false);
 		this.direction = 1;

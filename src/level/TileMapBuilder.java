@@ -2,7 +2,6 @@ package level;
 
 import java.awt.image.BufferedImage;
 
-import tmp.Game;
 import tmp.Handler;
 import tmp.ID;
 import tmp.SpriteSheet;
@@ -21,7 +20,7 @@ public class TileMapBuilder {
 	private BufferedImage holeRedBlock;
 	private BufferedImage holeGreenBlock;
 	
-	public void createLevel(SpriteSheet tileSheetName, int[][] tiles, Handler handler) {
+	public void createLevel(SpriteSheet tileSheetName, int[][] tiles) {
 		this.handler = handler;
 		
 		prepTileImgs9x9(tileSheetName);

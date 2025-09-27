@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class ThumperEnemy extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 200;
@@ -28,10 +27,9 @@ public class ThumperEnemy extends GameObject {
 	boolean collided = false;
 	boolean motionLocked = false;
 
-	public ThumperEnemy(int x, int y, int width, int height, ID id, Handler handler) {
+	public ThumperEnemy(int x, int y, int width, int height, ID id) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 100;
 		this.setGrounded(false);
 		this.animType = 1;

@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class CoreEnemy extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int attackMode;
@@ -25,10 +24,9 @@ public class CoreEnemy extends GameObject {
 	private int modeTimer = 0;
 	private int homingTimer = 0;
 
-	public CoreEnemy(int x, int y, int width, int height, ID id, Handler handler) {
+	public CoreEnemy(int x, int y, int width, int height, ID id) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 150;
 		this.animationFrame = 1;
 		this.attackMode = 1;
@@ -232,8 +230,8 @@ public class CoreEnemy extends GameObject {
 		//Sentry ranged attack
 		if(attackMode == 3 && modeTimer != -1) {
 			if(homingTimer >= 20 && Handler.enemyList.size() <= 8) {
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), false, 2));
-				handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), false, 2));
+				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), false, 2));
+				Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 10, 10, ID.Enemy, Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), false, 2));
 				homingTimer = 0;
 			}
 			if(modeTimer >= 90) {

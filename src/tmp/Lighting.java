@@ -8,7 +8,7 @@ public class Lighting {
     private static Color[] darkness = new Color[5];
     private static Area[] lightBounds = new Area[5];
 
-    public static void render(Graphics2D g, Handler handler) {
+    public static void render(Graphics2D g) {
         Color[] darkness = new Color[5];
         darkness[0] = new Color(0, 0, 0, 0);
         darkness[1] = new Color(0, 0, 0, 25);

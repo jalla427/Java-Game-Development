@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class StriderEnemy extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 200;
@@ -30,10 +29,9 @@ public class StriderEnemy extends GameObject {
 	boolean jumping = false;
 	boolean xCollided = false;
 
-	public StriderEnemy(int x, int y, int width, int height, ID id, Handler handler) {
+	public StriderEnemy(int x, int y, int width, int height, ID id) {
 		super(x, y, width, height, id);
-		
-		this.handler = handler;
+
 		this.luminosity = 100;
 		this.setGrounded(false);
 		this.animType = 1;

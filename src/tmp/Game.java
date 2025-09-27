@@ -45,8 +45,7 @@ public class Game extends Canvas implements Runnable {
 	private static String transitionMessage = "";
 	public static int coinsLeft = 1;
 	public Random random = new Random();
-	
-	private static Handler handler;
+
 	protected final Menu menu;
 	public static HUD hud;
 	protected static TileMapBuilder tombTileMapBuilder;
@@ -172,7 +171,6 @@ public class Game extends Canvas implements Runnable {
 		brightBlueButton_long = loader.loadImage("/brightBlueButton_long.png");
 
 		//Create core objects
-		handler = new Handler();
 		tombTileMapBuilder = new TileMapBuilder();
 		menu = new Menu();
 		hud = new HUD();
@@ -249,21 +247,21 @@ public class Game extends Canvas implements Runnable {
 
 		//Based on gamestate, determine what needs to tick
 		if(gameState == STATE.Game) {
-			handler.tick();
+			Handler.tick();
 			hud.tick();
 			if(escapeGame || Game.paused || Game.levelEnd) {
 				menu.tick();
 			}
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.Settings || gameState == STATE.Statistics || gameState == STATE.LevelSelect || gameState == STATE.Controls) {
-			handler.tick();
+			Handler.tick();
 			menu.tick();
 		}
 
 		//Quit was selected
 		if(quit) {
-			while(handler.areLevel()) {
-				handler.clearLevel();
+			while(Handler.areLevel()) {
+				Handler.clearLevel();
 			}
 			quit = false;
 		}
@@ -325,8 +323,8 @@ public class Game extends Canvas implements Runnable {
 			//Detect level completion
 			if(coinsLeft == 0 && !gameOver && !transitioning && !levelEnd && levelSelected == 0) {
 				levelEnd = true;
-				while(handler.areEnemies()) {
-					handler.clearEnemies();
+				while(Handler.areEnemies()) {
+					Handler.clearEnemies();
 				}
 				playerControl = false;
 			}
@@ -455,180 +453,180 @@ public class Game extends Canvas implements Runnable {
 				//Brief pause between levels before calling enemies
 				if(hud.getLevel() == 1) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(100, 100, 32, 32, ID.Enemy, handler, 300));
+						Handler.addEnemy(new HawkEnemy(100, 100, 32, 32, ID.Enemy, 300));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 2) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 50));
-						handler.addEnemy(new HawkEnemy(3 * (sWidth / 4), 100, 32, 32, ID.Enemy, handler, 120));
-						handler.addEnemy(new SentryEnemy(0, 200, 20, 20, ID.Enemy, handler, 150, 0));
+						Handler.addEnemy(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, 50));
+						Handler.addEnemy(new HawkEnemy(3 * (sWidth / 4), 100, 32, 32, ID.Enemy, 120));
+						Handler.addEnemy(new SentryEnemy(0, 200, 20, 20, ID.Enemy, 150, 0));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 3) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, handler, 200));
-						handler.addEnemy(new SentryEnemy(120, 100, 20, 20, ID.Enemy, handler, 250, 30));
-						handler.addEnemy(new SentryEnemy(440, 100, 20, 20, ID.Enemy, handler, 250, 60));
-						handler.addEnemy(new SentryEnemy(760, 100, 20, 20, ID.Enemy, handler, 250, 0));
+						Handler.addEnemy(new HawkEnemy(sWidth / 4, 100, 32, 32, ID.Enemy, 200));
+						Handler.addEnemy(new SentryEnemy(120, 100, 20, 20, ID.Enemy, 250, 30));
+						Handler.addEnemy(new SentryEnemy(440, 100, 20, 20, ID.Enemy, 250, 60));
+						Handler.addEnemy(new SentryEnemy(760, 100, 20, 20, ID.Enemy, 250, 0));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 4) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(200, 100,32, 32, ID.Enemy, handler, 100));
-						handler.addEnemy(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 250, 50));
-						handler.addEnemy(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, handler, 250, 150));
-						handler.addEnemy(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, handler, 250, 50));
-						handler.addEnemy(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, handler, 250, 150));
+						Handler.addEnemy(new HawkEnemy(200, 100,32, 32, ID.Enemy, 100));
+						Handler.addEnemy(new SentryEnemy(40, 100, 20, 20, ID.Enemy, 250, 50));
+						Handler.addEnemy(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, 250, 150));
+						Handler.addEnemy(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, 250, 50));
+						Handler.addEnemy(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, 250, 150));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 5) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 200));
-						handler.addEnemy(new HawkEnemy(200, 300, 32, 32, ID.Enemy, handler, 100));
-						handler.addEnemy(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 50));
-						handler.addEnemy(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, handler, 200, 150));
+						Handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, 200));
+						Handler.addEnemy(new HawkEnemy(200, 300, 32, 32, ID.Enemy, 100));
+						Handler.addEnemy(new SentryEnemy(40, sHeight - 50, 20, 20, ID.Enemy, 200, 50));
+						Handler.addEnemy(new SentryEnemy(sWidth - 60, sHeight - 50, 20, 20, ID.Enemy, 200, 150));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 6) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 250));
-						handler.addEnemy(new SentryEnemy(420, 120, 20, 20, ID.Enemy, handler, 200, 100));
-						handler.addEnemy(new SentryEnemy(420, 160, 20, 20, ID.Enemy, handler, 200, 110));
-						handler.addEnemy(new SentryEnemy(460, 120, 20, 20, ID.Enemy, handler, 200, 120));
-						handler.addEnemy(new SentryEnemy(460, 160, 20, 20, ID.Enemy, handler, 200, 130));
+						Handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, 250));
+						Handler.addEnemy(new SentryEnemy(420, 120, 20, 20, ID.Enemy, 200, 100));
+						Handler.addEnemy(new SentryEnemy(420, 160, 20, 20, ID.Enemy,  200, 110));
+						Handler.addEnemy(new SentryEnemy(460, 120, 20, 20, ID.Enemy,  200, 120));
+						Handler.addEnemy(new SentryEnemy(460, 160, 20, 20, ID.Enemy,  200, 130));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 7) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(100, 150, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new StriderEnemy(sWidth - 100, 100, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(100, 150, 32, 32, ID.Enemy));
+						Handler.addEnemy(new StriderEnemy(sWidth - 100, 100, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 8) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(100, 400, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new StriderEnemy(sWidth - 132, 400, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(100, 400, 32, 32, ID.Enemy));
+						Handler.addEnemy(new StriderEnemy(sWidth - 132, 400, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(100, 150, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 9) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(100, 150, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(Game.sWidth - 100, 150, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(sWidth - 100, 400, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(100, 150, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(Game.sWidth - 100, 150, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 10) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(160, 180, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(540, 180, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(50, sHeight - 75, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(160, 180, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(540, 180, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 11) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy(180, 160, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(100, sHeight - 60, 32, 32, ID.Enemy));
+						Handler.addEnemy(new StriderEnemy(200, sHeight - 60, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy(180, 160, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 12) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new ThumperEnemy((Game.sWidth/2) + 48, 300, 32, 32, ID.Enemy, handler));
+						Handler.addEnemy(new StriderEnemy(Game.sWidth - 62, 220, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy((Game.sWidth/2) - 80, 300, 32, 32, ID.Enemy));
+						Handler.addEnemy(new ThumperEnemy((Game.sWidth/2) + 48, 300, 32, 32, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 13) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
-						handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 14) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 100));
-						handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, 100));
+						Handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 15) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
-						handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 200));
-						handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, 50));
+						Handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, 200));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 16) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 75));
-						handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
-						handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, 75));
+						Handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 17) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
-						handler.addEnemy(new GolemEnemy(80, Game.sHeight - 180, 40, 40, ID.Enemy, handler));
-						handler.addEnemy(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, 50));
+						Handler.addEnemy(new GolemEnemy(80, Game.sHeight - 180, 40, 40, ID.Enemy));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 18) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 150));
-						handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy, handler));
-						handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy, handler));
+						Handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, 150));
+						Handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 19) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 50));
-						handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, handler, 175));
-						handler.addEnemy(new SentryEnemy(40, 100, 20, 20, ID.Enemy, handler, 300, 200));
-						handler.addEnemy(new SentryEnemy(40, 220, 20, 20, ID.Enemy, handler, 200, 110));
-						handler.addEnemy(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, handler, 300, 120));
-						handler.addEnemy(new SentryEnemy(sWidth - 60, 220, 20, 20, ID.Enemy, handler, 200, 230));
+						Handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, 50));
+						Handler.addEnemy(new WispEnemy(Game.sWidth - 240, 100, 26, 26, ID.Enemy, 175));
+						Handler.addEnemy(new SentryEnemy(40, 100, 20, 20, ID.Enemy, 300, 200));
+						Handler.addEnemy(new SentryEnemy(40, 220, 20, 20, ID.Enemy, 200, 110));
+						Handler.addEnemy(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, 300, 120));
+						Handler.addEnemy(new SentryEnemy(sWidth - 60, 220, 20, 20, ID.Enemy, 200, 230));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 20) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy, handler));
-						handler.addEnemy(new StriderEnemy(30, 220, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new HawkEnemy(200, 180, 32, 32, ID.Enemy, handler, 100));
+						Handler.addEnemy(new GolemEnemy(Game.sWidth/2 + 20, 200, 40, 40, ID.Enemy));
+						Handler.addEnemy(new StriderEnemy(30, 220, 32, 32, ID.Enemy));
+						Handler.addEnemy(new HawkEnemy(200, 180, 32, 32, ID.Enemy, 100));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 21) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, handler, 200));
-						handler.addEnemy(new ThumperEnemy((Game.sWidth/2) - 80, 200, 32, 32, ID.Enemy, handler));
-						handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, handler, 100));
+						Handler.addEnemy(new HawkEnemy(200, 100, 32, 32, ID.Enemy, 200));
+						Handler.addEnemy(new ThumperEnemy((Game.sWidth/2) - 80, 200, 32, 32, ID.Enemy));
+						Handler.addEnemy(new WispEnemy(200, 100, 26, 26, ID.Enemy, 100));
 						endLevelTransition();
 					}
 				}
 				if(hud.getLevel() == 22) {
 					if (transitionTimer >= 200) {
-						handler.addEnemy(new CoreEnemy(100, 100, 20, 20, ID.Enemy, handler));
-						handler.addEnemy(new CoreEnemy(sWidth - 100, 100, 20, 20, ID.Enemy, handler));
+						Handler.addEnemy(new CoreEnemy(100, 100, 20, 20, ID.Enemy));
+						Handler.addEnemy(new CoreEnemy(sWidth - 100, 100, 20, 20, ID.Enemy));
 						endLevelTransition();
 					}
 				}
@@ -665,10 +663,10 @@ public class Game extends Canvas implements Runnable {
 			g.drawImage(levelBackgroundImg, 0, 0, null);
 		}
 
-		handler.render(g);
+		Handler.render(g);
 
 		if(gameState == STATE.Game) {
-			Lighting.render((Graphics2D) g, handler);
+			Lighting.render((Graphics2D) g);
 			hud.render(g);
 			if(transitioning && !escapeGame) {
 				//Next level banner
@@ -687,7 +685,7 @@ public class Game extends Canvas implements Runnable {
 			}
 		}
 
-		handler.renderHigherElements(g);
+		Handler.renderHigherElements(g);
 		menu.render(g);
 		g.dispose();
 		bs.show();
@@ -707,12 +705,12 @@ public class Game extends Canvas implements Runnable {
 				for(int i = 0;  i < KeyInput.keyDown.length; i++) {
 					KeyInput.keyDown[i] = false;
 				}
-				while(handler.areLevel()) {
-					handler.clearLevel();
+				while(Handler.areLevel()) {
+					Handler.clearLevel();
 				}
-				tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel), handler);
-				handler.findTotalLevelArea();
-				handler.playerObject = new Player(playerX, playerY, 32, 32, playerSkin, ID.Player, handler);
+				tombTileMapBuilder.createLevel(tileMap, LevelCollection.getLevel(nextLevel));
+				Handler.findTotalLevelArea();
+				Handler.playerObject = new Player(playerX, playerY, 32, 32, playerSkin, ID.Player);
 				hud.setLevel(nextLevel);
 				if(nextLevel <= 22) { unlockedLevels[nextLevel - 1] = true; }
 				setLevelCoinGoal(coins);
@@ -749,31 +747,31 @@ public class Game extends Canvas implements Runnable {
 	private void blitzRandomEnemySpawner() {
 		double randomChoice = random.nextDouble();
 		if(randomChoice <= 0.24) {
-			Handler.addEnemy(new HawkEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler, 200));
+			Handler.addEnemy(new HawkEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, 200));
 		}
 		else if(randomChoice <= 0.46) {
-			Handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+			Handler.addEnemy(new StriderEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.52 && crazyCoins) {
 			Handler.addEnemy(new KeeperEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.65) {
-			Handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy, handler));
+			Handler.addEnemy(new ThumperEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.76) {
 			Handler.addEnemy(new WandererEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 32, 32, ID.Enemy));
 		}
 		else if(randomChoice <= 0.87) {
-			Handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy, handler));
+			Handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy));
 		}
 		else if(randomChoice <= 0.91 && hardMode) {
 			Handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
 		}
 		else if(randomChoice <= 0.98) {
-			Handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, handler, 100));
+			Handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, 100));
 		}
 		else {
-			Handler.addEnemy(new CoreEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 20, 20, ID.Enemy, handler));
+			Handler.addEnemy(new CoreEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 20, 20, ID.Enemy));
 		}
 	}
 	
@@ -787,9 +785,9 @@ public class Game extends Canvas implements Runnable {
 		transitionTimer = 0;
 		setLevelCoinGoal(1);
 		levelSelected = 0;
-		while(handler.areEnemies() || handler.areCoins()) {
-			handler.clearEnemies();
-			handler.clearItems();
+		while(Handler.areEnemies() || Handler.areCoins()) {
+			Handler.clearEnemies();
+			Handler.clearItems();
 		}
 	}
 
@@ -801,7 +799,7 @@ public class Game extends Canvas implements Runnable {
 
 	//Coin spawning during active gameplay
 	private void coinSpawner() {
-		if (!handler.areCoins() && coinsLeft > 0 && !transitioning && !gameOver) {
+		if (!Handler.areCoins() && coinsLeft > 0 && !transitioning && !gameOver) {
 			boolean obstructed;
 			float attemptX;
 			float attemptY;
@@ -818,8 +816,8 @@ public class Game extends Canvas implements Runnable {
 				collision.ypoints = yCollision;
 				collision.npoints = xCollision.length;
 
-				for (int i = 0; i < handler.object.size(); i++) {
-					GameObject tempObject = handler.object.get(i);
+				for (int i = 0; i < Handler.object.size(); i++) {
+					GameObject tempObject = Handler.object.get(i);
 					Area a1;
 					Area a2;
 
@@ -845,14 +843,14 @@ public class Game extends Canvas implements Runnable {
 				}
 			} while (obstructed);
 
-			handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+			Handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin));
 
 			//If in blitz game mode, spawn an enemy every 8 coins, heal orb every 15 coins, and blitz orb every 50 coins
 			if(hud.getLevel() == 99) {
-				if((coinsLeft) % 50 != 1) handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin, handler));
+				if((coinsLeft) % 50 != 1) Handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin));
 				if(((coinsLeft) % 5 == 0 && Handler.enemyList.size() <= 6) || !Handler.areEnemies()) blitzRandomEnemySpawner();
-				if((coinsLeft) % 15 == 0) handler.addObject(new HealOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb, handler));
-				if((coinsLeft) % 50 == 0) handler.addObject(new BlitzOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb, handler));
+				if((coinsLeft) % 15 == 0) Handler.addObject(new HealOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb));
+				if((coinsLeft) % 50 == 0) Handler.addObject(new BlitzOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb));
 			}
 		}
 	}

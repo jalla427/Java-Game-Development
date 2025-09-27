@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 public class BlitzOrb extends GameObject {
 
-	private final Handler handler;
 	private BufferedImage coin_image;
 	private int animationFrame;
 	private int animationDelay;
@@ -21,12 +20,11 @@ public class BlitzOrb extends GameObject {
 
 	private int maxSpeed = 7;
 
-	public BlitzOrb(float x, float y, int width, int height, float speedOne, float speedTwo, ID id, Handler handler) {
+	public BlitzOrb(float x, float y, int width, int height, float speedOne, float speedTwo, ID id) {
 		super(x, y, width, height, id);
 		
 		double[] speeds = getSpeed(speedOne, speedTwo);
-		
-		this.handler = handler;
+
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 
@@ -45,7 +43,7 @@ public class BlitzOrb extends GameObject {
 		
 		//If coin is off-screen, delete it
 		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
-			handler.object.remove(this);
+			Handler.object.remove(this);
 			if(Game.debugMode) {
 				System.out.println("*** Blitz Orb Out of Bounds! ***");
 			}
@@ -145,7 +143,7 @@ public class BlitzOrb extends GameObject {
 			Game.coinsLeft--;
 			Handler.clearEnemies();
 			AudioPlayer.playSound("/coinGet.wav");
-			handler.object.remove(this);
+			Handler.object.remove(this);
 		}
 
 		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));

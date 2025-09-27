@@ -19,7 +19,7 @@ public class Handler {
 	public static float playerY = 0;
 	public static Area currentLevelArea = null;
 	
-	public void tick() {
+	public static void tick() {
 		if(!Game.paused) {
 			for(int i = 0; i < object.size(); i++) {
 				GameObject tempObject = object.get(i);
@@ -53,7 +53,7 @@ public class Handler {
         }
 	}
 	
-	public void render(Graphics g) {
+	public static void render(Graphics g) {
 		object.parallelStream().forEach(obj -> obj.render(g));
 		for(int i = 0; i < enemyList.size(); i++) {
 			GameObject tempEnemyObject = enemyList.get(i);
@@ -64,7 +64,7 @@ public class Handler {
 		}
 	}
 
-	public void renderHigherElements(Graphics g) {
+	public static void renderHigherElements(Graphics g) {
 		for(int i = 0; i < buttonList.size(); i++) {
 			try {
 				Button tempObject = buttonList.get(i);
@@ -75,7 +75,7 @@ public class Handler {
 		}
 	}
 	
-	public void addObject(GameObject object) {
+	public static void addObject(GameObject object) {
 		Handler.object.add(object);
 	}
 	public static void removeObject(GameObject object) {
@@ -106,7 +106,7 @@ public class Handler {
 		imageButtonList.remove(button);
 	}
 	
-	public void clearPlayer() {
+	public static void clearPlayer() {
 		Handler.playerObject = null;
 	}
 	
@@ -130,7 +130,7 @@ public class Handler {
 		}
 	}
 
-	public void clearItems() {
+	public static void clearItems() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
@@ -139,7 +139,7 @@ public class Handler {
 		}
 	}
 	
-	public void clearLevel() {
+	public static void clearLevel() {
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
 			if(tempObject.getID() == ID.Level || tempObject.getID() == ID.Coin || tempObject.getID() == ID.Orb) {
@@ -188,7 +188,7 @@ public class Handler {
 		}
 	}
 
-	public boolean areCoins() {
+	public static boolean areCoins() {
 		boolean foundCoin = false;
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
@@ -212,7 +212,7 @@ public class Handler {
 		return foundOrb;
 	}
 	
-	public boolean areLevel() {
+	public static boolean areLevel() {
 		boolean foundLevel = false;
 		for(int i = 0; i < object.size(); i++) {
 			GameObject tempObject = object.get(i);
@@ -269,7 +269,7 @@ public class Handler {
 		return buttonName;
 	}
 
-	public void findTotalLevelArea() {
+	public static void findTotalLevelArea() {
         Area combinedLevel = new Area();
         for (int i = 0; i < object.size(); i++) {
             GameObject tempObject = object.get(i);
