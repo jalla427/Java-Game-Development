@@ -106,6 +106,10 @@ public class Game extends Canvas implements Runnable {
 	public static boolean hardMode = false;
 	public static boolean darkMode = false;
 	public static boolean crazyCoins = false;
+
+	//Rendering vars
+	BufferStrategy bs;
+	Graphics g;
 	
 	//Used for determining the current scene
 	public enum STATE {
@@ -192,7 +196,7 @@ public class Game extends Canvas implements Runnable {
 		try {
 			thread.join();
 			running = false;
-		}catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -229,7 +233,8 @@ public class Game extends Canvas implements Runnable {
 			if((System.currentTimeMillis() - timer) >= 1000) {
 				timer = System.currentTimeMillis();
 				if(logFPSMode) {
-					System.out.println("FPS: " + frames);
+					int totalEntities = Handler.object.size() + Handler.enemyList.size();
+					System.out.println("FPS: " + frames + ", Objects: " +  totalEntities);
 				}
 				frames = 0;
 			}
@@ -644,14 +649,16 @@ public class Game extends Canvas implements Runnable {
 	
 	//Draw method
 	private void render() {
-		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null) {
-			this.createBufferStrategy(3);
-			return;
+		if(this.g == null) {
+			//Initialize Rendering
+			bs = this.getBufferStrategy();
+			if(bs == null) {
+				this.createBufferStrategy(3);
+				return;
+			}
 		}
-		
-		Graphics g = bs.getDrawGraphics();
-		
+		g = bs.getDrawGraphics();
+
 		//Background
 		g.setColor(Color.black);
 		g.fillRect(0, 0, sWidth, sHeight);

@@ -10,21 +10,16 @@ import tmp.GameObject;
 import tmp.Handler;
 import tmp.ID;
 
-public class Tile extends GameObject{
-
-	Handler handler;
+public class Tile extends GameObject {
 	
-	BufferedImage img;
+	int tileType;
 	private Polygon collision;
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public Tile(int x, int y, int width, int height, ID id, Handler handler, BufferedImage img) {
-		super(x, y, width, height, id);
-		
-		this.handler = handler;
-		this.img = img;
-		
+	public Tile(int x, int y, int tileType) {
+		super(x, y, TileMapBuilder.tileWidth, TileMapBuilder.tileHeight, ID.Level);
+		this.tileType = tileType;
 		updateCollision();
 	}
 
@@ -33,7 +28,7 @@ public class Tile extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(img, (int) x, (int) y, null);
+		g.drawImage(TileMapBuilder.tileTypeList[tileType], (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {
@@ -47,8 +42,8 @@ public class Tile extends GameObject{
 	}
 	
 	private void updateCollision() {
-		xCollision = new int[] {(int) x, (int) x+19, (int) x+19, (int) x};
-		yCollision = new int[] {(int) y, (int) y, (int) y+19, (int) y+19};
+		xCollision = new int[] {(int) x, (int) x + 19, (int) x + 19, (int) x};
+		yCollision = new int[] {(int) y, (int) y, (int) y + 19, (int) y + 19};
 		
 		collision = new Polygon();
 		collision.xpoints = xCollision;
