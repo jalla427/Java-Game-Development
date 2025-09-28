@@ -8,14 +8,12 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 public class GolemEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 5;
 	private int animationDelayTimer;
 	private int direction = 1;
 	private long walkAudioTimer = 0;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 7;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -38,10 +36,8 @@ public class GolemEnemy extends GameObject {
 		this.direction = 1;
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
-		
-		ss = Game.sprite_sheet_golem;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		
 		velX = 5;
 		velY = 5;
@@ -178,8 +174,7 @@ public class GolemEnemy extends GameObject {
 		}
 
 		//Draws correct sprite
-		this.enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
-		g.drawImage(this.enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(direction + spriteSet, this.animationFrame), (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {

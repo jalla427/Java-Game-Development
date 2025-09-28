@@ -7,13 +7,11 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class ThumperEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 200;
 	private int animationDelayTimer;
 	int animType;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 4;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -35,10 +33,8 @@ public class ThumperEnemy extends GameObject {
 		this.animType = 1;
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
-		
-		ss = Game.sprite_sheet_thumper;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		this.velX = 0;
 		this.velY = 0;
@@ -161,8 +157,7 @@ public class ThumperEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImageFast(animType + spriteSet, this.animationFrame);
-		g.drawImage(this.enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(animType + spriteSet, this.animationFrame), (int) x, (int) y, null);
 
 		if(attacking) {
 			this.setLuminosity(Game.clamp(this.getLuminosity() + 7, 0, 100));

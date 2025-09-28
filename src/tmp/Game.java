@@ -62,7 +62,6 @@ public class Game extends Canvas implements Runnable {
 	public static BufferedImage blitzBackgroundImg_3;
 	public static BufferedImage blitzBackgroundImg_4;
 	public static BufferedImage blitzBackgroundImg_5;
-	public static SpriteSheet sprite_sheet_menu_buttons;
 	public static SpriteSheet tomb_blocks_20x20;
 	public static SpriteSheet dungeon_blocks_20x20;
 	public static SpriteSheet burning_blocks_20x20;
@@ -73,18 +72,9 @@ public class Game extends Canvas implements Runnable {
 	public static SpriteSheet blitz_blocks_4_20x20;
 	public static SpriteSheet blitz_blocks_5_20x20;
 	public static SpriteSheet sprite_sheet;
-	public static SpriteSheet sprite_sheet_hawk;
-	public static SpriteSheet sprite_sheet_sentry;
-	public static SpriteSheet sprite_sheet_bullet;
-	public static SpriteSheet sprite_sheet_strider;
-	public static SpriteSheet sprite_sheet_thumper;
-	public static SpriteSheet sprite_sheet_wanderer;
-	public static SpriteSheet sprite_sheet_wisp;
-	public static SpriteSheet sprite_sheet_golem;
-	public static SpriteSheet sprite_sheet_core;
-	public static SpriteSheet sprite_sheet_keeper;
-	public static SpriteSheet sprite_sheet_annihilator;
 	public static SpriteSheet sprite_sheet_coin;
+	public static SpriteSheet[] enemySpriteSheets;
+	public static SpriteSheet sprite_sheet_menu_buttons;
 	public static BufferedImage meter_overlay;
 	public static BufferedImage tombGameBanner;
 	public static BufferedImage tombButton;
@@ -139,7 +129,6 @@ public class Game extends Canvas implements Runnable {
 		blitzBackgroundImg_3 = loader.loadImage("/blitzBackground_3.png");
 		blitzBackgroundImg_4 = loader.loadImage("/blitzBackground_4.png");
 		blitzBackgroundImg_5 = loader.loadImage("/blitzBackground_5.png");
-		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
 		tomb_blocks_20x20 = new SpriteSheet(loader.loadImage("/tomb_blocks_20x20.png"), 3, 3, 20, 20);
 		dungeon_blocks_20x20 = new SpriteSheet(loader.loadImage("/dungeon_blocks_20x20.png"), 3, 3, 20, 20);
 		burning_blocks_20x20 = new SpriteSheet(loader.loadImage("/burning_blocks_20x20.png"), 3, 3, 20, 20);
@@ -150,18 +139,24 @@ public class Game extends Canvas implements Runnable {
 		blitz_blocks_4_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_4_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_5_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_5_20x20.png"), 3, 3, 20, 20);
 		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 8, 15, 32, 32);
-		sprite_sheet_hawk = new SpriteSheet(loader.loadImage("/sprite_sheet_hawk.png"), 2, 7, 32, 32);
-		sprite_sheet_sentry = new SpriteSheet(loader.loadImage("/sprite_sheet_sentry.png"), 4, 4, 20, 20);
-		sprite_sheet_bullet = new SpriteSheet(loader.loadImage("/sprite_sheet_bullet.png"), 3, 10, 16, 16);
-		sprite_sheet_strider = new SpriteSheet(loader.loadImage("/sprite_sheet_strider.png"), 8, 8, 32, 32);
-		sprite_sheet_thumper = new SpriteSheet(loader.loadImage("/sprite_sheet_thumper.png"), 4, 8, 32, 32);
-		sprite_sheet_wanderer = new SpriteSheet(loader.loadImage("/sprite_sheet_wanderer.png"), 8, 8, 32, 32);
-		sprite_sheet_wisp = new SpriteSheet(loader.loadImage("/sprite_sheet_wisp.png"), 8, 10, 26, 26);
-		sprite_sheet_golem = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
-		sprite_sheet_core = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
-		sprite_sheet_keeper = new SpriteSheet(loader.loadImage("/sprite_sheet_keeper.png"), 2, 22, 32, 32);
-		sprite_sheet_annihilator = new SpriteSheet(loader.loadImage("/sprite_sheet_annihilator.png"), 4, 6, 64, 48);
 		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 3, 17, 10, 10);
+
+		//Enemy SpriteSheets
+		enemySpriteSheets = new SpriteSheet[11];
+		enemySpriteSheets[0] = new SpriteSheet(loader.loadImage("/sprite_sheet_hawk.png"), 2, 7, 32, 32);
+		enemySpriteSheets[1] = new SpriteSheet(loader.loadImage("/sprite_sheet_sentry.png"), 4, 4, 20, 20);
+		enemySpriteSheets[2] = new SpriteSheet(loader.loadImage("/sprite_sheet_bullet.png"), 3, 10, 16, 16);
+		enemySpriteSheets[3] = new SpriteSheet(loader.loadImage("/sprite_sheet_strider.png"), 8, 8, 32, 32);
+		enemySpriteSheets[4] = new SpriteSheet(loader.loadImage("/sprite_sheet_thumper.png"), 4, 8, 32, 32);
+		enemySpriteSheets[5] = new SpriteSheet(loader.loadImage("/sprite_sheet_wanderer.png"), 8, 8, 32, 32);
+		enemySpriteSheets[6] = new SpriteSheet(loader.loadImage("/sprite_sheet_wisp.png"), 8, 10, 26, 26);
+		enemySpriteSheets[7] = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
+		enemySpriteSheets[8] = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
+		enemySpriteSheets[9] = new SpriteSheet(loader.loadImage("/sprite_sheet_keeper.png"), 2, 22, 32, 32);
+		enemySpriteSheets[10] = new SpriteSheet(loader.loadImage("/sprite_sheet_annihilator.png"), 4, 6, 64, 48);
+
+		//HUD+Menu elements
+		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
 		meter_overlay = loader.loadImage("/meter_overlay.png");
 		tombGameBanner = loader.loadImage("/tombGameBanner.png");
 		tombButton = loader.loadImage("/tombButton.png");

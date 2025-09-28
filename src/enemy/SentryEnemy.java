@@ -14,9 +14,9 @@ import tmp.SpriteSheet;
 
 public class SentryEnemy extends GameObject {
 
-	private BufferedImage enemy_image;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 1;
 	private int spriteSet = 0;
+	private int state = 2; //2=resting, 1=firing
 	
 	private int timer = 0;
 	private int fireRate = 150;
@@ -29,22 +29,20 @@ public class SentryEnemy extends GameObject {
 		this.fireRate = Game.clamp(fireRate, 20, 500);
 		
 		timer = Game.clamp(timerOffset, 0, fireRate - 10);
-		
-		ss = Game.sprite_sheet_sentry;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
-		enemy_image = ss.grabImageFast(1, 2 + spriteSet);
 	}
 
 	public void tick() {
 		timer++;
 		if(timer == fireRate - 10) {
 			luminosity = width;
-			enemy_image = ss.grabImageFast(1, 1 + spriteSet);
+			state = 1;
 		}
 		if(timer >= fireRate) {
 			timer = 0;
 			luminosity = 0;
-			enemy_image = ss.grabImageFast(1, 2 + spriteSet);
+			state = 2;
 
 			AudioPlayer.playSound("/bulletFire.wav");
 			Handler.addBullet(new Bullet(this.x + (width/2), this.y + (height/2), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 1));
@@ -52,7 +50,7 @@ public class SentryEnemy extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(1, state + spriteSet), (int) x, (int) y, null);
 	}
 	
 	public Polygon getBounds() {

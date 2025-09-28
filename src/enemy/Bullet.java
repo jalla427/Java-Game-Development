@@ -8,11 +8,10 @@ import java.awt.image.BufferedImage;
 import tmp.*;
 
 public class Bullet extends GameObject {
-	private BufferedImage bullet_image;
 	private int animationFrame;
 	private int animationDelay;
-	SpriteSheet ss;
-	int sprite;
+	private int enemySpriteNum = 2;
+	private int sprite;
 
 	private Polygon collision;
 	private int[] xCollision;
@@ -35,9 +34,6 @@ public class Bullet extends GameObject {
 		double[] speeds = getSpeed(x, y, targetX, targetY);
 		this.velX = (float) speeds[0];
 		this.velY = (float) speeds[1];
-
-		this.ss = Game.sprite_sheet_bullet;
-		this.bullet_image = ss.grabImageFast(this.sprite, 1);
 	}
 
 	public void tick() {
@@ -56,7 +52,6 @@ public class Bullet extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		bullet_image = ss.grabImageFast(this.sprite, animationFrame);
 		this.animationDelay++;
 		if(this.animationDelay >= 5) {
 			this.animationDelay = 1;
@@ -68,7 +63,7 @@ public class Bullet extends GameObject {
 			}
 		}
 
-		g.drawImage(bullet_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(this.sprite, animationFrame), (int) x, (int) y, null);
 
 		//Draw collision box
 		if(Game.debugMode) {

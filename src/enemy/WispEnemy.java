@@ -7,11 +7,9 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class WispEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 6;
 	private int spriteSet = 0;
 	int direction = 1;
 
@@ -31,10 +29,8 @@ public class WispEnemy extends GameObject {
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
 		this.animationFrame = 1;
 		this.animationDelay = 1;
-		
-		ss = Game.sprite_sheet_wisp;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		
 		velX = 0;
 		velY = 0;
@@ -56,7 +52,6 @@ public class WispEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		enemy_image = ss.grabImageFast(direction + spriteSet, this.animationFrame);
 		this.animationDelay++;
 		if(this.animationDelay >= 10) {
 			this.animationDelay = 1;
@@ -69,7 +64,7 @@ public class WispEnemy extends GameObject {
 		}
 
 		findPlayerDirection();
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(direction + spriteSet, this.animationFrame), (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {

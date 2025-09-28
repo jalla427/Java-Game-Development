@@ -10,10 +10,9 @@ import tmp.*;
 
 public class HawkEnemy extends GameObject {
 
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 0;
 	private int spriteSet = 0;
 	
 	private Polygon collision;
@@ -32,10 +31,8 @@ public class HawkEnemy extends GameObject {
 		this.retreatTimer = Game.clamp(retreatNum, 0, 300);
 		this.animationFrame = 1;
 		this.animationDelay = 1;
-		
-		ss = Game.sprite_sheet_hawk;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 1; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 5;
 		velY = 5;
@@ -138,8 +135,7 @@ public class HawkEnemy extends GameObject {
 			this.animationFrame = 7;
 		}
 
-		this.enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(1 + spriteSet, this.animationFrame), (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {
@@ -173,7 +169,6 @@ public class HawkEnemy extends GameObject {
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
 			luminosity = 0;
-			enemy_image = ss.grabImageFast(1, 7);
 			AudioPlayer.playSound("/hawkOffBeep.wav");
 		}
 		
@@ -193,7 +188,6 @@ public class HawkEnemy extends GameObject {
 			if(retreatTimer <= 0) {
 				attacking = true;
 				luminosity = 100;
-				enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 				AudioPlayer.playSound("/hawkOnBeep.wav");
 			}
 		}
@@ -202,8 +196,6 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		if(attacking) {
-			enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);
-
 			if(homingTimer >= 10) {
 				if(Handler.playerX > this.x) {
 					velX = velX + 1;

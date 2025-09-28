@@ -7,12 +7,10 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class CoreEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int attackMode;
 	private int animationDelay;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 8;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -31,8 +29,7 @@ public class CoreEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.attackMode = 1;
 		this.animationDelay = 1;
-		
-		ss = Game.sprite_sheet_core;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 3; }
 		
 		velX = 5;
@@ -131,8 +128,8 @@ public class CoreEnemy extends GameObject {
 				this.animationFrame = 1;
 			}
 		}
-		enemy_image = ss.grabImageFast(this.attackMode + spriteSet, this.animationFrame);
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(this.attackMode + spriteSet, this.animationFrame), (int) x, (int) y, null);
 
 		//Draw collision box
 		if(Game.debugMode) {

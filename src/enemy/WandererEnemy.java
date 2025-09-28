@@ -7,13 +7,11 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class WandererEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 10;
 	private int animationDelayTimer;
 	int animType;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 5;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -36,10 +34,8 @@ public class WandererEnemy extends GameObject {
 		this.animType = 1;
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
-		
-		ss = Game.sprite_sheet_wanderer;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		this.velX = 0;
 		this.velY = 0;
@@ -154,8 +150,7 @@ public class WandererEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImageFast(animType + spriteSet, this.animationFrame);
-		g.drawImage(this.enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(animType + spriteSet, this.animationFrame), (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {

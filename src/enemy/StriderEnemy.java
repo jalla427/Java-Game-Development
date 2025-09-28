@@ -7,14 +7,12 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class StriderEnemy extends GameObject {
-
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay = 200;
 	private int animationDelayTimer;
 	int animType;
 	long walkAudioTimer = 0;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 3;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -38,10 +36,8 @@ public class StriderEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 		this.sightRange += (int) (Math.random() * 10);
-		
-		ss = Game.sprite_sheet_strider;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 5;
 		velY = 5;
@@ -185,8 +181,7 @@ public class StriderEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImageFast(animType + spriteSet, this.animationFrame);
-		g.drawImage(this.enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(animType + spriteSet, this.animationFrame), (int) x, (int) y, null);
 
 		if(getVelX() != 0 || getVelY() != 0) {
 			this.setLuminosity(Game.clamp(this.getLuminosity() + 10, 10, 100));

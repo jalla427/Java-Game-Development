@@ -7,10 +7,9 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class AnnihilatorEnemy extends GameObject {
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 10;
 	private int spriteSet = 0;
 	private int firingOffset = 0;
 	private int firingTimer = 0;
@@ -27,10 +26,8 @@ public class AnnihilatorEnemy extends GameObject {
 		this.luminosity = 200;
 		this.animationFrame = 1;
 		this.animationDelay = 1;
-		
-		ss = Game.sprite_sheet_annihilator;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 5;
 		velY = 0;
@@ -140,8 +137,7 @@ public class AnnihilatorEnemy extends GameObject {
 			}
 		}
 
-		this.enemy_image = ss.grabImageFast(1 + spriteSet + firingOffset, this.animationFrame);
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(1 + spriteSet + firingOffset, this.animationFrame), (int) x, (int) y, null);
 		
 		//Draw collision box
 		if(Game.debugMode) {

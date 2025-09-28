@@ -7,10 +7,9 @@ import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
 public class KeeperEnemy extends GameObject {
-	private BufferedImage enemy_image;
 	private int animationFrame;
 	private int animationDelay;
-	private SpriteSheet ss;
+	private int enemySpriteNum = 9;
 	private int spriteSet = 0;
 
 	private Polygon collision;
@@ -28,10 +27,8 @@ public class KeeperEnemy extends GameObject {
 		this.luminosity = 100;
 		this.animationFrame = 1;
 		this.animationDelay = 1;
-		
-		ss = Game.sprite_sheet_keeper;
+
 		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 1; }
-		enemy_image = ss.grabImageFast(1 + spriteSet, 1);
 		
 		velX = 4;
 		velY = 4;
@@ -131,8 +128,7 @@ public class KeeperEnemy extends GameObject {
 			}
 		}
 
-		enemy_image = ss.grabImageFast(1 + spriteSet, this.animationFrame);
-		g.drawImage(enemy_image, (int) x, (int) y, null);
+		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(1 + spriteSet, this.animationFrame), (int) x, (int) y, null);
 
 		//Draw collision box
 		if(Game.debugMode) {
