@@ -3,7 +3,6 @@ package enemy;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.awt.image.BufferedImage;
 
 import tmp.*;
 
@@ -17,61 +16,72 @@ public class Bullet extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
+	private float targetX;
+	private float targetY;
 	private int bulletSpeed;
 	private boolean homing = false;
 	private int homingTimer = 0;
+	public boolean active = false;
 
-	public Bullet(float x, float y, int width, int height, ID id, float targetX, float targetY, int speed, boolean homing, int sprite) {
+	public Bullet(float x, float y, int width, int height, ID id, float targetX, float targetY, int speed, boolean homing, int sprite, boolean active) {
 		super(x, y, width, height, id);
 
+		this.x = x;
+		this.y = y;
+		this.targetX = targetX;
+		this.targetY = targetY;
 		this.luminosity = 20;
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 		this.sprite = sprite;
 		this.homing = homing;
-
+		this.active = active;
 		this.bulletSpeed = speed;
-		double[] speeds = getSpeed(x, y, targetX, targetY);
-		this.velX = (float) speeds[0];
-		this.velY = (float) speeds[1];
+
+		refreshSpeeds();
 	}
 
 	public void tick() {
-		//Update position
-		if(this.homing) { updateVelocity(); }
-		this.setX(this.getX() + this.getVelX());
-		this.setY(this.getY() + this.getVelY());
-		
-		updateCollision();
-		
-		//If bullet is offscreen, delete it
-		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
-			Handler.bulletRemoveList.add(this);
+		if(active) {
+			//Update position
+			if (this.homing) {
+				updateVelocity();
+			}
+			this.setX(this.getX() + this.getVelX());
+			this.setY(this.getY() + this.getVelY());
+
+			updateCollision();
+
+			//If bullet is offscreen, delete it
+			if ((x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) && this.isActive()) {
+				Handler.bulletRemoveList.add(this);
+			}
 		}
 	}
 
 	public void render(Graphics g) {
-		//Cycles animation frame
-		this.animationDelay++;
-		if(this.animationDelay >= 5) {
-			this.animationDelay = 1;
-			if(this.animationFrame < 10) {
-				this.animationFrame++;
+		if(active) {
+			//Cycles animation frame
+			this.animationDelay++;
+			if (this.animationDelay >= 5) {
+				this.animationDelay = 1;
+				if (this.animationFrame < 10) {
+					this.animationFrame++;
+				} else {
+					this.animationFrame = 1;
+				}
 			}
-			else {
-				this.animationFrame = 1;
-			}
-		}
 
-		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(this.sprite, animationFrame), (int) x, (int) y, null);
+			g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(this.sprite, animationFrame), (int) x, (int) y, null);
 
-		//Draw collision box
-		if(Game.debugMode) {
-			g.setColor(Color.YELLOW);
-			try{
-				g.drawPolygon(collision);
-			} catch(NullPointerException npe) {
-				System.out.println(npe);
+			//Draw collision box
+			if (Game.debugMode) {
+				g.setColor(Color.YELLOW);
+				try {
+					g.drawPolygon(collision);
+				} catch (NullPointerException npe) {
+					System.out.println(npe);
+				}
 			}
 		}
 	}
@@ -130,4 +140,43 @@ public class Bullet extends GameObject {
 		return speeds;
 	}
 
+	public void refreshSpeeds() {
+		double[] speeds = getSpeed(this.x, this.y, this.targetX, this.targetY);
+		this.velX = (float) speeds[0];
+		this.velY = (float) speeds[1];
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	public boolean getActive() {
+		return this.active;
+	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setTargetX(float targetX) {
+		this.targetX = targetX;
+	}
+	public float getTargetX() {
+		return this.targetX;
+	}
+	public void setTargetY(float targetY) {
+		this.targetY = targetY;
+	}
+	public float getTargetY() {
+		return this.targetY;
+	}
+	public void setBulletSpeed(int speed) {
+		this.bulletSpeed = speed;
+	}
+	public int getBulletSpeed() {
+		return this.bulletSpeed;
+	}
+	public void setHoming(boolean homing) {
+		this.homing = homing;
+	}
+	public void setSprite(int sprite) {
+		this.sprite = sprite;
+	}
 }

@@ -1,5 +1,7 @@
 package tmp;
 
+import enemy.Bullet;
+
 import java.awt.Graphics;
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -8,10 +10,11 @@ import java.util.Objects;
 
 
 public class Handler {
-	public static ArrayList<GameObject> object = new ArrayList<>(100);
+	public static ArrayList<GameObject> object = new ArrayList<>(500);
 	public static ArrayList<GameObject> enemyList = new ArrayList<>(50);
-	public static ArrayList<GameObject> bulletAddList = new ArrayList<>(10);
-	public static ArrayList<GameObject> bulletRemoveList = new ArrayList<>(10);
+	public static ArrayList<Bullet> bulletAddList = new ArrayList<>(10);
+	public static ArrayList<Bullet> bulletRemoveList = new ArrayList<>(10);
+	public static LinkedList<Bullet> bulletReserveList = new LinkedList<>();
 	public static ArrayList<Button> buttonList = new ArrayList<>(30);
 	public static ArrayList<ImageButton> imageButtonList = new ArrayList<>(30);
 	public static Player playerObject = null;
@@ -28,11 +31,12 @@ public class Handler {
 
 			//Tick enemies
 			//Newly generated bullets are added to enemy list, removes oob bullets
-			enemyList.parallelStream().forEach(GameObject::tick);
 			enemyList.removeAll(bulletRemoveList);
+			bulletReserveList.addAll(bulletRemoveList);
 			bulletRemoveList.clear();
 			enemyList.addAll(bulletAddList);
 			bulletAddList.clear();
+			enemyList.parallelStream().forEach(GameObject::tick);
 
 			//Retrieve current player cords for easy access
 			if(playerObject != null) {
@@ -81,18 +85,51 @@ public class Handler {
 	public static void removeObject(GameObject object) {
 		Handler.object.remove(object);
 	}
-
 	public static void addEnemy(GameObject object) {
 		Handler.enemyList.add(object);
 	}
 	public static void removeEnemy(GameObject object) {
 		Handler.enemyList.remove(object);
 	}
-	public static void addBullet(GameObject object) {
-		Handler.bulletAddList.add(object);
+
+	public static void addBullet(float x, float y, float targetX, float targetY, int speed, boolean homing, int sprite) {
+		if(!bulletReserveList.isEmpty()) {
+			Bullet tempBullet = bulletReserveList.getFirst();
+			bulletReserveList.remove(tempBullet);
+
+			tempBullet.setX(x);
+			tempBullet.setY(y);
+			tempBullet.setTargetX(targetX);
+			tempBullet.setTargetY(targetY);
+			tempBullet.setBulletSpeed(speed);
+			tempBullet.setHoming(homing);
+			tempBullet.setSprite(sprite);
+			tempBullet.refreshSpeeds();
+
+			bulletAddList.add(tempBullet);
+			tempBullet.setActive(true);
+		}
 	}
-	public static void removeBullet(GameObject bullet) {
-		Handler.bulletRemoveList.add(bullet);
+
+	public static void removeBullet(Bullet bullet) {
+		bullet.setActive(false);
+		bullet.setX(0);
+		bullet.setY(0);
+		bulletReserveList.add(bullet);
+		enemyList.remove(bullet);
+	}
+
+	public static void initializeBulletReserve() {
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
+		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
 	}
 
 	public static void addButton(Button button) { buttonList.add(button); }

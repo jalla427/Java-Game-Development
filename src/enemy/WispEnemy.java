@@ -108,13 +108,12 @@ public class WispEnemy extends GameObject {
 		if(!attacking) {
 			if(Handler.playerX > this.x) {
 				velX = velX - 1;
-				velX = Game.clamp(velX, -2, 2);
-			}
+            }
 			else {
 				velX = velX + 1;
-				velX = Game.clamp(velX, -2, 2);
-			}
-			velY -= 1;
+            }
+            velX = Game.clamp(velX, -2, 2);
+            velY -= 1;
 			velY = Game.clamp(velY, -4, 4);
 			
 			retreatTimer -= 7;
@@ -127,9 +126,9 @@ public class WispEnemy extends GameObject {
 
 					//Fire barrage of fireballs
 					AudioPlayer.playSound("/wisp_fire.wav");
-					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY - 34, 7, false, 2));
-					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 2));
-					Handler.addBullet(new Bullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 66, 7, false, 2));
+					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY - 34, 7, false, 2);
+					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 16, 7, false, 2);
+					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 66, 7, false, 2);
 				}
 			}
 		}

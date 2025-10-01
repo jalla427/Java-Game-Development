@@ -198,7 +198,6 @@ public class Game extends Canvas implements Runnable {
 	
 	//Main game loop method
 	public void run() {
-		this.requestFocus();
 		long sleepTime;
 		long timeTaken;
 		double fps = 60;
@@ -228,8 +227,7 @@ public class Game extends Canvas implements Runnable {
 			if((System.currentTimeMillis() - timer) >= 1000) {
 				timer = System.currentTimeMillis();
 				if(logFPSMode) {
-					int totalEntities = Handler.object.size() + Handler.enemyList.size();
-					System.out.println("FPS: " + frames + ", Objects: " +  totalEntities);
+					System.out.println("FPS: " + frames);
 				}
 				frames = 0;
 			}
@@ -272,6 +270,7 @@ public class Game extends Canvas implements Runnable {
 			gameState = STATE.Game;
 			clearButtons = true;
 			startLevelTransition(tomb_blocks_20x20, 1, 3, sWidth/2-16, sHeight/2-32);
+			if(Handler.bulletReserveList.isEmpty()) { Handler.initializeBulletReserve(); }
 		}
 
 		//Game starts in blitz game mode
@@ -280,6 +279,7 @@ public class Game extends Canvas implements Runnable {
 			gameState = STATE.Game;
 			clearButtons = true;
 			blitzLevelRandomizer();
+			if(Handler.bulletReserveList.isEmpty()) { Handler.initializeBulletReserve(); }
 		}
 
 		//Game start by level selection

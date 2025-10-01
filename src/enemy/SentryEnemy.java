@@ -45,7 +45,7 @@ public class SentryEnemy extends GameObject {
 			state = 2;
 
 			AudioPlayer.playSound("/bulletFire.wav");
-			Handler.addBullet(new Bullet(this.x + (width/2), this.y + (height/2), 16, 16, ID.Enemy, Handler.playerX + 16, Handler.playerY + 16, 7, false, 1));
+			Handler.addBullet(this.x + (width/2), this.y + (height/2), Handler.playerX + 16, Handler.playerY + 16, 7, false, 1);
 		}
 	}
 
