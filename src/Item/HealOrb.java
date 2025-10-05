@@ -10,7 +10,7 @@ public class HealOrb extends GameObject {
 
 	private BufferedImage coin_image;
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private boolean animationForward = true;
 	SpriteSheet ss;
 
@@ -24,7 +24,7 @@ public class HealOrb extends GameObject {
 	public HealOrb(float x, float y, int width, int height, float speedOne, float speedTwo, ID id) {
 		super(x, y, width, height, id);
 		
-		double[] speeds = getSpeed(speedOne, speedTwo);
+		float[] speeds = getSpeed(speedOne, speedTwo);
 
 		this.animationFrame = 1;
 		this.animationDelay = 1;
@@ -33,8 +33,8 @@ public class HealOrb extends GameObject {
 		coin_image = ss.grabImageFast(2, 1);
 
 		this.luminosity = 50;
-		this.velX = (float) speeds[0];
-		this.velY = (float) speeds[1];
+		this.velX = speeds[0];
+		this.velY = speeds[1];
 
 		if(Game.hardMode) {
 			this.orbHeal = 10;
@@ -60,7 +60,7 @@ public class HealOrb extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 
 		//Horizontal Collision
-		this.setX(this.getX() + this.getVelX());
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by coin and tile
@@ -70,7 +70,7 @@ public class HealOrb extends GameObject {
 		//Determine if area is shared by coin and tile
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			this.setX(this.getX() - this.getVelX());
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -78,7 +78,7 @@ public class HealOrb extends GameObject {
 
 			//Move coin to the wall slowly until overlapping by one pixel
 			while(a1.isEmpty()) {
-				x += Math.signum(this.getVelX());
+				x += Math.signum(velX);
 				updateCollision();
 				a1.reset();
 				a1 = new Area(collision);
@@ -86,19 +86,19 @@ public class HealOrb extends GameObject {
 			}
 
 			//Position coin one pixel outside of wall
-			x -= Math.signum(this.getVelX());
+			x -= Math.signum(velX);
 			updateCollision();
 
 			//Flip velocity to bounce coin
-			this.setVelX(-this.getVelX());
-			this.setVelX((this.getVelX() * (float) ((1.5 * Math.random()) + 0.3)));
+			velX = -velX;
+			velX = (float) (velX * ((1.5 * Math.random()) + 0.3));
 
 			//Play bounce sound
 			AudioPlayer.playSound("/coinBounce.wav");
 		}
 
 		//Vertical Collision
-		this.setY(this.getY() + this.getVelY());
+		y += velY * Game.deltaTime;
 		updateCollision();
 
 		//Set grounded to false in case coin has moved over an edge
@@ -111,7 +111,7 @@ public class HealOrb extends GameObject {
 		//Determine if any area is shared by coin and tile
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			this.setY(this.getY() - this.getVelY());
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -119,7 +119,7 @@ public class HealOrb extends GameObject {
 
 			//Move coin to the wall slowly until overlapping by one pixel
 			while(a1.isEmpty()) {
-				y += Math.signum(this.getVelY());
+				y += Math.signum(velY);
 				updateCollision();
 				a1.reset();
 				a1 = new Area(collision);
@@ -127,12 +127,12 @@ public class HealOrb extends GameObject {
 			}
 
 			//Position coin one pixel outside of wall
-			y -= Math.signum(this.getVelY());
+			y -= Math.signum(velY);
 			updateCollision();
 
 			//Flip velocity to bounce coin
-			this.setVelY(-this.getVelY());
-			this.setVelY((this.getVelY() * (float) ((2 * Math.random()) + 0.5)));
+			velY = -velY;
+			velY = (float) (velY * ((2 * Math.random()) + 0.5));
 
 			//Play bounce sound
 			AudioPlayer.playSound("/coinBounce.wav");
@@ -151,13 +151,13 @@ public class HealOrb extends GameObject {
 			Handler.object.remove(this);
 		}
 
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 	}
 
 	public void render(Graphics g) {
 		coin_image = ss.grabImageFast(2, this.animationFrame);
-		this.animationDelay++;
+		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 3) {
 			this.animationDelay = 1;
 			if(this.animationForward) {
@@ -210,18 +210,16 @@ public class HealOrb extends GameObject {
 		return collision;
 	}
 	
-	public double[] getSpeed(float x, float y) {
-		double[] speeds = new double[2];
+	public float[] getSpeed(float x, float y) {
+		float[] speeds = new float[2];
 		int coinSpeed = 2;
-
-		if(Game.crazyCoins) { coinSpeed = coinSpeed * 2; }
 
 		double dx = x;
 		double dy = y;
 		double angle = Math.atan2(dy, dx);
 		
-		speeds[0] = Math.cos(angle) * coinSpeed;
-		speeds[1] = Math.sin(angle) * coinSpeed;
+		speeds[0] = (float) (Math.cos(angle) * coinSpeed);
+		speeds[1] = (float) (Math.sin(angle) * coinSpeed);
 		
 		return speeds;
 	}

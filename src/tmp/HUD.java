@@ -6,7 +6,7 @@ import java.awt.Graphics;
 
 public class HUD {
 	
-	public static int HEALTH = 100;
+	public static float HEALTH = 100;
 	private int greenValue = 255;
 	protected int coinStart = 1;
 	
@@ -18,7 +18,7 @@ public class HUD {
 		HEALTH = Game.clamp(HEALTH, 0, 100);
 		greenValue = Game.clamp(greenValue, 0, 255);
 		
-		greenValue = HEALTH * 2;
+		greenValue = (int) (HEALTH * 2);
 	}
 	
 	public void render(Graphics g) {
@@ -26,7 +26,7 @@ public class HUD {
 		g.setColor(Color.gray);
 		g.fillRect(24, 24, 200, 32);
 		g.setColor(new Color(75, greenValue, 0));
-		g.fillRect(24, 24, HEALTH * 2, 32);
+		g.fillRect(24, 24, (int) (HEALTH * 2), 32);
 		g.drawImage(Game.meter_overlay, 24, 24, null);
 
 		//Score + Level

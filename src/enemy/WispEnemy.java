@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class WispEnemy extends GameObject {
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 6;
 	private int spriteSet = 0;
 	int direction = 1;
@@ -18,8 +18,8 @@ public class WispEnemy extends GameObject {
 	private int[] yCollision;
 
 	int maxSpeed = 2;
-	int homingTimer = 0;
-	int retreatTimer;
+	float homingTimer = 0;
+	float retreatTimer;
 	boolean attacking = true;
 
 	public WispEnemy(int x, int y, int width, int height, ID id, int retreatNum) {
@@ -45,14 +45,14 @@ public class WispEnemy extends GameObject {
 
 	//Updates position and adjusts if the enemy is colliding with any tiles
 	private void collision() {
-		x += velX;
-		y += velY;
+		x += velX * Game.deltaTime;
+		y += velY * Game.deltaTime;
 		updateCollision();
 	}
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelay++;
+		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 10) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 9) {
@@ -94,7 +94,7 @@ public class WispEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		homingTimer++;
+		homingTimer += 1 * Game.deltaTime;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
 			if((Math.random() * 2) >= 1) {
@@ -116,7 +116,7 @@ public class WispEnemy extends GameObject {
             velY -= 1;
 			velY = Game.clamp(velY, -4, 4);
 			
-			retreatTimer -= 7;
+			retreatTimer -= 7 * Game.deltaTime;
 			if(retreatTimer <= 0) {
 				velX = 0;
 				velY = 0;
@@ -126,14 +126,14 @@ public class WispEnemy extends GameObject {
 
 					//Fire barrage of fireballs
 					AudioPlayer.playSound("/wisp_fire.wav");
-					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY - 34, 7, false, 2);
-					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 16, 7, false, 2);
-					Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 66, 7, false, 2);
+					Handler.addBullet(x + (this.getWidth()/2), y + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY - 34, 7, false, 2);
+					Handler.addBullet(x + (this.getWidth()/2), y + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 16, 7, false, 2);
+					Handler.addBullet(x + (this.getWidth()/2), y + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 66, 7, false, 2);
 				}
 			}
 		}
 		else {
-			retreatTimer++;
+			retreatTimer += 1 * Game.deltaTime;
 		}
 		
 		if(attacking) {

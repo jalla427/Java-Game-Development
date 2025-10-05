@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class KeeperEnemy extends GameObject {
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 9;
 	private int spriteSet = 0;
 
@@ -17,7 +17,7 @@ public class KeeperEnemy extends GameObject {
 	private int[] yCollision;
 
 	private int maxSpeed = 4;
-	private int homingTimer = 0;
+	private float homingTimer = 0;
 	private boolean coinLock = false;
 	private int coinIndex;
 
@@ -49,7 +49,7 @@ public class KeeperEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tile
@@ -58,7 +58,7 @@ public class KeeperEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -80,7 +80,7 @@ public class KeeperEnemy extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -93,7 +93,7 @@ public class KeeperEnemy extends GameObject {
 		//Determine if any area is shared by enemy and by tile
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -117,7 +117,7 @@ public class KeeperEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelay++;
+		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 5) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 22) {
@@ -158,17 +158,17 @@ public class KeeperEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		homingTimer++;
+		homingTimer += 1 * Game.deltaTime;
 		GameObject playerTargetObj = Handler.playerObject;
-		if((Math.abs(playerTargetObj.getX() - this.getX()) < 80) && (Math.abs(playerTargetObj.getY() - this.getY()) < 80)) {
+		if((Math.abs(playerTargetObj.getX() - x) < 80) && (Math.abs(playerTargetObj.getY() - y) < 80)) {
 			if(homingTimer >= 10) {
-				if(playerTargetObj.getX() > this.x) {
+				if(playerTargetObj.getX() > x) {
 					velX = velX + 1;
 				}
 				else {
 					velX = velX - 1;
 				}
-				if(playerTargetObj.getY() > this.y) {
+				if(playerTargetObj.getY() > y) {
 					velY = velY + 1;
 				}
 				else {
@@ -180,13 +180,13 @@ public class KeeperEnemy extends GameObject {
 		else if(coinLock) {
 			GameObject coinObject = Handler.object.get(coinIndex);
 			if(homingTimer >= 10) {
-				if(coinObject.getX() > this.x) {
+				if(coinObject.getX() > x) {
 					velX = velX + 1;
 				}
 				else {
 					velX = velX - 1;
 				}
-				if(coinObject.getY() > this.y) {
+				if(coinObject.getY() > y) {
 					velY = velY + 1;
 				}
 				else {

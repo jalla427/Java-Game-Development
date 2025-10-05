@@ -10,9 +10,9 @@ import java.awt.image.BufferedImage;
 public class GolemEnemy extends GameObject {
 	private int animationFrame;
 	private int animationDelay = 5;
-	private int animationDelayTimer;
+	private float animationDelayTimer;
 	private int direction = 1;
-	private long walkAudioTimer = 0;
+	private float walkAudioTimer = 0;
 	private int enemySpriteNum = 7;
 	private int spriteSet = 0;
 
@@ -21,8 +21,8 @@ public class GolemEnemy extends GameObject {
 	private int[] yCollision;
 
 	private int maxSpeed = 3;
-	private int jumpTimer = 0;
-	private int waitTimer = 0;
+	private float jumpTimer = 0;
+	private float waitTimer = 0;
 	private boolean attacking = false;
 	private boolean rising = false;
 	private boolean jumping = false;
@@ -56,7 +56,7 @@ public class GolemEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tiles
@@ -65,7 +65,7 @@ public class GolemEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -92,7 +92,7 @@ public class GolemEnemy extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -104,7 +104,7 @@ public class GolemEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -140,14 +140,14 @@ public class GolemEnemy extends GameObject {
 		findPlayerDirection();
 
 		//Cycles animation frame
-		this.animationDelayTimer++;
+		this.animationDelayTimer += 1 * Game.deltaTime;
 		if(this.animationDelayTimer >= this.animationDelay) {
 			this.animationDelayTimer = 1;
 			if(this.animationFrame <= 9) {
 				//If not attacking, enemy is walking and frame progression is normal
 				if(!attacking) {
-					this.setLuminosity(Game.clamp(this.getLuminosity() + 7, 0, 100));
-					if(this.getVelX() == 0) {
+					this.setLuminosity(Game.clamp(this.getLuminosity() + (7 * Game.deltaTime), 0, 100));
+					if(velY == 0) {
 						this.animationFrame = 1;
 					} else {
 						this.animationFrame++;
@@ -164,7 +164,7 @@ public class GolemEnemy extends GameObject {
 						}
 					} else if(this.animationFrame < 9) {
 						this.animationFrame++;
-						this.setLuminosity(Game.clamp(this.getLuminosity() - 7, 0, 100));
+						this.setLuminosity(Game.clamp(this.getLuminosity() - (7 * Game.deltaTime), 0, 100));
 					}
 				}
 			}
@@ -208,8 +208,8 @@ public class GolemEnemy extends GameObject {
 
 		//Stopping and revealing spikes is 'attacking'
 		if(attacking) {
-			this.setVelX(0);
-			this.waitTimer++;
+			velX = 0;
+			this.waitTimer += 1 * Game.deltaTime;
 			if(!this.rising && (this.waitTimer > 300 || playerDistance >= 200)) {
 				AudioPlayer.playSound("/golem_rise.wav");
 				this.waitTimer = 0;
@@ -220,15 +220,15 @@ public class GolemEnemy extends GameObject {
 		//Walking at the player is 'not attacking'
 		if(!attacking) {
 			if(Handler.playerX > this.x) {
-				this.setVelX(this.getVelX() + 1);
+				velX++;
 			}
 			else {
-				this.setVelX(this.getVelX() - 1);
+				velX--;
 			}
 
 			if(playerDistance <= 70) {
 				this.attacking = true;
-				this.setVelX(0);
+				velX = 0;
 				this.animationFrame = 1;
 				AudioPlayer.playSound("/golem_stab.wav");
 			}
@@ -236,34 +236,34 @@ public class GolemEnemy extends GameObject {
 
 		//Decide to jump
 		if(!this.jumping && this.isGrounded() && (this.xCollided || shouldJump())) {
-			this.jumpTimer = (int) (20 * Math.random());
-			this.setVelY(this.getVelY() - 20);
+			this.jumpTimer = (float) (20 * Math.random() * Game.deltaTime);
+			velY -= 20;
 			this.setGrounded(false);
 			this.jumping = true;
 			this.xCollided = false;
 		}
 		else {
-			this.jumpTimer++;
+			this.jumpTimer += 1 * Game.deltaTime;
 		}
 
 		if(!this.isGrounded()) {
-			this.setVelY(this.getVelY() + 1);
-			this.setVelY(Game.clamp(this.getVelY(), -20, 10));
+			velY += 1 * Game.deltaTime;
+			velY = Game.clamp(velY, -20, 10);
 		}
 		else {
-			this.setVelY(0);
+			velY = 0;
 		}
 		
 		//Limit speed
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
 
 		//Stop adjusting velocity X if overlapping player on the X axis (prevents spinning in place)
-		if(Game.calculateDistance(this.getX(), this.getX(), Handler.playerX, this.getX()) < this.getWidth() / 2) {
-			this.setVelX(0);
+		if(Game.calculateDistance(x, x, Handler.playerX, x) < this.getWidth() / 2) {
+			velX = 0;
 		}
 
 		//Walking audio
-		if(!this.jumping && this.getVelX() != 0 && (System.currentTimeMillis() - walkAudioTimer) > 200) {
+		if(!this.jumping && velX != 0 && (System.currentTimeMillis() - walkAudioTimer) > 200) {
 			walkAudioTimer = System.currentTimeMillis();
 			AudioPlayer.playSound("/golem_walk.wav");
 		}
@@ -275,7 +275,7 @@ public class GolemEnemy extends GameObject {
 
 	private void findPlayerDirection() {
 		//First two sprite sheet rows are right/left, last two rows are right/left while firing
-		if(Handler.playerX >= this.getX()) {
+		if(Handler.playerX >= x) {
 			this.direction = 1;
 		} else {
 			this.direction = 2;
@@ -296,10 +296,10 @@ public class GolemEnemy extends GameObject {
 		int widthAccount = 0;
 
 		//Account for direction of movement
-		if(this.getVelX() < 0) {
+		if(velX < 0) {
 			xGap = (xGap * -1);
 		} else {
-			widthAccount = (int) this.getWidth();
+			widthAccount = width;
 		}
 
 		int[] xZone1 = new int[] {(int) x, ((int) x) + width, ((int) x) + width, (int) x};

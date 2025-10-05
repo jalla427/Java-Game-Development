@@ -8,7 +8,7 @@ import tmp.*;
 
 public class Bullet extends GameObject {
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 2;
 	private int sprite;
 
@@ -18,12 +18,12 @@ public class Bullet extends GameObject {
 
 	private float targetX;
 	private float targetY;
-	private int bulletSpeed;
+	private float bulletSpeed;
 	private boolean homing = false;
-	private int homingTimer = 0;
+	private float homingTimer = 0;
 	public boolean active = false;
 
-	public Bullet(float x, float y, int width, int height, ID id, float targetX, float targetY, int speed, boolean homing, int sprite, boolean active) {
+	public Bullet(float x, float y, int width, int height, ID id, float targetX, float targetY, float speed, boolean homing, int sprite, boolean active) {
 		super(x, y, width, height, id);
 
 		this.x = x;
@@ -47,8 +47,8 @@ public class Bullet extends GameObject {
 			if (this.homing) {
 				updateVelocity();
 			}
-			this.setX(this.getX() + this.getVelX());
-			this.setY(this.getY() + this.getVelY());
+			x += velX * Game.deltaTime;
+			y += velY * Game.deltaTime;
 
 			updateCollision();
 
@@ -62,7 +62,7 @@ public class Bullet extends GameObject {
 	public void render(Graphics g) {
 		if(active) {
 			//Cycles animation frame
-			this.animationDelay++;
+			this.animationDelay += 1 * Game.deltaTime;
 			if (this.animationDelay >= 5) {
 				this.animationDelay = 1;
 				if (this.animationFrame < 10) {
@@ -103,47 +103,47 @@ public class Bullet extends GameObject {
 	}
 
 	private void updateVelocity() {
-		this.homingTimer++;
+		this.homingTimer += 1 * Game.deltaTime;
 		if(this.homingTimer >= 10) {
 			if(Handler.playerX > this.getX()) {
-				this.setVelX(this.getVelX() + 1);
+				velX++;
 			}
 			else {
-				this.setVelX(this.getVelX() - 1);
+				velX--;
 			}
 			if(Handler.playerY > this.getY()) {
-				this.setVelY(this.getVelY() + 1);
+				velY++;
 			}
 			else {
-				this.setVelY(this.getVelY() - 1);
+				velY--;
 			}
 			this.homingTimer = 0;
 		}
-		this.setVelX(Game.clamp(this.getVelX(), -this.bulletSpeed, this.bulletSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -this.bulletSpeed, this.bulletSpeed));
+		velX = Game.clamp(velX, (int) -this.bulletSpeed, (int) this.bulletSpeed);
+		velY = Game.clamp(velY, (int) -this.bulletSpeed, (int) this.bulletSpeed);
 	}
 
 	public Polygon getBounds() {
 		return collision;
 	}
 	
-	public double[] getSpeed(float x, float y, float targetX, float targetY) {
-		double[] speeds = new double[2];
+	public float[] getSpeed(float x, float y, float targetX, float targetY) {
+		float[] speeds = new float[2];
 		
 		double dx = targetX - x;
 		double dy = targetY - y;
 		double angle = Math.atan2(dy, dx);
 		
-		speeds[0] = Math.cos(angle) * this.bulletSpeed;
-		speeds[1] = Math.sin(angle) * this.bulletSpeed;
+		speeds[0] = (float) (Math.cos(angle) * this.bulletSpeed);
+		speeds[1] = (float) (Math.sin(angle) * this.bulletSpeed);
 		
 		return speeds;
 	}
 
 	public void refreshSpeeds() {
-		double[] speeds = getSpeed(this.x, this.y, this.targetX, this.targetY);
-		this.velX = (float) speeds[0];
-		this.velY = (float) speeds[1];
+		float[] speeds = getSpeed(this.x, this.y, this.targetX, this.targetY);
+		this.velX = speeds[0];
+		this.velY = speeds[1];
 	}
 
 	public void setActive(boolean active) {
@@ -167,10 +167,10 @@ public class Bullet extends GameObject {
 	public float getTargetY() {
 		return this.targetY;
 	}
-	public void setBulletSpeed(int speed) {
+	public void setBulletSpeed(float speed) {
 		this.bulletSpeed = speed;
 	}
-	public int getBulletSpeed() {
+	public float getBulletSpeed() {
 		return this.bulletSpeed;
 	}
 	public void setHoming(boolean homing) {

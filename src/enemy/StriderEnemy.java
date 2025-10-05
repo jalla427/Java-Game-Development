@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class StriderEnemy extends GameObject {
 	private int animationFrame;
-	private int animationDelay = 200;
-	private int animationDelayTimer;
+	private float animationDelay = 200;
+	private float animationDelayTimer;
 	int animType;
 	long walkAudioTimer = 0;
 	private int enemySpriteNum = 3;
@@ -21,8 +21,8 @@ public class StriderEnemy extends GameObject {
 
 	int maxSpeed = 3;
 	int sightRange = 295;
-	int jumpTimer = 0;
-	int wanderTimer = 0;
+	float jumpTimer = 0;
+	float wanderTimer = 0;
 	boolean attacking = true;
 	boolean jumping = false;
 	boolean xCollided = false;
@@ -56,7 +56,7 @@ public class StriderEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tiles
@@ -65,7 +65,7 @@ public class StriderEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -92,7 +92,7 @@ public class StriderEnemy extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -104,7 +104,7 @@ public class StriderEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -137,7 +137,7 @@ public class StriderEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelayTimer++;
+		this.animationDelayTimer += 1 * Game.deltaTime;
 		if(this.animationDelayTimer >= this.animationDelay) {
 			this.animationDelayTimer = 1;
 			if(this.animationFrame < 8) {
@@ -150,7 +150,7 @@ public class StriderEnemy extends GameObject {
 
 		int currentAnimType = this.animType;
 
-		if(getVelX() == 0 && getVelY() == 0) {
+		if(velX == 0 && velY == 0) {
 			this.animType = 1;
 			if(this.animType != currentAnimType) {
 				this.animationDelayTimer = 0;
@@ -184,10 +184,10 @@ public class StriderEnemy extends GameObject {
 		g.drawImage(Game.enemySpriteSheets[enemySpriteNum].grabImageFast(animType + spriteSet, this.animationFrame), (int) x, (int) y, null);
 
 		if(getVelX() != 0 || getVelY() != 0) {
-			this.setLuminosity(Game.clamp(this.getLuminosity() + 10, 10, 100));
+			this.setLuminosity(Game.clamp(this.getLuminosity() + (10 * Game.deltaTime), 10, 100));
 		}
 		else {
-			this.setLuminosity(Game.clamp(this.getLuminosity() - 10, 0, 100));
+			this.setLuminosity(Game.clamp(this.getLuminosity() - (10 * Game.deltaTime), 0, 100));
 		}
 		
 		//Draw collision box
@@ -228,7 +228,7 @@ public class StriderEnemy extends GameObject {
 			}
 			else {
 				//Handle random wandering movements
-				this.wanderTimer++;
+				this.wanderTimer += 1 * Game.deltaTime;
 				if(this.wanderTimer > 300) {
 					if(this.getVelX() != 0) {
 						this.setVelX(0);
@@ -242,29 +242,29 @@ public class StriderEnemy extends GameObject {
 							this.setVelX(-1);
 						}
 					}
-					this.wanderTimer = 0 + (int) (Math.random() * 10);
+					this.wanderTimer = (float) (Math.random() * 10);
 				}
 			}
 		}
 		
 		if(attacking) {
 			if(Handler.playerX > this.x) {
-				this.setVelX(this.getVelX() + 1);
+				velX += 1 * Game.deltaTime;
 			}
 			else {
-				this.setVelX(this.getVelX() - 1);
+				velX -= 1 * Game.deltaTime;
 			}
 
 			//Decide to jump
 			if(!this.jumping && ((this.xCollided && this.isGrounded()) || (Handler.playerY < this.y && this.isGrounded() && this.jumpTimer >= 150))) {
-				this.jumpTimer = (int) (20 * Math.random());
-				this.setVelY(this.getVelY() - 20);
+				this.jumpTimer = (float) (20 * Math.random() * Game.deltaTime);
+				velY -= 20;
 				this.setGrounded(false);
 				this.jumping = true;
 				this.xCollided = false;
 			}
 			else {
-				this.jumpTimer++;
+				this.jumpTimer += 1 * Game.deltaTime;
 			}
 
 			if(playerDistance >= this.sightRange) {
@@ -275,23 +275,23 @@ public class StriderEnemy extends GameObject {
 		}
 
 		if(!this.isGrounded()) {
-			this.setVelY(this.getVelY() + 1);
-			this.setVelY(Game.clamp(this.getVelY(), -20, 10));
+			velY += 1 * Game.deltaTime;
+			velY = Game.clamp(velY, -20, 10);
 		}
 		else {
-			this.setVelY(0);
+			velY = 0;
 		}
 		
 		//Limit speed
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
 
 		//Stop adjusting velocity X if overlapping player on the X axis (prevents spinning in place)
-		if(Game.calculateDistance(this.getX(), this.getX(), Handler.playerX, this.getX()) < this.getWidth() / 2) {
+		if(Game.calculateDistance(x, x, Handler.playerX, x) < (float) width / 2) {
 			this.setVelX(0);
 		}
 
 		//Walking audio
-		if(!this.jumping && this.getVelX() != 0 && (System.currentTimeMillis() - walkAudioTimer) > 200) {
+		if(!this.jumping && velX != 0 && (System.currentTimeMillis() - walkAudioTimer) > 200) {
 			walkAudioTimer = System.currentTimeMillis();
 			AudioPlayer.playSound("/striderWalk.wav");
 		}

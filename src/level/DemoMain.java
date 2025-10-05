@@ -20,7 +20,7 @@ public class DemoMain extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 	
-	public DemoMain(float x, float y, ID id, Handler handler) {
+	public DemoMain(long x, long y, ID id, Handler handler) {
 		super(x, y, 0, 0, id);
 		this.handler = handler;
 		

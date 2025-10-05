@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 public class CoreEnemy extends GameObject {
 	private int animationFrame;
 	private int attackMode;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 8;
 	private int spriteSet = 0;
 
@@ -19,8 +19,8 @@ public class CoreEnemy extends GameObject {
 	private boolean colliding = false;
 
 	private int maxSpeed = 6;
-	private int modeTimer = 0;
-	private int homingTimer = 0;
+	private float modeTimer = 0;
+	private float homingTimer = 0;
 
 	public CoreEnemy(int x, int y, int width, int height, ID id) {
 		super(x, y, width, height, id);
@@ -50,7 +50,7 @@ public class CoreEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tile
@@ -61,7 +61,7 @@ public class CoreEnemy extends GameObject {
 		if(!a1.isEmpty()) { colliding = true; }
 		if(!a1.isEmpty() && this.attackMode != 2) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -83,7 +83,7 @@ public class CoreEnemy extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and tile
@@ -94,7 +94,7 @@ public class CoreEnemy extends GameObject {
 		if(!a1.isEmpty()) { colliding = true; }
 		if(!a1.isEmpty() && this.attackMode != 2) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -118,7 +118,7 @@ public class CoreEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelay++;
+		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 5) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 10) {
@@ -159,8 +159,8 @@ public class CoreEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		modeTimer++;
-		homingTimer++;
+		modeTimer += 1 * Game.deltaTime;
+		homingTimer += 1 * Game.deltaTime;
 		//Pursuit with collisions
 		if(attackMode == 1) {
 			if(homingTimer >= 8) {
@@ -196,16 +196,16 @@ public class CoreEnemy extends GameObject {
 		if(attackMode == 2 && modeTimer != -1) {
 			if(homingTimer >= 5) {
 				if(Handler.playerX > this.x) {
-					this.setVelX(velX + 1);
+					velX++;
 				}
 				else {
-					this.setVelX(velX - 1);
+					velX--;
 				}
 				if(Handler.playerY > this.y) {
-					this.setVelY(velY + 1);
+					velY++;
 				}
 				else {
-					this.setVelY(velY - 1);
+					velY--;
 				}
 				homingTimer = 0;
 			}
@@ -245,8 +245,8 @@ public class CoreEnemy extends GameObject {
 		}
 		
 		//Limit speed
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 		
 		//Position
 		x = Game.clamp(x, 0, Game.sWidth - width);

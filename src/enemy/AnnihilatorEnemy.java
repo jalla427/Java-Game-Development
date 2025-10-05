@@ -8,11 +8,11 @@ import java.awt.image.BufferedImage;
 
 public class AnnihilatorEnemy extends GameObject {
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 10;
 	private int spriteSet = 0;
 	private int firingOffset = 0;
-	private int firingTimer = 0;
+	private float firingTimer = 0;
 
 	private Polygon collision;
 	private int[] xCollision;
@@ -35,7 +35,7 @@ public class AnnihilatorEnemy extends GameObject {
 
 	public void tick() {
 		//Fire bullets timer
-		firingTimer++;
+		firingTimer += 1 * Game.deltaTime;
 		if(firingTimer >= 120) {
 			firingOffset = 1;
 			if(firingTimer >= 140) {
@@ -58,7 +58,7 @@ public class AnnihilatorEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tile
@@ -67,7 +67,7 @@ public class AnnihilatorEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -83,13 +83,13 @@ public class AnnihilatorEnemy extends GameObject {
 			}
 					
 			//Position enemy one pixel outside of wall
-			x -= Math.signum(this.getVelX());
+			x -= Math.signum(velX);
 			updateCollision();
-			this.setVelX(-this.getVelX());
+			velX = -velX;
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -102,7 +102,7 @@ public class AnnihilatorEnemy extends GameObject {
 		//Determine if any area is shared by enemy and by tile
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -126,7 +126,7 @@ public class AnnihilatorEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelay++;
+		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 10) {
 			this.animationDelay = 1;
 			if(this.animationFrame < 6) {
@@ -168,11 +168,11 @@ public class AnnihilatorEnemy extends GameObject {
 
 	protected void updateVelocity() {
 		//Limit speed
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 		
 		//Position
-		this.setX(Game.clamp(x, 0, Game.sWidth - width));
-		this.setY(Game.clamp(y, 0, Game.sHeight - height));
+		x = Game.clamp(x, 0, Game.sWidth - width);
+		y = Game.clamp(y, 0, Game.sHeight - height);
 	}
 }

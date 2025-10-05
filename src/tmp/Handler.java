@@ -92,7 +92,7 @@ public class Handler {
 		Handler.enemyList.remove(object);
 	}
 
-	public static void addBullet(float x, float y, float targetX, float targetY, int speed, boolean homing, int sprite) {
+	public static void addBullet(float x, float y, float targetX, float targetY, float speed, boolean homing, int sprite) {
 		if(!bulletReserveList.isEmpty()) {
 			Bullet tempBullet = bulletReserveList.getFirst();
 			bulletReserveList.remove(tempBullet);

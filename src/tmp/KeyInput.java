@@ -103,7 +103,7 @@ public class KeyInput extends KeyAdapter {
 					Handler.playerObject.setxDirection(0);
 				} else { //Both direction keys are released, lower player X velocity
 					Handler.playerObject.setxDirection(2);
-					Handler.playerObject.setVelX(Game.clamp(Handler.playerObject.getVelX(), -2, 2));
+					Handler.playerObject.setVelX((long) Game.clamp(Handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[0] = false;
 			}
@@ -112,7 +112,7 @@ public class KeyInput extends KeyAdapter {
 					Handler.playerObject.setxDirection(1);
 				} else { //Both direction keys are released, lower player X velocity
 					Handler.playerObject.setxDirection(2);
-					Handler.playerObject.setVelX(Game.clamp(Handler.playerObject.getVelX(), -2, 2));
+					Handler.playerObject.setVelX((long) Game.clamp(Handler.playerObject.getVelX(), -2, 2));
 				}
 				keyDown[1] = false;
 			}

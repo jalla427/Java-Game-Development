@@ -20,7 +20,7 @@ public class Player extends GameObject {
 	private int playerSkin = 1;
 	private int animationFrame;
 	private int animationDelay = 5;
-	private int animationDelayTimer;
+	private float animationDelayTimer;
 	private int direction = 1;
 	private int animationOffset = 0;
 	private boolean damaged = false;
@@ -57,7 +57,7 @@ public class Player extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by player and tile
@@ -66,7 +66,7 @@ public class Player extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -88,7 +88,7 @@ public class Player extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		if(velY >= 0) { jumping = false; } //Player is now falling
 		
@@ -101,7 +101,7 @@ public class Player extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -145,7 +145,7 @@ public class Player extends GameObject {
 
 				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
-					HUD.HEALTH--;
+					HUD.HEALTH -= 1 * Game.deltaTime;
 					damaged = true;
 				}
 			}
@@ -153,12 +153,12 @@ public class Player extends GameObject {
 	}
 
 	public void render(Graphics g) {
-		this.animationDelayTimer++;
+		this.animationDelayTimer += 1 * Game.deltaTime;
 		animationOffset = 0;
 
 		if(Game.gameOver) { //Dim player if gameover
 			if(this.getLuminosity() > 0) {
-				this.setLuminosity(this.getLuminosity() - 1);
+				this.setLuminosity(this.getLuminosity() - (1 * Game.deltaTime));
 				player_image = ss.grabImageFast(playerSkin, 1);
 			}
 			else {
@@ -211,7 +211,7 @@ public class Player extends GameObject {
 	protected void updateVelocity() {
 		//Y Direction
 		if(!this.isGrounded()) {
-			velY += 1; 
+			velY += 1 * Game.deltaTime;
 			velY = Game.clamp(velY, -20, 10);
 		}
 		else {
@@ -221,7 +221,7 @@ public class Player extends GameObject {
 		//X Direction -- (0 = left), (1 = right), (2 = neutral)
 		if(this.xDirection == 0) {
 			if(this.isGrounded()) {
-				velX = -5; 
+				velX = -5;
 			} 
 			else {
 				velX -= 1;
@@ -229,7 +229,7 @@ public class Player extends GameObject {
 		}
 		else if(this.xDirection == 1) {
 			if(this.isGrounded()) {
-				velX = 5; 
+				velX = 5;
 			} 
 			else {
 				velX += 1;

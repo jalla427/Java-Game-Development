@@ -26,6 +26,7 @@ public class Game extends Canvas implements Runnable {
 	public static boolean escapeGame = false;
 	public static boolean gameOver = false;
 	public static boolean quit = false;
+	public static float deltaTime;
 	
 	//Main frame dimensions
 	public static int sWidth = 900;
@@ -41,7 +42,7 @@ public class Game extends Canvas implements Runnable {
 	protected static boolean playerControl = true;
 	protected static boolean levelEnd = false;
 	protected static boolean transitioning = false;
-	private static int transitionTimer = 0;
+	private static float transitionTimer = 0;
 	private static String transitionMessage = "";
 	public static int coinsLeft = 1;
 	public Random random = new Random();
@@ -198,30 +199,22 @@ public class Game extends Canvas implements Runnable {
 	
 	//Main game loop method
 	public void run() {
-		long sleepTime;
-		long timeTaken;
-		double fps = 60;
-		double nsPerTick = 1000000000.0 / fps;
+		int fps = 60;
+		double nsPerTick = (double) 1000000000 / fps;
+		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 
 		while(running){
 			long now = System.nanoTime();
+			long timeTaken = now - lastTime;
+			lastTime = now;
+
+			deltaTime = (float) (timeTaken / nsPerTick);
 
 			tick();
 			render();
 			frames++;
-
-			//Sleep to maintain the target FPS
-			timeTaken = System.nanoTime() - now;
-			sleepTime = (long)(nsPerTick - timeTaken) / 1000000;  //Convert to milliseconds
-			if (sleepTime > 0) {
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
 
 			//Output current FPS if debug mode is active
 			if((System.currentTimeMillis() - timer) >= 1000) {
@@ -297,6 +290,7 @@ public class Game extends Canvas implements Runnable {
 			if(levelSelected == 22) {
 				levelBackgroundImg = finalBackgroundImg;
 			}
+			if(Handler.bulletReserveList.isEmpty()) { Handler.initializeBulletReserve(); }
 		}
 
 		//In game
@@ -442,7 +436,7 @@ public class Game extends Canvas implements Runnable {
 
 			//Level Transition Timer
 			if(transitioning && !escapeGame) {
-				transitionTimer++;
+				transitionTimer += 1 * Game.deltaTime;
 				if(hud.getLevel() == 99) {
 					transitionMessage = "Blitz Infinite Survival"; //Blitz
 				}
@@ -681,7 +675,7 @@ public class Game extends Canvas implements Runnable {
 				g.setColor(Color.gray);
 				g.fillRect(sWidth / 2 - 50, (sHeight / 2) + 35, 100, 10);
 				g.setColor(Color.blue);
-				g.fillRect(sWidth / 2 - 50, (sHeight / 2) + 35, transitionTimer/2, 10);
+				g.fillRect(sWidth / 2 - 50, (sHeight / 2) + 35, (int) (transitionTimer/2), 10);
 				g.setColor(Color.white);
 				g.drawRect(sWidth / 2 - 50, (sHeight / 2) + 35, 100, 10);
 			}
@@ -843,7 +837,7 @@ public class Game extends Canvas implements Runnable {
 						}
 					}
 				}
-			} while (obstructed);
+			} while(obstructed);
 
 			Handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin));
 
@@ -874,6 +868,16 @@ public class Game extends Canvas implements Runnable {
 		if(input < min) output = min;
 		if(input > max) output = max;
 		
+		return output;
+	}
+
+	//Restricts a long value between a given minimum and maximum value
+	public static long clamp(long input, int min, int max) {
+		long output = input;
+
+		if(input < min) output = min;
+		if(input > max) output = max;
+
 		return output;
 	}
 

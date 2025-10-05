@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class ThumperEnemy extends GameObject {
 	private int animationFrame;
-	private int animationDelay = 200;
-	private int animationDelayTimer;
+	private float animationDelay = 200;
+	private float animationDelayTimer;
 	int animType;
 	private int enemySpriteNum = 4;
 	private int spriteSet = 0;
@@ -19,7 +19,7 @@ public class ThumperEnemy extends GameObject {
 	private int[] yCollision;
 
 	int maxSpeed = 5;
-	int restingTimer = 0;
+	float restingTimer = 0;
 
 	boolean attacking = false;
 	boolean collided = false;
@@ -53,7 +53,7 @@ public class ThumperEnemy extends GameObject {
 	    Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and tiles
@@ -62,7 +62,7 @@ public class ThumperEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -87,7 +87,7 @@ public class ThumperEnemy extends GameObject {
 		}
 
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -99,7 +99,7 @@ public class ThumperEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -131,7 +131,7 @@ public class ThumperEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelayTimer++;
+		this.animationDelayTimer += 1 * Game.deltaTime;
 		if(this.animationDelayTimer >= this.animationDelay) {
 			this.animationDelayTimer = 1;
 			if(this.animationFrame < 8) {
@@ -199,7 +199,7 @@ public class ThumperEnemy extends GameObject {
 		float playerYDistance = (int) Game.calculateDistance(this.getX(), this.getY(), this.getX(), Handler.playerY);
 
 		if(!attacking) {
-			restingTimer++;
+			restingTimer += 1 * Game.deltaTime;
 			if(restingTimer >= 20) {
 				restingTimer = 0;
 

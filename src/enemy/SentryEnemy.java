@@ -18,10 +18,10 @@ public class SentryEnemy extends GameObject {
 	private int spriteSet = 0;
 	private int state = 2; //2=resting, 1=firing
 	
-	private int timer = 0;
+	private float timer = 0;
 	private int fireRate = 150;
 
-	public SentryEnemy(float x, float y, int width, int height, ID id, int fireRate, int timerOffset) {
+	public SentryEnemy(long x, long y, int width, int height, ID id, int fireRate, int timerOffset) {
 		super(x, y, width, height, id);
 
 		this.velX = 0;
@@ -34,8 +34,8 @@ public class SentryEnemy extends GameObject {
 	}
 
 	public void tick() {
-		timer++;
-		if(timer == fireRate - 10) {
+		timer += 1 * Game.deltaTime;
+		if(timer >= fireRate - 10 && timer < fireRate) {
 			luminosity = width;
 			state = 1;
 		}
@@ -45,7 +45,7 @@ public class SentryEnemy extends GameObject {
 			state = 2;
 
 			AudioPlayer.playSound("/bulletFire.wav");
-			Handler.addBullet(this.x + (width/2), this.y + (height/2), Handler.playerX + 16, Handler.playerY + 16, 7, false, 1);
+			Handler.addBullet(x + ((float) width / 2), y + ((float) height / 2), Handler.playerX + 16, Handler.playerY + 16, 7, false, 1);
 		}
 	}
 

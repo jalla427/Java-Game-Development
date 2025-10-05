@@ -11,7 +11,7 @@ import tmp.*;
 public class HawkEnemy extends GameObject {
 
 	private int animationFrame;
-	private int animationDelay;
+	private float animationDelay;
 	private int enemySpriteNum = 0;
 	private int spriteSet = 0;
 	
@@ -20,8 +20,8 @@ public class HawkEnemy extends GameObject {
 	private int[] yCollision;
 
 	int maxSpeed = 6;
-	int homingTimer = 0;
-	int retreatTimer;
+	double homingTimer = 0;
+	double retreatTimer;
 	boolean attacking = true;
 	
 	public HawkEnemy(int x, int y, int width, int height, ID id, int retreatNum) {
@@ -51,7 +51,7 @@ public class HawkEnemy extends GameObject {
 		Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and by tile
@@ -60,7 +60,7 @@ public class HawkEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -82,7 +82,7 @@ public class HawkEnemy extends GameObject {
 		}
 		
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -95,7 +95,7 @@ public class HawkEnemy extends GameObject {
 		//Determine if any area is shared by enemy and by tile
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -121,7 +121,7 @@ public class HawkEnemy extends GameObject {
 
 		//Cycles animation frame
 		if(attacking) {
-			this.animationDelay++;
+			this.animationDelay += 1 * Game.deltaTime;
 			if(this.animationDelay >= 10) {
 				this.animationDelay = 1;
 				if(this.animationFrame < 6) {
@@ -165,7 +165,7 @@ public class HawkEnemy extends GameObject {
 	}
 	
 	protected void updateVelocity() {
-		homingTimer++;
+		homingTimer += 1 * Game.deltaTime;
 		if(retreatTimer >= 300 && attacking) {
 			attacking = false;
 			luminosity = 0;
@@ -174,17 +174,17 @@ public class HawkEnemy extends GameObject {
 		
 		if(!attacking) {
 			if(Handler.playerX > this.x) {
-				velX = velX - 1;
+				velX = velX - (1 * Game.deltaTime);
 				velX = Game.clamp(velX, -2, 2);
 			}
 			else {
-				velX = velX + 1;
+				velX = velX + (1 * Game.deltaTime);
 				velX = Game.clamp(velX, -2, 2);
 			}
-			velY -= 1;
+			velY -= 1 * Game.deltaTime;
 			velY = Game.clamp(velY, -4, 4);
 			
-			retreatTimer -= 7;
+			retreatTimer -= 7 * Game.deltaTime;
 			if(retreatTimer <= 0) {
 				attacking = true;
 				luminosity = 100;
@@ -192,7 +192,7 @@ public class HawkEnemy extends GameObject {
 			}
 		}
 		else {
-			retreatTimer++;
+			retreatTimer += 1 * Game.deltaTime;
 		}
 		
 		if(attacking) {

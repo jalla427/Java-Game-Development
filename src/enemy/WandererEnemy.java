@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 public class WandererEnemy extends GameObject {
 	private int animationFrame;
 	private int animationDelay = 10;
-	private int animationDelayTimer;
+	private float animationDelayTimer;
 	int animType;
 	private int enemySpriteNum = 5;
 	private int spriteSet = 0;
@@ -19,7 +19,7 @@ public class WandererEnemy extends GameObject {
 	private int[] yCollision;
 
 	private int maxSpeed = 5;
-	private int restingTimer = 0;
+	private float restingTimer = 0;
 	private int direction = 1; //down=1, left=2, up=3, right=4
 
 	private boolean attacking = false;
@@ -54,7 +54,7 @@ public class WandererEnemy extends GameObject {
 	    Area a2 = Handler.currentLevelArea;
 		
 	    //Horizontal Collision
-		x += velX;
+		x += velX * Game.deltaTime;
 		updateCollision();
 
 		//Find area shared by enemy and tiles
@@ -63,7 +63,7 @@ public class WandererEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			x -= velX;
+			x -= velX * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -88,7 +88,7 @@ public class WandererEnemy extends GameObject {
 		}
 
 		//Vertical Collision
-		y += velY;
+		y += velY * Game.deltaTime;
 		updateCollision();
 		
 		//Set grounded to false in case enemy has walked over an edge
@@ -100,7 +100,7 @@ public class WandererEnemy extends GameObject {
 
 		if(!a1.isEmpty()) {
 			//Reverse bad movement
-			y -= velY;
+			y -= velY * Game.deltaTime;
 			updateCollision();
 			a1.reset();
 			a1 = new Area(collision);
@@ -132,7 +132,7 @@ public class WandererEnemy extends GameObject {
 
 	public void render(Graphics g) {
 		//Cycles animation frame
-		this.animationDelayTimer++;
+		this.animationDelayTimer += 1 * Game.deltaTime;
 		if(this.animationDelayTimer >= this.animationDelay) {
 			this.animationDelayTimer = 1;
 			if(this.animationFrame < 8) {
@@ -185,7 +185,7 @@ public class WandererEnemy extends GameObject {
 		float playerYDistance = (int) Game.calculateDistance(this.getX(), this.getY(), this.getX(), Handler.playerY);
 
 		if(!attacking) {
-			restingTimer++;
+			restingTimer += 1 * Game.deltaTime;
 			if(restingTimer >= 20) {
 				restingTimer = 0;
 
@@ -227,36 +227,36 @@ public class WandererEnemy extends GameObject {
 				attacking = false;
 				collided = false;
 				motionLocked = false;
-				this.setVelX(0);
-				this.setVelY(0);
+				velX = 0;
+				velY = 0;
 			}
 
 			//Possibly change direction once during each attack
 			//Direction: down=1, left=2, up=3, right=4
-			if(this.getVelX() != 0 && playerXDistance <= 16 && !motionLocked) {
-				this.setVelX(0);
-				if(Handler.playerY >= this.getY()) {
-					this.setVelY(maxSpeed);
+			if(velX != 0 && playerXDistance <= 16 && !motionLocked) {
+				velX = 0;
+				if(Handler.playerY >= y) {
+					velY = maxSpeed;
 					this.direction = 3;
 					this.animType = 2;
 				}
 				else {
-					this.setVelY(-maxSpeed);
+					velY = -maxSpeed;
 					this.direction = 1;
 					this.animType = 4;
 				}
 				AudioPlayer.playSound("/thumperOn.wav");
 				motionLocked = true;
 			}
-			else if(this.getVelY() != 0 && playerYDistance <= 16 && !motionLocked) {
-				this.setVelY(0);
-				if(Handler.playerX >= this.getX()) {
-					this.setVelX(maxSpeed);
+			else if(velY != 0 && playerYDistance <= 16 && !motionLocked) {
+				velY = 0;
+				if(Handler.playerX >= x) {
+					velX = maxSpeed;
 					this.direction = 4;
 					this.animType = 1;
 				}
 				else {
-					this.setVelX(-maxSpeed);
+					velX = -maxSpeed;
 					this.direction = 2;
 					this.animType = 3;
 				}
@@ -266,8 +266,8 @@ public class WandererEnemy extends GameObject {
 		}
 		
 		//Limit speed
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 
 		//Position
 		x = Game.clamp(x, 0, Game.sWidth - width);
