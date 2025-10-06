@@ -154,7 +154,7 @@ public class Game extends Canvas implements Runnable {
 		enemySpriteSheets[7] = new SpriteSheet(loader.loadImage("/sprite_sheet_golem.png"), 8, 10, 40, 40);
 		enemySpriteSheets[8] = new SpriteSheet(loader.loadImage("/sprite_sheet_core.png"), 6, 10, 20, 20);
 		enemySpriteSheets[9] = new SpriteSheet(loader.loadImage("/sprite_sheet_keeper.png"), 2, 22, 32, 32);
-		enemySpriteSheets[10] = new SpriteSheet(loader.loadImage("/sprite_sheet_annihilator.png"), 4, 6, 64, 48);
+		enemySpriteSheets[10] = new SpriteSheet(loader.loadImage("/sprite_sheet_annihilator.png"), 4, 6, 40, 36);
 
 		//HUD+Menu elements
 		sprite_sheet_menu_buttons = new SpriteSheet(loader.loadImage("/sprite_sheet_menu_buttons.png"), 4, 4, 32, 32);
@@ -710,6 +710,7 @@ public class Game extends Canvas implements Runnable {
 				hud.setLevel(nextLevel);
 				if(nextLevel <= 22) { unlockedLevels[nextLevel - 1] = true; }
 				setLevelCoinGoal(coins);
+				Handler.initializeBulletReserve();
 			}
 		}
 	}
@@ -761,7 +762,7 @@ public class Game extends Canvas implements Runnable {
 			Handler.addEnemy(new GolemEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 40, 40, ID.Enemy));
 		}
 		else if(randomChoice <= 0.91 && hardMode) {
-			Handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 100, 64, 48, ID.Enemy));
+			Handler.addEnemy(new AnnihilatorEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 100, 40, 36, ID.Enemy));
 		}
 		else if(randomChoice <= 0.98) {
 			Handler.addEnemy(new WispEnemy(clamp((int) (Math.random() * sWidth), 100, sWidth - 100), 50, 26, 26, ID.Enemy, 100));

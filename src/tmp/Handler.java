@@ -120,6 +120,9 @@ public class Handler {
 	}
 
 	public static void initializeBulletReserve() {
+		while(!bulletReserveList.isEmpty()) {
+			bulletReserveList.pop();
+		}
 		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
 		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
 		bulletReserveList.add(new Bullet(0, 0, 16, 16, ID.Enemy, 0, 0, 0, false, 3, false));
@@ -217,7 +220,7 @@ public class Handler {
 	}
 	
 	public static boolean areEnemies() {
-		if(Handler.enemyList.size() != 0) {
+		if(!Handler.enemyList.isEmpty()) {
 			return true;
 		}
 		else {

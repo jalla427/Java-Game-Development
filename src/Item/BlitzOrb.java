@@ -142,6 +142,7 @@ public class BlitzOrb extends GameObject {
 		if (!a1.isEmpty()) {
 			Game.coinsLeft--;
 			Handler.clearEnemies();
+			Handler.initializeBulletReserve();
 			AudioPlayer.playSound("/coinGet.wav");
 			Handler.object.remove(this);
 		}
