@@ -331,13 +331,13 @@ public class Menu extends MouseAdapter {
 				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "High Score: " + Game.highScore, Game.brightBlueButton_long, (Game.sWidth/2) - 310, 110, 300, bHeight));
 				Handler.addButton(new ImageTextButton(fnt3, Color.WHITE, "Blitz High Score: " + Game.blitzHighScore, Game.brightBlueButton_long, (Game.sWidth/2) + 10, 110, 300, bHeight));
 
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Reach the cavern levels", Game.brightRedButton, (Game.sWidth/2) - 310, 179, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Reach the burning levels", Game.brightRedButton, (Game.sWidth/2) + 10, 179, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Reach the final levels", Game.brightRedButton, (Game.sWidth/2) - 310, 248, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Score 6000 points", Game.brightRedButton, (Game.sWidth/2) + 10, 248, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Score 7000 in hard mode", Game.brightRedButton, (Game.sWidth/2) - 310, 317, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Score 7000 on crazy coins", Game.brightRedButton, (Game.sWidth/2) + 10, 317, bWidth, bHeight));
-				Handler.addButton(new ImageTextButton(fnt4, Color.WHITE, "Score 7000 in dark mode", Game.brightRedButton, (Game.sWidth/2) - 310, 386, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Reach the cavern levels", "Reach the campaign's", "cavern levels", Game.brightRedButton, (Game.sWidth/2) - 310, 179, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Reach the burning levels", "Reach the campaign's", "burning levels", Game.brightRedButton, (Game.sWidth/2) + 10, 179, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Reach the final levels", "Reach the campaign's", "final levels", Game.brightRedButton, (Game.sWidth/2) - 310, 248, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 6000 points", "Score 6000 points in the", "campaign", Game.brightRedButton, (Game.sWidth/2) + 10, 248, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 in hard mode", "Score 7000 points on", "hard mode in campaign", Game.brightRedButton, (Game.sWidth/2) - 310, 317, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 on crazy coins", "Score 7000 points on", "crazy coins in campaign", Game.brightRedButton, (Game.sWidth/2) + 10, 317, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 in dark mode", "Score 7000 points on", "dark mode in campaign", Game.brightRedButton, (Game.sWidth/2) - 310, 386, bWidth, bHeight));
 
 				for(int i = 1; i <= Game.unlockedSkins.length; i++) {
 					int skinButtonX;
