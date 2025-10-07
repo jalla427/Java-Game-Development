@@ -39,8 +39,8 @@ public class ImageDoubleTextButton extends Button {
     private int longestLine(String lineOne, String lineTwo, FontMetrics metrics) {
         int finalLength;
 
-        int lengthOne = this.getX() + (this.getWidth() - metrics.stringWidth(this.getTextOne())) / 2;
-        int lengthTwo = this.getX() + (this.getWidth() - metrics.stringWidth(this.getTextTwo())) / 2;
+        int lengthOne = this.getX() + (this.getWidth() - metrics.stringWidth(lineOne)) / 2;
+        int lengthTwo = this.getX() + (this.getWidth() - metrics.stringWidth(lineTwo)) / 2;
 
         if(lengthOne <= lengthTwo) { finalLength = lengthOne; }
         else { finalLength = lengthTwo; }

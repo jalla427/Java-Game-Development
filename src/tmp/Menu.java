@@ -190,7 +190,9 @@ public class Menu extends MouseAdapter {
 				AudioPlayer.playSound("/buttonClick.wav");
 				if(Game.highScore < Game.hud.getScore() && Game.hud.getLevel() <= 22) { Game.highScore = Game.hud.getScore(); }
 				if(Game.blitzHighScore < Game.hud.getScore() && Game.hud.getLevel() == 99) { Game.blitzHighScore = Game.hud.getScore(); }
-				HUD.HEALTH = 100;
+				HUD.health = 100;
+				HUD.shield = 0;
+				HUD.hasShield = false;
 				Game.hud.setScore(0);
 				Game.hud.setLevel(0);
 				Game.escapeGame = false;

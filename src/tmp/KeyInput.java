@@ -13,7 +13,7 @@ public class KeyInput extends KeyAdapter {
 		keyDown[0] = false; //Right
 		keyDown[1] = false; //Left
 		keyDown[2] = false; //Jump
-		keyDown[3] = false;
+		keyDown[3] = false; //Shield
 		keyDown[4] = false;
 	}
 	
@@ -48,6 +48,12 @@ public class KeyInput extends KeyAdapter {
 					Handler.playerObject.setGrounded(false);
 					Handler.playerObject.jumping = true;
 				}
+			}
+
+			//Shield
+			if(key == keyBinds[3] && HUD.hasShield && !Game.transitioning && !Game.paused && Game.coinsLeft > 0) {
+				HUD.shield = 100;
+				HUD.hasShield = false;
 			}
 		}
 		

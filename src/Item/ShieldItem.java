@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 
-public class Coin extends GameObject {
+public class ShieldItem extends GameObject {
 
 	private BufferedImage coin_image;
 	private int animationFrame;
@@ -18,11 +18,9 @@ public class Coin extends GameObject {
 	private int[] xCollision;
 	private int[] yCollision;
 
-	private int coinValue = 50;
-	private int coinHeal = 5;
-	private int maxSpeed = 5;
+	private int maxSpeed = 6;
 
-	public Coin(float x, float y, int width, int height, float speedOne, float speedTwo, ID id) {
+	public ShieldItem(float x, float y, int width, int height, float speedOne, float speedTwo, ID id) {
 		super(x, y, width, height, id);
 		
 		float[] speeds = getSpeed(speedOne, speedTwo);
@@ -31,21 +29,11 @@ public class Coin extends GameObject {
 		this.animationDelay = 1;
 
 		ss = Game.sprite_sheet_coin;
-		coin_image = ss.grabImageFast(1, 1);
+		coin_image = ss.grabImageFast(4, 1);
 
 		this.luminosity = 50;
 		this.velX = speeds[0];
 		this.velY = speeds[1];
-
-		if(Game.hardMode) {
-			this.coinValue += 25;
-			this.coinHeal = 2;
-		}
-		if(Game.darkMode) { this.coinValue += 25; }
-		if(Game.crazyCoins) {
-			this.coinValue += 25;
-			this.maxSpeed += 3;
-		}
 	}
 
 	public void tick() {
@@ -55,10 +43,10 @@ public class Coin extends GameObject {
 		
 		//If coin is off-screen, delete it
 		if(x > Game.sWidth || x < -this.getWidth() || y > Game.sHeight || y < -this.getHeight()) {
-			if(Game.debugMode) {
-				System.out.println("*** Coin Out of Bounds! ***");
-			}
 			Handler.object.remove(this);
+			if(Game.debugMode) {
+				System.out.println("*** Heal Orb Out of Bounds! ***");
+			}
 		}
 	}
 
@@ -139,7 +127,7 @@ public class Coin extends GameObject {
 
 			//Flip velocity to bounce coin
 			velY = -velY;
-			velY = (float) (velY * (2 * Math.random()) + 0.5);
+			velY = (float) (velY * ((2 * Math.random()) + 0.5));
 
 			//Play bounce sound
 			AudioPlayer.playSound("/coinBounce.wav");
@@ -151,20 +139,18 @@ public class Coin extends GameObject {
 		a1.intersect(a2);
 
 		//Determine if area is shared by coin and player
-		if (!a1.isEmpty()) {
-			Game.coinsLeft--;
-			Game.hud.setScore(Game.hud.getScore() + coinValue);
-			HUD.health += coinHeal;
+		if (!a1.isEmpty() && !HUD.hasShield) {
+			HUD.hasShield = true;
 			AudioPlayer.playSound("/coinGet.wav");
 			Handler.object.remove(this);
 		}
 
-		this.setVelX(Game.clamp(this.getVelX(), -maxSpeed, maxSpeed));
-		this.setVelY(Game.clamp(this.getVelY(), -maxSpeed, maxSpeed));
+		velX = Game.clamp(velX, -maxSpeed, maxSpeed);
+		velY = Game.clamp(velY, -maxSpeed, maxSpeed);
 	}
 
 	public void render(Graphics g) {
-		coin_image = ss.grabImageFast(1, this.animationFrame);
+		coin_image = ss.grabImageFast(4, this.animationFrame);
 		this.animationDelay += 1 * Game.deltaTime;
 		if(this.animationDelay >= 3) {
 			this.animationDelay = 1;
@@ -221,8 +207,6 @@ public class Coin extends GameObject {
 	public float[] getSpeed(float x, float y) {
 		float[] speeds = new float[2];
 		int coinSpeed = 2;
-
-		if(Game.crazyCoins) { coinSpeed = coinSpeed * 2; }
 
 		double dx = x;
 		double dy = y;

@@ -144,9 +144,8 @@ public class HealOrb extends GameObject {
 		a1.intersect(a2);
 
 		//Determine if area is shared by coin and player
-		if (!a1.isEmpty()) {
-			Game.coinsLeft--;
-			HUD.HEALTH += orbHeal;
+		if (!a1.isEmpty() && HUD.health < 100) {
+			HUD.health += orbHeal;
 			AudioPlayer.playSound("/coinGet.wav");
 			Handler.object.remove(this);
 		}

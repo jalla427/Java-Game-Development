@@ -6,19 +6,22 @@ import java.awt.Graphics;
 
 public class HUD {
 	
-	public static float HEALTH = 100;
+	public static float health = 100;
 	private int greenValue = 255;
 	protected int coinStart = 1;
+	public static float shield = 0;
+	public static boolean hasShield = false;
 	
 	protected static int score = 0;
 	private int scoreTimer = 0;
 	private int level = 0;
 	
 	public void tick() {
-		HEALTH = Game.clamp(HEALTH, 0, 100);
+		health = Game.clamp(health, 0, 100);
+		if(!Game.transitioning && !Game.paused && Game.coinsLeft > 0) shield -= 0.1 * Game.deltaTime;
+		shield = Game.clamp(shield, 0, 100);
+		greenValue = (int) (health * 2);
 		greenValue = Game.clamp(greenValue, 0, 255);
-		
-		greenValue = (int) (HEALTH * 2);
 	}
 	
 	public void render(Graphics g) {
@@ -26,18 +29,25 @@ public class HUD {
 		g.setColor(Color.gray);
 		g.fillRect(24, 24, 200, 32);
 		g.setColor(new Color(75, greenValue, 0));
-		g.fillRect(24, 24, (int) (HEALTH * 2), 32);
+		g.fillRect(24, 24, (int) (health * 2), 32);
 		g.drawImage(Game.meter_overlay, 24, 24, null);
+
+		//Shield
+		g.setColor(new Color(90, 210, 255));
+		g.fillRect(24, 24, (int) (shield * 2), 32);
+		g.drawImage(Game.meter_overlay, 24, 24, null);
+		if(hasShield) { g.drawImage(Game.sprite_sheet_menu_buttons.grabImageFast(2, 4), 230, 24, null); }
+		else { g.drawImage(Game.sprite_sheet_menu_buttons.grabImageFast(3, 4), 230, 24, null); }
 
 		//Score + Level
 		g.setColor(Color.white);
 		g.setFont(new Font("Helvetica", Font.PLAIN, 12));
-		g.drawString("Score: " + score, 240, 36);
+		g.drawString("Score: " + score, 270, 36);
 		if(getLevel() == 99) {
-			g.drawString("Blitz Infinite Survival", 240, 52);
+			g.drawString("Blitz Infinite Survival", 270, 52);
 		}
 		else {
-			g.drawString("Level: " + level, 240, 52);
+			g.drawString("Level: " + level, 270, 52);
 		}
 
 		//Level progress bar

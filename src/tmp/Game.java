@@ -11,6 +11,7 @@ import java.util.Random;
 
 import Item.BlitzOrb;
 import Item.HealOrb;
+import Item.ShieldItem;
 import enemy.*;
 import Item.Coin;
 import level.LevelCollection;
@@ -140,7 +141,7 @@ public class Game extends Canvas implements Runnable {
 		blitz_blocks_4_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_4_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_5_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_5_20x20.png"), 3, 3, 20, 20);
 		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 8, 15, 32, 32);
-		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 3, 17, 10, 10);
+		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 4, 17, 10, 10);
 
 		//Enemy SpriteSheets
 		enemySpriteSheets = new SpriteSheet[11];
@@ -296,7 +297,7 @@ public class Game extends Canvas implements Runnable {
 		//In game
 		if(gameState == STATE.Game) {
 			//Game Over
-			if(HUD.HEALTH <= 0 && !escapeGame) {
+			if(HUD.health <= 0 && !escapeGame) {
 				escapeGame = true;
 			}
 			if(escapeGame) {
@@ -501,6 +502,7 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						Handler.addEnemy(new StriderEnemy(100, 150, 32, 32, ID.Enemy));
 						Handler.addEnemy(new StriderEnemy(sWidth - 100, 100, 32, 32, ID.Enemy));
+						Handler.addObject(new ShieldItem((float) (sWidth + 20) / 2, 100, 10, 10, (float) (5 * (Math.random() - 0.3)), (float) (6 * (Math.random() - 0.3)), ID.Orb));
 						endLevelTransition();
 					}
 				}
@@ -548,6 +550,7 @@ public class Game extends Canvas implements Runnable {
 					if (transitionTimer >= 200) {
 						Handler.addEnemy(new GolemEnemy(30, 220, 40, 40, ID.Enemy));
 						Handler.addEnemy(new GolemEnemy(Game.sWidth - 70, 220, 40, 40, ID.Enemy));
+						Handler.addObject(new ShieldItem((float) (sWidth + 20) / 2, 100, 10, 10, (float) (5 * (Math.random() - 0.3)), (float) (6 * (Math.random() - 0.3)), ID.Orb));
 						endLevelTransition();
 					}
 				}
@@ -598,6 +601,7 @@ public class Game extends Canvas implements Runnable {
 						Handler.addEnemy(new SentryEnemy(40, 220, 20, 20, ID.Enemy, 200, 110));
 						Handler.addEnemy(new SentryEnemy(sWidth - 60, 100, 20, 20, ID.Enemy, 300, 120));
 						Handler.addEnemy(new SentryEnemy(sWidth - 60, 220, 20, 20, ID.Enemy, 200, 230));
+						Handler.addObject(new ShieldItem((float) (sWidth + 20) / 2, 100, 10, 10, (float) (5 * (Math.random() - 0.3)), (float) (6 * (Math.random() - 0.3)), ID.Orb));
 						endLevelTransition();
 					}
 				}
@@ -842,11 +846,12 @@ public class Game extends Canvas implements Runnable {
 
 			Handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin));
 
-			//If in blitz game mode, spawn an enemy every 8 coins, heal orb every 15 coins, and blitz orb every 50 coins
+			//If in blitz game mode, spawn an enemy every 8 coins, heal orb every 15 coins, shield every 35 coins, and blitz orb every 50 coins
 			if(hud.getLevel() == 99) {
 				if((coinsLeft) % 50 != 1) Handler.addObject(new Coin(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (5 * (Math.random() + 0.4)), ID.Coin));
 				if(((coinsLeft) % 5 == 0 && Handler.enemyList.size() <= 6) || !Handler.areEnemies()) blitzRandomEnemySpawner();
 				if((coinsLeft) % 15 == 0) Handler.addObject(new HealOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb));
+				if((coinsLeft) % 35 == 0) Handler.addObject(new ShieldItem(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb));
 				if((coinsLeft) % 50 == 0) Handler.addObject(new BlitzOrb(attemptX, attemptY, 10, 10, (float) (5 * (Math.random() + 0.4)), (float) (6 * (Math.random() + 0.4)), ID.Orb));
 			}
 		}

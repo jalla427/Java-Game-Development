@@ -2,16 +2,9 @@ package tmp;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
-
-import tmp.GameObject;
-import tmp.Game;
-import tmp.ID;
 
 public class Player extends GameObject {
 
@@ -145,7 +138,8 @@ public class Player extends GameObject {
 
 				//Lower HUD health if player is touching an enemy
 				if(!a1.isEmpty()) {
-					HUD.HEALTH -= 1 * Game.deltaTime;
+					if(HUD.shield <= 0) { HUD.health -= 1 * Game.deltaTime; }
+					else { HUD.shield -= 1 * Game.deltaTime; }
 					damaged = true;
 				}
 			}
