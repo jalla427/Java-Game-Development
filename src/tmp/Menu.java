@@ -266,14 +266,15 @@ public class Menu extends MouseAdapter {
 				//Create player skin buttons
 				for(int i = 1; i <= Game.unlockedSkins.length; i++) {
 					int rowHeightMod = 0;
-					if(i > Game.unlockedSkins.length / 2) { rowHeightMod = 1; }
+					int rowWidthMod = 0;
+					if(i > Game.unlockedSkins.length / 2) { rowHeightMod = 1; rowWidthMod = 18; }
 					if(Game.playerSkin == i) {
 						Handler.addImageButton(new ImageButton("playerSkinOption" + i, player_skins.grabImageFast(i, 1), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
 					}
 					else if(Game.unlockedSkins[i - 1]) {
-						Handler.addImageButton(new ImageButton("playerSkinOption" + i, player_skins.grabImageFast(i, 14), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
+						Handler.addImageButton(new ImageButton("playerSkinOption" + i, player_skins.grabImageFast(i, 14), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod) - rowWidthMod, 320 + (rowHeightMod * 36), 32, 32));
 					} else {
-						Handler.addImageButton(new ImageButton("playerSkinOption" + i, player_skins.grabImageFast(i, 15), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod), 320 + (rowHeightMod * 36), 32, 32));
+						Handler.addImageButton(new ImageButton("playerSkinOption" + i, player_skins.grabImageFast(i, 15), (Game.sWidth/2) + (i * 36) - 105 - ((Game.unlockedSkins.length/2) * 36 * rowHeightMod) - rowWidthMod, 320 + (rowHeightMod * 36), 32, 32));
 					}
 				}
 
@@ -340,6 +341,7 @@ public class Menu extends MouseAdapter {
 				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 in hard mode", "Score 7000 points on", "hard mode in campaign", Game.brightRedButton, (Game.sWidth/2) - 310, 317, bWidth, bHeight));
 				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 on crazy coins", "Score 7000 points on", "crazy coins in campaign", Game.brightRedButton, (Game.sWidth/2) + 10, 317, bWidth, bHeight));
 				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Score 7000 in dark mode", "Score 7000 points on", "dark mode in campaign", Game.brightRedButton, (Game.sWidth/2) - 310, 386, bWidth, bHeight));
+				Handler.addButton(new ImageDoubleTextButton(fnt4, Color.WHITE, "Spot a unique enemy", "Spot an enemy with a", "a unique look", Game.brightRedButton, (Game.sWidth/2) + 10, 386, bWidth, bHeight));
 
 				for(int i = 1; i <= Game.unlockedSkins.length; i++) {
 					int skinButtonX;

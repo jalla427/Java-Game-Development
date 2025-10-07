@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable {
 	public static int gameVolume = 50;
 	protected static int highScore = 0;
 	protected static int blitzHighScore = 0;
-	private static int[] saveData = new int[38];
+	private static int[] saveData = new int[39];
 	
 	//Variables primarily for level transition
 	protected static boolean playerControl = true;
@@ -91,7 +91,7 @@ public class Game extends Canvas implements Runnable {
 
 	public static double altEnemySkinOdds = 0.005;
 	public static int playerSkin = 1;
-	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false};
+	public static boolean[] unlockedSkins = new boolean[] {true, false, false, false, false, false, false, false, false};
 	public static boolean[] unlockedLevels = new boolean[] {true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 
 	//Score modifiers
@@ -140,7 +140,7 @@ public class Game extends Canvas implements Runnable {
 		blitz_blocks_3_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_3_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_4_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_4_20x20.png"), 3, 3, 20, 20);
 		blitz_blocks_5_20x20 = new SpriteSheet(loader.loadImage("/blitz_blocks_5_20x20.png"), 3, 3, 20, 20);
-		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 8, 15, 32, 32);
+		sprite_sheet = new SpriteSheet(loader.loadImage("/sprite_sheet.png"), 9, 15, 32, 32);
 		sprite_sheet_coin = new SpriteSheet(loader.loadImage("/sprite_sheet_coin.png"), 4, 17, 10, 10);
 
 		//Enemy SpriteSheets
@@ -912,7 +912,7 @@ public class Game extends Canvas implements Runnable {
 					saveData[i] = Integer.parseInt(parts[i]);
 				}
 			} else {
-				saveData = new int[] {50, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				saveData = new int[] {50, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 				writeOutSaveData();
 			}
 		} catch (IOException e) {
@@ -927,19 +927,19 @@ public class Game extends Canvas implements Runnable {
 				highScore = saveData[i];
 			} else if (i == 2) {
 				blitzHighScore = saveData[i];
-			} else if (i <= 10) {
+			} else if (i <= 11) {
 				unlockedSkins[i - 3] = saveData[i] == 1;
-			} else if (i <= 32) {
-				unlockedLevels[i - 11] = saveData[i] == 1;
-			} else if (i == 33) {
+			} else if (i <= 33) {
+				unlockedLevels[i - 12] = saveData[i] == 1;
+			} else if (i == 34) {
 				playerSkin = saveData[i];
-			} else if (i <= 34) {
-				KeyInput.keyBinds[0] = saveData[i];
 			} else if (i <= 35) {
-				KeyInput.keyBinds[1] = saveData[i];
+				KeyInput.keyBinds[0] = saveData[i];
 			} else if (i <= 36) {
-				KeyInput.keyBinds[2] = saveData[i];
+				KeyInput.keyBinds[1] = saveData[i];
 			} else if (i <= 37) {
+				KeyInput.keyBinds[2] = saveData[i];
+			} else if (i <= 38) {
 				KeyInput.keyBinds[3] = saveData[i];
 			}
 		}
@@ -957,19 +957,19 @@ public class Game extends Canvas implements Runnable {
 				 saveData[i] = highScore;
 			} else if(i == 2) {
 				saveData[i] = blitzHighScore;
-			} else if(i <= 10) {
+			} else if(i <= 11) {
 				saveData[i] = unlockedSkins[i - 3] ? 1 : 0;
-			} else if(i <= 32) {
-				saveData[i] = unlockedLevels[i - 11] ? 1 : 0;
 			} else if(i <= 33) {
-				saveData[i] = playerSkin;
+				saveData[i] = unlockedLevels[i - 12] ? 1 : 0;
 			} else if(i <= 34) {
-				saveData[i] = KeyInput.keyBinds[0];
+				saveData[i] = playerSkin;
 			} else if(i <= 35) {
-				saveData[i] = KeyInput.keyBinds[1];
+				saveData[i] = KeyInput.keyBinds[0];
 			} else if(i <= 36) {
-				saveData[i] = KeyInput.keyBinds[2];
+				saveData[i] = KeyInput.keyBinds[1];
 			} else if(i <= 37) {
+				saveData[i] = KeyInput.keyBinds[2];
+			} else if(i <= 38) {
 				saveData[i] = KeyInput.keyBinds[3];
 			}
 		}
@@ -1002,7 +1002,7 @@ public class Game extends Canvas implements Runnable {
 
 				//Write out default data
 				try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveFile))) {
-					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 68, 65, 32, 83");
+					writer.write("50, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 68, 65, 32, 83");
 				}
 			}
 		} catch (IOException e) {

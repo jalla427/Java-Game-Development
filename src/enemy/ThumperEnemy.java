@@ -34,7 +34,7 @@ public class ThumperEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; Game.unlockedSkins[8] = true; }
 		
 		this.velX = 0;
 		this.velY = 0;

@@ -37,7 +37,7 @@ public class StriderEnemy extends GameObject {
 		this.animationDelayTimer = 1;
 		this.sightRange += (int) (Math.random() * 10);
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; Game.unlockedSkins[8] = true; }
 		
 		velX = 5;
 		velY = 5;

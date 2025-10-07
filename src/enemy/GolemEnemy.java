@@ -37,7 +37,7 @@ public class GolemEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelayTimer = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; Game.unlockedSkins[8] = true; }
 		
 		velX = 5;
 		velY = 5;

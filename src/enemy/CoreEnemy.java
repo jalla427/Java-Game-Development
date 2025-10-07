@@ -30,7 +30,7 @@ public class CoreEnemy extends GameObject {
 		this.attackMode = 1;
 		this.animationDelay = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 3; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 3; Game.unlockedSkins[8] = true; }
 		
 		velX = 5;
 		velY = 5;

@@ -28,7 +28,7 @@ public class KeeperEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 1; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 1; Game.unlockedSkins[8] = true; }
 		
 		velX = 4;
 		velY = 4;

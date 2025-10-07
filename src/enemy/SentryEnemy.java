@@ -30,7 +30,7 @@ public class SentryEnemy extends GameObject {
 		
 		timer = Game.clamp(timerOffset, 0, fireRate - 10);
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; Game.unlockedSkins[8] = true; }
 	}
 
 	public void tick() {

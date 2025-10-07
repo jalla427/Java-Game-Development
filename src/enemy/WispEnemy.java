@@ -30,7 +30,7 @@ public class WispEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 4; Game.unlockedSkins[8] = true; }
 		
 		velX = 0;
 		velY = 0;
