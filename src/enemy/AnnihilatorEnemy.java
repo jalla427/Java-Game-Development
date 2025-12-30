@@ -27,7 +27,7 @@ public class AnnihilatorEnemy extends GameObject {
 		this.animationFrame = 1;
 		this.animationDelay = 1;
 
-		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; }
+		if(Math.random() <= Game.altEnemySkinOdds) { spriteSet = 2; Game.unlockedSkins[8] = true; }
 		
 		velX = 5;
 		velY = 0;
