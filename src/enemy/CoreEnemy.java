@@ -189,9 +189,11 @@ public class CoreEnemy extends GameObject {
 					this.setVelX(0);
 					this.setVelY(0);
 				}
+				AudioPlayer.playSound("/core_shift.wav");
 				modeTimer = -1;
 			}
 		}
+
 		//Pursuit without collisions
 		if(attackMode == 2 && modeTimer != -1) {
 			if(homingTimer >= 5) {
@@ -219,6 +221,7 @@ public class CoreEnemy extends GameObject {
 					this.setVelX(0);
 					this.setVelY(0);
 				}
+				AudioPlayer.playSound("/core_shift.wav");
 				modeTimer = -1;
 				this.maxSpeed = 6;
 			}
@@ -229,6 +232,7 @@ public class CoreEnemy extends GameObject {
 			if(homingTimer >= 20 && Handler.enemyList.size() <= 8) {
 				Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY - 16 - (float)(Math.random()*4), (int) (5 + (Math.random()*5)), false, 2);
 				Handler.addBullet(this.getX() + (this.getWidth()/2), this.getY() + (this.getHeight()/4), Handler.playerX + 16, Handler.playerY + 45 + (float)(Math.random()*10), (int) (5 + (Math.random()*5)), false, 2);
+				AudioPlayer.playSound("/bulletFire.wav");
 				homingTimer = 0;
 			}
 			if(modeTimer >= 90) {
@@ -240,6 +244,7 @@ public class CoreEnemy extends GameObject {
 					homingTimer = 0;
 					this.maxSpeed = 4;
 				}
+				AudioPlayer.playSound("/core_shift.wav");
 				modeTimer = -1;
 			}
 		}

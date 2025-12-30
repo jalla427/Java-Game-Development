@@ -93,21 +93,23 @@ public class Handler {
 	}
 
 	public static void addBullet(float x, float y, float targetX, float targetY, float speed, boolean homing, int sprite) {
-		if(!bulletReserveList.isEmpty()) {
-			Bullet tempBullet = bulletReserveList.getFirst();
-			bulletReserveList.remove(tempBullet);
+		synchronized(bulletReserveList) {
+			if (!bulletReserveList.isEmpty()) {
+				Bullet tempBullet = bulletReserveList.getFirst();
+				bulletReserveList.remove(tempBullet);
 
-			tempBullet.setX(x);
-			tempBullet.setY(y);
-			tempBullet.setTargetX(targetX);
-			tempBullet.setTargetY(targetY);
-			tempBullet.setBulletSpeed(speed);
-			tempBullet.setHoming(homing);
-			tempBullet.setSprite(sprite);
-			tempBullet.refreshSpeeds();
+				tempBullet.setX(x);
+				tempBullet.setY(y);
+				tempBullet.setTargetX(targetX);
+				tempBullet.setTargetY(targetY);
+				tempBullet.setBulletSpeed(speed);
+				tempBullet.setHoming(homing);
+				tempBullet.setSprite(sprite);
+				tempBullet.refreshSpeeds();
 
-			bulletAddList.add(tempBullet);
-			tempBullet.setActive(true);
+				bulletAddList.add(tempBullet);
+				tempBullet.setActive(true);
+			}
 		}
 	}
 
